@@ -9,6 +9,7 @@ body{
     
     background-color: black;
     color: white;
+    background-image: url(./BlackPotrait.jpg);
 }
 
 .navbar{
@@ -37,10 +38,31 @@ body{
     height: auto;
 }
 
+.scrolling-text {
+    display:flex;
+    justify-content:flex-start;
+    overflow:hidden;  
+  }
+  
+ .scrolling-text h1{
+  animation: scroll-left 6s linear infinite;
+  white-space:nowrap;
+  }
+  
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+
 .frontpage__text{
     margin-bottom: 8rem;
-    margin-top: 6rem;
-    font-size: 60px;
+    margin-top: 24rem;
+    font-size: 100px;
     font-weight: 100;
     color: antiquewhite;
     text-align: center;
