@@ -10,6 +10,7 @@ body{
     background-color: black;
     color: white;
     background-image: url(./BlackPotrait.jpg);
+    background-repeat: no-repeat;
 }
 
 .navbar{
@@ -34,6 +35,7 @@ body{
 }
 
 .frontpage__image{
+    
     max-width: 100%;
     height: auto;
 }
@@ -45,7 +47,7 @@ body{
   }
   
  .scrolling-text h1{
-  animation: scroll-left 6s linear infinite;
+  animation: scroll-left 10s linear infinite;
   white-space:nowrap;
   }
   
@@ -72,7 +74,29 @@ body{
 .about{
     color: rgb(187, 181, 181);
 }
+.flex-container1 {
+    display: flex;
+  }
 
+  .flex-container2 {
+    display: flex;
+  }
+  
+  .box {
+    flex: 1; /* evenly distribute the boxes across the row */
+    background-color: aliceblue;
+    background-image: url(./lamp.avif);
+    text-align: center;
+    height: 250px;
+    width:400px;
+    border-top: 30px solid white;
+    border-bottom: 30px solid white;
+    border-left: 20px solid white;
+    border-right: 20px solid white;
+
+    margin: 30px;
+  }
+  
 /* Responsive design */
 
 @media all and (max-width:500px) {
