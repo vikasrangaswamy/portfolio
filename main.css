@@ -117,10 +117,8 @@ body{
 
 .flex-container1 {
     display: flex;
-    /* background-image: url(./BlackPotrait.jpg); */
     background-size: contain;
   }
-  
 
   .flex-container2 {
     display: flex;
@@ -147,6 +145,12 @@ body{
     background-repeat: no-repeat;
     /* background-position-y: 30%; */
   }
+
+  #adventure:hover{
+    zoom: 110%;
+    background-image: none;
+  }
+
   #friends{
     background-image: url(./photos/Friends/DSC_0062.jpg);
     background-size: cover;
