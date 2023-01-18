@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="main.css">
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
     <style> @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap'); </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 
@@ -15,11 +16,11 @@
     <div class="frontpage">
         <div class="frontpage__image">
             <!-- nav bar -->
-            <div class="navbar">
-                <a href="" class="navbar__buttons" style="width:25% !important">HOME</a>
-                <a href="" class="navbar__buttons" style="width:25% !important">ABOUT</a>
-                <a href="" class="navbar__buttons" style="width:25% !important">PHOTOS</a>
-                <a href="" class="navbar__buttons" style="width:25% !important">CONTACT</a>
+            <div id="nav-bar" class="navbar">
+                <a href="#home" class="navbar__buttons" style="width:25% !important">HOME</a>
+                <a href="#about" class="navbar__buttons" style="width:25% !important">ABOUT</a>
+                <a href="#photos" class="navbar__buttons" style="width:25% !important">PHOTOS</a>
+                <a href="#contact" class="navbar__buttons" style="width:25% !important">CONTACT</a>
             </div>
         </div>
 
@@ -37,8 +38,9 @@
         <!-- <p class="frontpage__font">Associate Software Engineer Intern, Contentstack</p> -->
         <!-- <img class="frontpage__image" src="BlackPotrait.jpg" alt="Vikas Rangaswamy image" width="1000" height="1000"> -->
     </div>
+    
     <!-- About Section -->
-    <div class="about">
+    <div id="about" class="about">
         <H2>ABOUT</H2>
         <br>
         <hr width="200px">
@@ -49,21 +51,36 @@
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus dolorum, fugiat est cum voluptatem recusandae eligendi facilis perspiciatis, architecto porro labore repudiandae iste fuga at tempora! A iusto sed reiciendis?</p>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus dolorum, fugiat est cum voluptatem recusandae eligendi facilis perspiciatis, architecto porro labore repudiandae iste fuga at tempora! A iusto sed reiciendis?</p>
         <!-- hamburger button -->
-        <button id="top-button">=</button>
+        <a href="#nav-bar"><button id="top-button">=</button></a>
+        <br>
+
+        <hr width="200px">
 
 
 
 
         <!-- box containers -->
-        <div class="flex-container1">
-            <div class="box">Box 1</div>
-            <div class="box">Box 2</div>
-            <div class="box">Box 3</div>
+        <!--
+            Travel
+            Sports
+            Riding
+            Academics
+            Adventure 
+
+         -->
+
+        
+         
+        <div id="photos" class="flex-container1">
+            <div id="adventure" class="box"><a href="./adventure.html">click</a></div>
+            <div id="friends" class="box"><a href="./friends.html"></a></div>
+            <div id="riding" class="box"><a href="./riding.html"></a></div>
+            
         </div>
         <div class="flex-container2">
-            <div class="box">Box 4</div>
-            <div class="box">Box 5</div>
-            <div class="box">Box 6</div>
+            <div id="academic" class="box"><a href="./academics.html"></a></div>
+            <div id="sports" class="box"><a href="./sports.html"></a></div>
+            <div id="travel" class="box"><a href="./travel.html"></a></div>
         </div>
           
     </div>
@@ -71,7 +88,7 @@
 
 <!-- Footer -->
 
-<div class="footer">
+<div id= "contact" class="footer">
     <div class="flex-box">
         <div>
             <h1>Let's get to know </h1><h1>Eachother<h1>
@@ -90,6 +107,15 @@
     
 
 </div>
+
+<footer>
+    <div class="social-links">
+      <a href="#">facebook</a>
+      <a href="#">twitter</a>
+      <a href="#">instagram</a>
+    </div>
+</footer>
+  
 
 
 </body>
