@@ -9,7 +9,7 @@ body{
     
     background-color: black;
     color: white;
-    background-image: url(./photos/download.png);
+    background-image: url(./photos/extras/download.png);
     background-repeat: no-repeat;
     background-size: 100%;
     background-color: black;
@@ -142,40 +142,41 @@ body{
     margin: 30px;
   }
   #adventure{
-    background-image: url(./photos/DSC_0150.jpg);
+    background-image: url(./photos/Adventure/IMG_20230118_080359.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     /* background-position-y: 30%; */
   }
   #friends{
-    background-image: url(./photos/DSC_0150.jpg);
+    background-image: url(./photos/Friends/DSC_0062.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    /* background-position-y: 30%; */
+    background-position-y: 70%;
   }
   #riding{
-    background-image: url(./photos/DSC_0150.jpg);
+    background-image: url(./photos/Riding/IMG_20211114_172018.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    /* background-position-y: 30%; */
+    background-position-y: 40%;
   }
   #academic{
-    background-image: url(./photos/DSC_0150.jpg);
+    background-image: url(./photos/Academics/IMG_20220527_153957_Bokeh.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    /* background-position-y: 30%; */
+    background-position-y: 30%;
+    background-position-x:-10%;
   }
   #sports{
-    background-image: url(./photos/DSC_0150.jpg);
+    background-image: url(./photos/Sports/Screenshot_2023-01-18-08-05-50-28_92460851df6f172a4592fca41cc2d2e6.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    /* background-position-y: 30%; */
+    background-position-y: 70%;
   }
   #travel{
-    background-image: url(./photos/DSC_0150.jpg);
+    background-image: url(./photos/Travel/IMG_20211203_212850_247.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    /* background-position-y: 30%; */
+    background-position-y: 60%;
   }
 
   /* Footer */

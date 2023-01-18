@@ -27,9 +27,40 @@
 
     margin: 30px;
   }
-  #box1{
+  
+  #adventure{
+    background-image: url(./photos/download.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-position-y: 30%; */
+  }
+  #friends{
     background-image: url(./photos/DSC_0150.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    background-position-y: 30%;
+    /* background-position-y: 30%; */
+  }
+  #riding{
+    background-image: url(./photos/DSC_0150.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-position-y: 30%; */
+  }
+  #academic{
+    background-image: url(./photos/DSC_0150.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-position-y: 30%; */
+  }
+  #sports{
+    background-image: url(./photos/DSC_0150.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-position-y: 30%; */
+  }
+  #travel{
+    background-image: url(./photos/DSC_0150.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-position-y: 30%; */
   }
