@@ -1,66 +1,17 @@
-/* box containers */
-
-
-.flex-container1 {
-    display: flex;
-    /* background-image: url(./BlackPotrait.jpg); */
-    background-size: contain;
+*{
+    box-sizing: border-box;
+    margin: 10px;
+    padding: 0;
+}
+.gallery {
+    display: flex; 
+    justify-content: space-between; 
   }
   
-
-  .flex-container2 {
-    display: flex;
+  
+  .gallery img {
+    width: 300px; 
+    height: 200px; 
+    object-fit: contain;
   }
   
-  .box {
-    flex: 1; /* evenly distribute the boxes across the row */
-    background-color: aliceblue;
-    /* background-image: url(./DSC_0150.jpg); */
-    text-align: center;
-    height: 250px;
-    width:400px;
-    border-top: 30px solid white;
-    border-bottom: 30px solid white;
-    border-left: 20px solid white;
-    border-right: 20px solid white;
-    /* background-size: cover; */
-
-    margin: 30px;
-  }
-  
-  #adventure{
-    background-image: url(./photos/download.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    /* background-position-y: 30%; */
-  }
-  #friends{
-    background-image: url(./photos/DSC_0150.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    /* background-position-y: 30%; */
-  }
-  #riding{
-    background-image: url(./photos/DSC_0150.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    /* background-position-y: 30%; */
-  }
-  #academic{
-    background-image: url(./photos/DSC_0150.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    /* background-position-y: 30%; */
-  }
-  #sports{
-    background-image: url(./photos/DSC_0150.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    /* background-position-y: 30%; */
-  }
-  #travel{
-    background-image: url(./photos/DSC_0150.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    /* background-position-y: 30%; */
-  }
