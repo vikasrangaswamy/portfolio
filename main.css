@@ -4,7 +4,9 @@
     box-sizing: border-box;
     font-family: 'Sora', sans-serif;
 }
-
+html{
+    scroll-behavior: smooth;
+}
 body{
     
     background-color: black;
@@ -20,7 +22,7 @@ body{
 .navbar{
     /* position:fixed; */
     display: flex;
-    width:35% ;
+    width:39% ;
     text-align: center;
     top: 0;
     z-index: 1;
@@ -164,6 +166,7 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     position: relative;
+    background-position-y: 30%;
   }
 
   .adventure:hover{
@@ -171,6 +174,7 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 50%;
+    transition: 0.3s;
     
   }
   
@@ -186,6 +190,7 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 50%;
+    transition: 0.3s;
     
   }
   .riding{
@@ -199,6 +204,7 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 50%;
+    transition: 0.3s;
   }
   .academic{
     background-image: url(./photos/Academics/IMG_20220527_153957_Bokeh.jpg);
@@ -212,6 +218,7 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 50%;
+    transition: 0.3s;
   }
   .sports{
     background-image: url(./photos/Sports/Screenshot_2023-01-18-08-05-50-28_92460851df6f172a4592fca41cc2d2e6.jpg);
@@ -224,6 +231,7 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 50%;
+    transition: 0.3s;
   }
   .travel{
     background-image: url(./photos/Travel/IMG_20211203_212850_247.jpg);
@@ -236,6 +244,7 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 50%;
+    transition: 0.3s;
   }
 
   /* Footer */
