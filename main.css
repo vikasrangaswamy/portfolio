@@ -390,7 +390,7 @@ body{
   }
 
   .adventure:hover{
-    background-image: url(./photos/extras/Adventure.png);
+    background-image: url(./photos/Adventure/Adventure.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 50%;
