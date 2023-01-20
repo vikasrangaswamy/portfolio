@@ -1,17 +1,80 @@
 *{
-    box-sizing: border-box;
-    margin: 10px;
+    margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
-.gallery {
-    display: flex; 
-    justify-content: space-between; 
+
+body{
+    background-color: black;
+}
+
+/* nav bar */
+.navbar{
+    /* position:fixed; */
+    display: flex;
+    width:39% ;
+    text-align: center;
+    top: 0;
+    z-index: 1;
+}
+
+.navbar__buttons{
+    color:rgb(186, 183, 183);
+    text-decoration: none;
+    padding: 7px;
+    font-size: 20px;
+}
+.navbar__buttons:hover{
+    color: black;
+    background-color:rgb(186, 183, 183) ;
+    
+}
+
+/* Hamburger button */
+#top-button {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    background-color: rgb(12, 11, 11);
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius:10px;
+    text-align: center;
+    font-size: 20px;
+    line-height: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 20px white;
+  }
+  #top-button:hover{
+    background-color: aliceblue;
+    color: black;
+  }
+  #top-button:active{
+    /* background-color: aqua; */
+    box-shadow: 0 0 1px black;
+  }
+
+.flex-container {
+    display: flex;
+    
+    
   }
   
+  img{
+    max-width: 100%;
+    height: auto;
+    border: 10px solid white;
+
   
-  .gallery img {
-    width: 300px; 
-    height: 200px; 
-    object-fit: contain;
+  }
+  .box {
+    flex: 1; /* evenly distribute the boxes across the row */
+    padding: 10px;
+    background-color: rgb(0, 0, 0);
+    text-align: center;
+    width: 400px;
+    height: 250px; 
   }
   
