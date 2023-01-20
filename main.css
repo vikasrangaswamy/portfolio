@@ -8,12 +8,12 @@ html{
     scroll-behavior: smooth;
 }
 body{   
-    background-color: black;
+    background-color: white;
     color: white;
-    background-image: url(./photos/extras/download.png);
+    background-image: url(./photos/extras/download.jpg);
     background-repeat: no-repeat;
     background-size: 100%;
-    background-color: black;    
+    background-color: white;    
 }
 .navbar{
     display: flex;
@@ -29,7 +29,7 @@ body{
     font-size: 20px;
 }
 .navbar__buttons:hover{
-    color: black;
+    color: white;
     background-color:rgb(186, 183, 183) ;   
 }
 
@@ -59,16 +59,18 @@ body{
     margin-top: 24rem;
     font-size: 100px;
     font-weight: 100;
-    color: antiquewhite;
+    color: grey;
     text-align: center;  
+    border-color: antiquewhite;
+    border: 2px;
 }
 /* About section */
 .about h2 {
-    color: antiquewhite;
+    color: rgb(0, 0, 0);
 }
 .about{
-    color: rgb(187, 181, 181);
-    background-color: black;
+    color: rgb(0, 0, 0);
+    background-color: white;
     font-size: 20px;
     text-align: justify;
     max-width: 100%;
@@ -84,7 +86,7 @@ body{
     right: 10px;
     width: 50px;
     height: 50px;
-    background-color: rgb(12, 11, 11);
+    background-color: grey;
     color: rgb(255, 255, 255);
     border: none;
     border-radius:10px;
@@ -95,8 +97,8 @@ body{
     box-shadow: 0 0 20px white;
   }
   #top-button:hover{
-    background-color: aliceblue;
-    color: black;
+    background-color: rgb(25, 25, 25);
+    color: rgb(232, 232, 232);
   }
   #top-button:active{
     box-shadow: 0 0 1px black;
@@ -115,14 +117,14 @@ body{
   }
   .box {
     flex: 1; /* evenly distribute the boxes across the row */
-    background-color: aliceblue;
+    background-color: grey;
     text-align: center;
     height: 250px;
     width:400px;
-    border-top: 30px solid white;
-    border-bottom: 30px solid white;
-    border-left: 20px solid white;
-    border-right: 20px solid white;
+    border-top: 30px solid grey;
+    border-bottom: 30px solid grey;
+    border-left: 20px solid grey;
+    border-right: 20px solid grey;
     margin: 30px;
   }
 .flex-container1 a{
@@ -220,7 +222,7 @@ body{
     padding-top: 10%;
     padding-left: 20%;
     padding-right: 20%;
-    background-color: black;
+    background-color: white;
     zoom: 140%;
     margin-bottom: 5%;    
  }
@@ -307,7 +309,7 @@ footer a{
         padding-top: 10%;
         padding-left: 20%;
         padding-right: 20%;
-        background-color: black;
+        background-color: white;
         zoom: 140%;
         
      }
@@ -447,7 +449,7 @@ footer a{
                 top: 0;
                 z-index: 1;
                 zoom: 50%;
-                background-color: black;
+                background-color: white;
 
         
             }
@@ -497,7 +499,7 @@ footer a{
                 top: 0;
                 z-index: 1;
                 zoom: 50%;
-                background-color: black;
+                background-color: white;
 
         
             }
