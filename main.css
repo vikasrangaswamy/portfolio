@@ -358,8 +358,8 @@ body{
                 
             }
             .frontpage__text{
-                margin-bottom: 8rem;
-                margin-top: 5rem;
+                margin-bottom: 3rem;
+                margin-top: 11rem;
                 font-size: 100px;
                 font-weight: 100;
                 color: antiquewhite;
@@ -370,16 +370,33 @@ body{
                 font-size: 60px;
                 margin-bottom: 10%;
                 text-shadow: 0 0 2px white;
-                zoom: 80%;
+                zoom: 70%;
              }
              #get-in-touch{
                 border-radius: 50%;
                 margin-left: 10%;
                 height: 100px;
                 width: 100px;
-                zoom: 80%;
+                zoom: 50%;
+                margin-bottom: 10%;
             
              }
+             #phone {
+                border-radius: 20%;
+                height: 40%;
+                width: fit-content;
+                /* transform:translateX(30%); */
+                padding: 1%;
+                margin-left: 5%;
+            }
+             #mail{
+                border-radius: 10px;
+                height: 40%;
+                width: fit-content;
+                /* transform:translateX(30%); */
+                padding: 1%;
+                margin-top: 10%;
+            }
         }
   .adventure{
     background-image: url(./photos/Adventure/IMG_20230118_080359.jpg);
