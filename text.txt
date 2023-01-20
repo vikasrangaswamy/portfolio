@@ -1,0 +1,4 @@
+Webpage Startup time
+
+1. Initially - 9s [Lot of images and size of images is large]
+2.

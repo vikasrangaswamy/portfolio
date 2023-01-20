@@ -64,10 +64,15 @@ body{
   
   img{
     max-width: 100%;
-    height: auto;
+    height: 240px;
     border: 10px solid white;
+    justify-items: center;
 
   
+  }
+  .box-sports img{
+    max-width: 100%;
+    height: fit-content;
   }
   .box {
     flex: 1; /* evenly distribute the boxes across the row */
