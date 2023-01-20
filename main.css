@@ -241,6 +241,10 @@ body{
             text-align: center;
             
         }
+        .about p{
+            margin-right: 2%;
+            margin-left: 1%;
+        }
         .box {
             flex: 1; /* evenly distribute the boxes across the row */
             background-color: aliceblue;
