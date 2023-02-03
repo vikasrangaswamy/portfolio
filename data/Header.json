@@ -1,0 +1,20 @@
+{
+  "navBar":[
+    {
+        "title":"Home",
+        "href":"#home"
+    },
+    {
+        "title":"About",
+        "href":"#about"
+    },
+    {
+        "title":"Gallery",
+        "href":"#gallery"
+    },
+    {
+        "title":"Contact",
+        "href":"#contact"
+    }
+]
+}

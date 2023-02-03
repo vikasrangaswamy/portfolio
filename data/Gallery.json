@@ -1,0 +1,30 @@
+{
+    "images":[
+        {
+
+            "cardBackground":"photos/Academics/IMG_20220527_153957_Bokeh.jpg",
+            "cardHoverBackground":"photos/Academics/asdemics.png"
+        },
+        {
+            "cardBackground":"photos/Adventure/DSC_0134.jpg",
+            "cardHoverBackground":"photos/Adventure/Adventure.png"
+        },
+        {
+            "cardBackground":"photos/Friends/1642594970070.jpg",
+            "cardHoverBackground":"photos/Friends/friends.png"
+        },
+        {
+            "cardBackground":"photos/Riding/IMG_20211001_091401.jpg",
+            "cardHoverBackground":"photos/Riding/bike rides.png"
+        },
+        {
+            "cardBackground":"photos/Sports/IMG_20220409_130201.jpg",
+            "cardHoverBackground":"photos/Sports/sports.png"
+        },
+        {
+            "cardBackground":"photos/Travel/DSC_0005.jpg",
+            "cardHoverBackground":"photos/Travel/travel.png"
+        }
+    ],
+    "galelryHeading": "GALLERY"
+}

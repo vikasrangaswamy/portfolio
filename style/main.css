@@ -1,3 +1,4 @@
+
 * {
     padding: 0;
     margin:0;
@@ -8,12 +9,12 @@ html{
     scroll-behavior: smooth;
 }
 body{   
-    background-color: white;
+    background-color: black;
     color: white;
-    background-image: url(./photos/extras/download.jpg);
+    background-image:url("../photos/extras/download.png");
     background-repeat: no-repeat;
     background-size: 100%;
-    background-color: white;    
+    /* background-color: white;     */
 }
 .navbar{
     display: flex;
@@ -59,18 +60,18 @@ body{
     margin-top: 24rem;
     font-size: 100px;
     font-weight: 100;
-    color: grey;
+    color:rgb(196, 196, 196);
     text-align: center;  
     border-color: antiquewhite;
     border: 2px;
 }
 /* About section */
 .about h2 {
-    color: rgb(0, 0, 0);
+    color: whitesmoke;
 }
 .about{
-    color: rgb(0, 0, 0);
-    background-color: white;
+    color: whitesmoke;
+    background-color: black;
     font-size: 20px;
     text-align: justify;
     max-width: 100%;
@@ -117,14 +118,14 @@ body{
   }
   .box {
     flex: 1; /* evenly distribute the boxes across the row */
-    background-color: grey;
+    background-color: white;
     text-align: center;
     height: 250px;
     width:400px;
-    border-top: 30px solid grey;
-    border-bottom: 30px solid grey;
-    border-left: 20px solid grey;
-    border-right: 20px solid grey;
+    border-top: 30px solid white;
+    border-bottom: 30px solid white;
+    border-left: 20px solid white;
+    border-right: 20px solid white;
     margin: 30px;
   }
 .flex-container1 a{
@@ -132,80 +133,80 @@ body{
     font-size: 20px;    
 }
   .adventure{
-    background-image: url(./photos/Adventure/IMG_20230118_080359.jpg);
+    background-image: url("../photos/Adventure/IMG_20230118_080359.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     position: relative;
     background-position-y: 30%;
   }
   .adventure:hover{
-    background-image: url(./photos/Adventure/Adventure.png);
+    background-image: url("../photos/Adventure/Adventure.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 50%;
     transition: 0.3s; 
   }
   .friends{
-    background-image: url(./photos/Friends/DSC_0062.jpg);
+    background-image: url("../photos/Friends/DSC_0062.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 70%;
   }
   .friends:hover{
-    background-image: url(./photos/Friends/friends.png);
+    background-image: url("../photos/Friends/friends.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 50%;
     transition: 0.3s; 
   }
   .riding{
-    background-image: url(./photos/Riding/IMG_20211114_172018.jpg);
+    background-image: url("../photos/Riding/IMG_20211114_172018.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 40%;
   }
   .riding:hover{
-    background-image: url(./photos/Riding/bike\ rides.png);
+    background-image: url("../photos/Riding/bike\ rides.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 50%;
     transition: 0.3s;
   }
   .academic{
-    background-image: url(./photos/Academics/IMG_20220527_153957_Bokeh.jpg);
+    background-image: url("../photos/Academics/IMG_20220527_153957_Bokeh.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 30%;
     background-position-x:-10%;
   }
   .academic:hover{
-    background-image: url(./photos/Academics/asademics.png);
+    background-image: url("../photos/Academics/asademics.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 50%;
     transition: 0.3s;
   }
   .sports{
-    background-image: url(./photos/Sports/Screenshot_2023-01-18-08-05-50-28_92460851df6f172a4592fca41cc2d2e6.jpg);
+    background-image: url("../photos/Sports/Screenshot_2023-01-18-08-05-50-28_92460851df6f172a4592fca41cc2d2e6.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 70%;
   }
   .sports:hover{
-    background-image: url(./photos/Sports/sports.png);
+    background-image: url("../photos/Sports/sports.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 50%;
     transition: 0.3s;
   }
   .travel{
-    background-image: url(./photos/Travel/IMG_20211203_212850_247.jpg);
+    background-image: url("../photos/Travel/IMG_20211203_212850_247.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 60%;
   }
   .travel:hover{
-    background-image: url(./photos/Travel/travel.png);
+    background-image: url("../photos/Travel/travel.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 50%;
@@ -222,7 +223,7 @@ body{
     padding-top: 10%;
     padding-left: 20%;
     padding-right: 20%;
-    background-color: white;
+    background-color: black;
     zoom: 140%;
     margin-bottom: 5%;    
  }
