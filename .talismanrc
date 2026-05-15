@@ -1,14 +1,6 @@
 fileignoreconfig:
-- filename: package-lock.json
-  checksum: 1f3ed8a70ae0cc08acf828ed2c9825d3052f661d90488c1c04dc884b44a2cbda
-- filename: src/content/experience.ts
-  checksum: 26f4a7ed05e74d5a47477482136411dd11dcd95208cc5a95cfc3e72b23508edc
-- filename: src/routes/Learnings.tsx
-  checksum: 3e7fd5b081e287b8c8778d6efa0cd9ac291ac1d8d3b243a2ffe62e72e4699601
+- filename: src/components/learnings/TopicGrid.tsx
+  checksum: 103e5d1efdf5854b36a98ef23634f8b1dbf0db53cfab8c69a4cf1cc7a8a9f01c
 - filename: src/routes/Home.tsx
-  checksum: 96523482a89b5e79cb819ae47798e359db9bf0d126f08cadf45ed5dda45f1c71
-- filename: src/lib/sound.ts
-  checksum: 1190ca604fe5aa8b85fa6b2ea921b7a23a81134c876e340052cbfd2434da497f
-- filename: src/routes/LeetCodeStats.tsx
-  checksum: 3a63d8e88bb4d2dcdd1f3daff96f951d92537cf82909c6bd3bc65f1211a47cc1
+  checksum: fdb6d01211b84254f4991601515be0389b912ffd284aab1542ddf3e6200751c6
 version: "1.0"

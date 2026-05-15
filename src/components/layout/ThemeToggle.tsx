@@ -15,6 +15,7 @@ export function ThemeToggle() {
     <motion.button
       type="button"
       onClick={handleClick}
+      data-no-sound
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
       title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
       whileHover={{ scale: 1.08, rotate: -6 }}

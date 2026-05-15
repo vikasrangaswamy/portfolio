@@ -1,25 +1,31 @@
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import type { LearningTopic } from './LearningPage'
+import { PageHeader } from '../layout/PageHeader'
 import pageStyles from '../../routes/Page.module.css'
 
 type Props = {
   tag: string
   title: string
   summary: string
-  trackPath: string // e.g. "/learnings/system-design"
+  trackPath: string
   topics: readonly LearningTopic[]
 }
 
 export function TopicGrid({ tag, title, summary, trackPath, topics }: Props) {
   return (
     <div className={pageStyles.container}>
-      <div className={pageStyles.tag}>{tag}</div>
-      <h1 className={pageStyles.title}>{title}</h1>
-      <p className={pageStyles.summary}>{summary}</p>
-      <div className={pageStyles.divider} />
+      <PageHeader tag={tag} title={title} summary={summary} />
       <ul style={{ display: 'grid', gap: 'var(--sp-3)' }}>
-        {topics.map((topic) => (
-          <li key={topic.slug}>
+        {topics.map((topic, i) => (
+          <motion.li
+            key={topic.slug}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.15 + i * 0.06, ease: 'easeOut' }}
+            whileHover={{ y: -2 }}
+            style={{ listStyle: 'none' }}
+          >
             <Link
               to={`${trackPath}/${topic.slug}`}
               style={{
@@ -28,7 +34,8 @@ export function TopicGrid({ tag, title, summary, trackPath, topics }: Props) {
                 background: 'var(--white)',
                 border: '1px solid var(--gray-300)',
                 borderRadius: 'var(--r-md)',
-                transition: 'transform var(--transition), border-color var(--transition), box-shadow var(--transition)',
+                transition:
+                  'border-color var(--transition), box-shadow var(--transition)',
               }}
             >
               <div
@@ -62,7 +69,7 @@ export function TopicGrid({ tag, title, summary, trackPath, topics }: Props) {
                 ))}
               </div>
             </Link>
-          </li>
+          </motion.li>
         ))}
       </ul>
     </div>

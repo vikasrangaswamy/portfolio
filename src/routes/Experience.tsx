@@ -1,4 +1,6 @@
+import { motion } from 'framer-motion'
 import { experience, type Role } from '../content/experience'
+import { PageHeader } from '../components/layout/PageHeader'
 import pageStyles from './Page.module.css'
 import styles from './Experience.module.css'
 
@@ -18,18 +20,19 @@ function formatRange(role: Role): string {
 export default function Experience() {
   return (
     <div className={pageStyles.container}>
-      <div className={pageStyles.tag}>Experience</div>
-      <h1 className={pageStyles.title}>Work history</h1>
-      <p className={pageStyles.summary}>
-        A timeline of where I've worked and what I built. Most recent first.
-      </p>
-      <div className={pageStyles.divider} />
+      <PageHeader
+        tag="Experience"
+        title="Work history"
+        summary="A timeline of where I've worked and what I built. Most recent first."
+      />
       <div className={styles.timeline}>
         {experience.map((role, i) => (
-          <article
+          <motion.article
             key={`${role.company}-${role.start}`}
             className={styles.role}
-            style={{ animationDelay: `${i * 0.08}s` }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.15 + i * 0.08, ease: 'easeOut' }}
           >
             <header className={styles.roleHeader}>
               <div className={styles.titleRow}>
@@ -55,7 +58,7 @@ export default function Experience() {
                 ))}
               </div>
             )}
-          </article>
+          </motion.article>
         ))}
       </div>
     </div>

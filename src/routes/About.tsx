@@ -1,21 +1,26 @@
+import { motion } from 'framer-motion'
 import { profile } from '../content/profile'
 import { skills } from '../content/skills'
+import { PageHeader } from '../components/layout/PageHeader'
 import pageStyles from './Page.module.css'
 import styles from './About.module.css'
 
 export default function About() {
   return (
     <div className={pageStyles.container}>
-      <div className={pageStyles.tag}>About</div>
-      <h1 className={pageStyles.title}>{profile.name}</h1>
-      <p className={pageStyles.summary}>
-        {profile.role} · {profile.company}
-      </p>
-      <div className={pageStyles.divider} />
+      <PageHeader
+        tag="About"
+        title={profile.name}
+        summary={`${profile.role} · ${profile.company} · ${profile.location}`}
+      />
 
-      <div className={styles.layout}>
+      <motion.div
+        className={styles.layout}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.15, ease: 'easeOut' }}
+      >
         <div className={styles.avatar} aria-label="Profile photo placeholder">
-          {/* DUMMY — add public/avatar.jpg per NEEDS-FROM-USER.md #1 */}
           <span>V</span>
         </div>
         <div className={styles.bio}>
@@ -37,9 +42,14 @@ export default function About() {
             </a>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      <section className={styles.skillBlock}>
+      <motion.section
+        className={styles.skillBlock}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.25, ease: 'easeOut' }}
+      >
         <h2>Skills</h2>
         {skills.map((cat) => (
           <div key={cat.category} className={styles.skillCategory}>
@@ -53,7 +63,7 @@ export default function About() {
             </div>
           </div>
         ))}
-      </section>
+      </motion.section>
     </div>
   )
 }

@@ -8,6 +8,7 @@ export function SoundToggle() {
     <motion.button
       type="button"
       onClick={toggleMute}
+      data-no-sound
       aria-label={muted ? 'Enable sounds' : 'Mute sounds'}
       aria-pressed={!muted}
       title={muted ? 'Enable sounds' : 'Mute sounds'}

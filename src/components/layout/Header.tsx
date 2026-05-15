@@ -1,7 +1,6 @@
 import { NavLink, Link } from 'react-router-dom'
 import { ThemeToggle } from './ThemeToggle'
 import { SoundToggle } from './SoundToggle'
-import { useSound } from '../../lib/sound'
 import styles from './Header.module.css'
 
 const navItems = [
@@ -12,11 +11,9 @@ const navItems = [
 ]
 
 export function Header() {
-  const { play } = useSound()
-
   return (
     <header className={styles.header}>
-      <Link to="/" className={styles.logo} onClick={() => play('click', 0.5)}>
+      <Link to="/" className={styles.logo}>
         <span className={styles.logoDot} />
         Vikas Rangaswamy
       </Link>
@@ -25,7 +22,6 @@ export function Header() {
           <NavLink
             key={item.to}
             to={item.to}
-            onClick={() => play('click', 0.6)}
             className={({ isActive }) =>
               isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink
             }

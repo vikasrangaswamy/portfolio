@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { ActivityCalendar, type Activity, type ThemeInput } from 'react-activity-calendar'
 import { profile } from '../content/profile'
 import { useTheme } from '../lib/useTheme'
+import { PageHeader } from '../components/layout/PageHeader'
 import pageStyles from './Page.module.css'
 import styles from './LeetCodeStats.module.css'
 
@@ -57,9 +58,7 @@ export default function LeetCodeStats() {
   if (!data) {
     return (
       <div className={pageStyles.container}>
-        <div className={pageStyles.tag}>Learnings · LeetCode</div>
-        <h1 className={pageStyles.title}>LeetCode</h1>
-        <p className={pageStyles.summary}>Loading stats…</p>
+        <PageHeader tag="Learnings · LeetCode" title="LeetCode" summary="Loading stats…" />
       </div>
     )
   }
@@ -67,40 +66,23 @@ export default function LeetCodeStats() {
   const isPlaceholder = data._placeholder || !data.username
   const activities = toActivities(data.calendar.submissionCalendar)
   const lastYear = activities.reduce((s, a) => s + a.count, 0)
+  const profileUrl = data.username
+    ? `https://leetcode.com/u/${data.username}/`
+    : 'https://leetcode.com'
+  const handle = data.username ?? profile.leetcodeUsername
 
   return (
     <div className={pageStyles.container}>
-      <div className={pageStyles.tag}>Learnings · LeetCode</div>
-      <motion.h1
-        className={pageStyles.title}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
-      >
-        LeetCode
-      </motion.h1>
-      <motion.p
-        className={pageStyles.summary}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.08, ease: 'easeOut' }}
-      >
-        Practice across {data.questionTotals.All.toLocaleString()} problems. Updated daily from{' '}
-        <a
-          href={
-            data.username
-              ? `https://leetcode.com/u/${data.username}/`
-              : 'https://leetcode.com'
-          }
-          target="_blank"
-          rel="noreferrer"
-          className={styles.profileLink}
-        >
-          leetcode.com/u/{data.username ?? profile.leetcodeUsername}
+      <PageHeader
+        tag="Learnings · LeetCode"
+        title="LeetCode"
+        summary={`Practice across ${data.questionTotals.All.toLocaleString()} problems. Stats and submission heatmap synced daily from leetcode.com/u/${handle}.`}
+      />
+      <div className={styles.profileRow}>
+        <a href={profileUrl} target="_blank" rel="noreferrer" className={styles.profileLink}>
+          View profile on leetcode.com ↗
         </a>
-        .
-      </motion.p>
-      <div className={pageStyles.divider} />
+      </div>
 
       {isPlaceholder && (
         <div className={styles.notice}>
