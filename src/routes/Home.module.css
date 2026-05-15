@@ -80,8 +80,76 @@
   transform: translateY(-2px);
 }
 
+.section {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--sp-6) var(--sp-6) var(--sp-7);
+}
+
+.ctaTitle {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--slate);
+  margin-bottom: var(--sp-5);
+  letter-spacing: -0.01em;
+}
+
+.ctaList {
+  display: grid;
+  gap: var(--sp-2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ctaLink {
+  display: grid;
+  grid-template-columns: 160px 1fr auto;
+  align-items: baseline;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--r-md);
+  background: transparent;
+  border: 1px solid transparent;
+  transition: background var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.ctaLink:hover {
+  background: var(--white);
+  border-color: var(--gray-300);
+}
+
+.ctaLabel {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--slate);
+}
+
+.ctaDesc {
+  font-size: 13px;
+  color: var(--gray-700);
+}
+
+.ctaArrow {
+  color: var(--clay);
+  font-size: 16px;
+  transition: transform var(--transition);
+}
+
+.ctaLink:hover .ctaArrow {
+  transform: translateX(4px);
+}
+
 @media (max-width: 720px) {
   .heroTitle {
     font-size: 32px;
+  }
+  .ctaLink {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: var(--sp-1) var(--sp-3);
+  }
+  .ctaDesc {
+    grid-column: 1 / 3;
   }
 }

@@ -10,7 +10,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--sp-5);
   animation: fadeIn 0.35s ease both;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  flex: 1;
+  min-width: 0;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
 }
 
 .logo {
@@ -20,6 +35,7 @@
   display: flex;
   align-items: center;
   gap: var(--sp-2);
+  white-space: nowrap;
 }
 
 .logoDot {
