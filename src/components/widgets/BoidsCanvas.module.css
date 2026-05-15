@@ -1,3 +1,4 @@
+/* Card variant — small bounded canvas (kept for potential future reuse). */
 .wrap {
   position: relative;
   width: 100%;
@@ -40,10 +41,18 @@
   pointer-events: none;
 }
 
-@media (max-width: 860px) {
-  .wrap {
-    justify-self: stretch;
-    max-width: 100%;
-    aspect-ratio: 16 / 9;
-  }
+/* Background variant — full-viewport ambient layer behind page content. */
+.bgWrap {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* On top of the body's --ivory background, so the canvas's own fade fill
+     becomes the visible page background. */
+}
+
+.bgCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }

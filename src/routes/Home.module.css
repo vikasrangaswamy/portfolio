@@ -1,36 +1,9 @@
-/* The hero is now a full-width frame that lets the rainbow arc canvas
-   bleed past the content max-width. .heroText is the constrained inner
-   column that holds the actual text + CTAs. */
-.heroFrame {
-  position: relative;
-  width: 100%;
-  min-height: 520px;
-  overflow: hidden;
-}
-
-.heroText {
+.hero {
   position: relative;
   z-index: 1;
   max-width: var(--content-max);
   margin: 0 auto;
   padding: var(--sp-8) var(--sp-6) var(--sp-7);
-  /* Cap the text column on wide screens so it doesn't run into the arc. */
-}
-
-.heroText .heroTitle,
-.heroText .heroRole,
-.heroText .heroDescription,
-.heroText .heroActions {
-  max-width: 560px;
-}
-
-@media (max-width: 860px) {
-  .heroFrame {
-    min-height: auto;
-  }
-  .heroText {
-    padding-bottom: var(--sp-4);
-  }
 }
 
 .heroTag {
@@ -110,6 +83,8 @@
 }
 
 .section {
+  position: relative;
+  z-index: 1;
   max-width: var(--content-max);
   margin: 0 auto;
   padding: var(--sp-6) var(--sp-6) var(--sp-7);

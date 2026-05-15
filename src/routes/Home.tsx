@@ -5,7 +5,7 @@ import { LeetCodeWidget } from '../components/widgets/LeetCodeWidget'
 import { GitHubWidget } from '../components/widgets/GitHubWidget'
 import { RoleWidget } from '../components/widgets/RoleWidget'
 import { NowWidget } from '../components/widgets/NowWidget'
-import { RainbowArcCanvas } from '../components/widgets/RainbowArcCanvas'
+import { BoidsCanvas } from '../components/widgets/BoidsCanvas'
 import widgetStyles from '../components/widgets/Widget.module.css'
 import styles from './Home.module.css'
 
@@ -26,33 +26,26 @@ const widgets = [
 export default function Home() {
   return (
     <>
-      <section className={styles.heroFrame}>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
-        >
-          <RainbowArcCanvas />
-        </motion.div>
-        <motion.div
-          className={styles.heroText}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-        >
-          <div className={styles.heroTag}>Portfolio</div>
-          <h1 className={styles.heroTitle}>{profile.name}</h1>
-          <div className={styles.heroRole}>
-            {profile.role} · {profile.company} · {profile.location}
-          </div>
-          <p className={styles.heroDescription}>{profile.tagline}</p>
-          <div className={styles.heroActions}>
-            <Link to="/projects" className={styles.btnPrimary}>
-              See projects →
-            </Link>
-          </div>
-        </motion.div>
-      </section>
+      <BoidsCanvas variant="background" />
+
+      <motion.section
+        className={styles.hero}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      >
+        <div className={styles.heroTag}>Portfolio</div>
+        <h1 className={styles.heroTitle}>{profile.name}</h1>
+        <div className={styles.heroRole}>
+          {profile.role} · {profile.company} · {profile.location}
+        </div>
+        <p className={styles.heroDescription}>{profile.tagline}</p>
+        <div className={styles.heroActions}>
+          <Link to="/projects" className={styles.btnPrimary}>
+            See projects →
+          </Link>
+        </div>
+      </motion.section>
 
       <section className={styles.section}>
         <motion.div

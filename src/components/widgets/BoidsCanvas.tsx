@@ -1,13 +1,18 @@
 import { useEffect, useRef } from 'react'
 import styles from './BoidsCanvas.module.css'
 
+type Variant = 'card' | 'background'
+
 /**
  * A small flock of dots running Craig Reynolds' boids rules: cohesion,
- * alignment, separation. The cursor gently attracts them; clicks create a
- * short scatter ripple. Pauses when off-screen or when the tab is hidden, and
- * respects prefers-reduced-motion (renders one static frame).
+ * alignment, separation. The cursor attracts them; in card mode clicks create
+ * a short scatter ripple. Pauses when off-screen or when the tab is hidden,
+ * and respects prefers-reduced-motion (renders one static frame).
+ *
+ * variant='background' makes the canvas a fixed full-viewport layer that sits
+ * behind page content, drawn at lower opacity so it blends in.
  */
-export function BoidsCanvas() {
+export function BoidsCanvas({ variant = 'card' }: { variant?: Variant } = {}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
   useEffect(() => {
@@ -16,20 +21,23 @@ export function BoidsCanvas() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
+    const isBackground = variant === 'background'
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     type Boid = { x: number; y: number; vx: number; vy: number }
-    const NUM_BOIDS = 70
-    const VISUAL_RANGE = 60
+    const NUM_BOIDS = isBackground ? 90 : 70
+    const VISUAL_RANGE = isBackground ? 80 : 60
     const SEP_RANGE = 18
     const MAX_SPEED = 2.2
     const MIN_SPEED = 1.0
-    const EDGE_MARGIN = 30
+    const EDGE_MARGIN = 40
     const EDGE_TURN = 0.25
     const COHESION = 0.0045
     const ALIGNMENT = 0.05
     const SEPARATION = 0.06
-    const CURSOR_PULL = 0.0028
+    const CURSOR_PULL = isBackground ? 0.0018 : 0.0028
+    const BOID_ALPHA = isBackground ? 0.45 : 1
+    const FADE_ALPHA = isBackground ? 0.12 : 0.18
 
     const boids: Boid[] = []
     let cursor: { x: number; y: number } | null = null
@@ -42,8 +50,8 @@ export function BoidsCanvas() {
       if (!canvas) return
       const rect = canvas.getBoundingClientRect()
       dpr = window.devicePixelRatio || 1
-      canvas.width = rect.width * dpr
-      canvas.height = rect.height * dpr
+      canvas.width = Math.max(1, Math.floor(rect.width * dpr))
+      canvas.height = Math.max(1, Math.floor(rect.height * dpr))
       if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     }
 
@@ -67,7 +75,7 @@ export function BoidsCanvas() {
       const root = getComputedStyle(document.documentElement)
       return {
         clay: root.getPropertyValue('--clay').trim() || '#D97757',
-        bg: root.getPropertyValue('--white').trim() || '#FFFFFF',
+        bg: root.getPropertyValue(isBackground ? '--ivory' : '--white').trim() || '#FAF9F5',
       }
     }
 
@@ -77,9 +85,8 @@ export function BoidsCanvas() {
       const h = canvas.clientHeight
       const { clay, bg } = readColors()
 
-      // soft fade for the trail effect
       ctx!.fillStyle = bg
-      ctx!.globalAlpha = 0.18
+      ctx!.globalAlpha = FADE_ALPHA
       ctx!.fillRect(0, 0, w, h)
       ctx!.globalAlpha = 1
 
@@ -132,13 +139,11 @@ export function BoidsCanvas() {
           b.vy += (dy / dist) * force
         }
 
-        // edge soft-turn
         if (b.x < EDGE_MARGIN) b.vx += EDGE_TURN
         if (b.x > w - EDGE_MARGIN) b.vx -= EDGE_TURN
         if (b.y < EDGE_MARGIN) b.vy += EDGE_TURN
         if (b.y > h - EDGE_MARGIN) b.vy -= EDGE_TURN
 
-        // clamp speed
         const speed = Math.hypot(b.vx, b.vy)
         if (speed > MAX_SPEED) {
           b.vx = (b.vx / speed) * MAX_SPEED
@@ -151,17 +156,16 @@ export function BoidsCanvas() {
         b.x += b.vx
         b.y += b.vy
 
-        // hard wrap as a safety net
         if (b.x < -10) b.x = w + 10
         if (b.x > w + 10) b.x = -10
         if (b.y < -10) b.y = h + 10
         if (b.y > h + 10) b.y = -10
 
-        // draw as small triangle pointing in velocity direction
         const angle = Math.atan2(b.vy, b.vx)
         ctx!.save()
         ctx!.translate(b.x, b.y)
         ctx!.rotate(angle)
+        ctx!.globalAlpha = BOID_ALPHA
         ctx!.fillStyle = clay
         ctx!.beginPath()
         ctx!.moveTo(4, 0)
@@ -179,27 +183,31 @@ export function BoidsCanvas() {
       raf = requestAnimationFrame(loop)
     }
 
-    const onPointerMove = (e: PointerEvent) => {
+    function cursorFromEvent(e: PointerEvent): { x: number; y: number } | null {
+      if (!canvas) return null
       const rect = canvas.getBoundingClientRect()
-      cursor = { x: e.clientX - rect.left, y: e.clientY - rect.top }
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      if (x < 0 || y < 0 || x > rect.width || y > rect.height) return null
+      return { x, y }
+    }
+
+    const onPointerMove = (e: PointerEvent) => {
+      cursor = cursorFromEvent(e)
     }
     const onPointerLeave = () => {
       cursor = null
     }
     const onPointerDown = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect()
-      scatter = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-        until: performance.now() + 700,
-      }
+      const c = cursorFromEvent(e)
+      if (!c) return
+      scatter = { x: c.x, y: c.y, until: performance.now() + 700 }
     }
 
     resize()
     seed()
 
     if (prefersReduced) {
-      // Single static frame.
       step()
     } else {
       raf = requestAnimationFrame(loop)
@@ -234,20 +242,36 @@ export function BoidsCanvas() {
     }
     document.addEventListener('visibilitychange', onVis)
 
-    canvas.addEventListener('pointermove', onPointerMove)
-    canvas.addEventListener('pointerleave', onPointerLeave)
-    canvas.addEventListener('pointerdown', onPointerDown)
+    // In background mode the canvas has pointer-events: none, so DOM events
+    // never reach it directly — listen on window instead so the cursor still
+    // attracts boids even when hovering text or widgets above the canvas.
+    const target: Window | HTMLCanvasElement = isBackground ? window : canvas
+    target.addEventListener('pointermove', onPointerMove as EventListener)
+    target.addEventListener('pointerdown', onPointerDown as EventListener)
+    if (!isBackground) {
+      canvas.addEventListener('pointerleave', onPointerLeave)
+    }
 
     return () => {
       cancelAnimationFrame(raf)
       ro.disconnect()
       io.disconnect()
       document.removeEventListener('visibilitychange', onVis)
-      canvas.removeEventListener('pointermove', onPointerMove)
-      canvas.removeEventListener('pointerleave', onPointerLeave)
-      canvas.removeEventListener('pointerdown', onPointerDown)
+      target.removeEventListener('pointermove', onPointerMove as EventListener)
+      target.removeEventListener('pointerdown', onPointerDown as EventListener)
+      if (!isBackground) {
+        canvas.removeEventListener('pointerleave', onPointerLeave)
+      }
     }
-  }, [])
+  }, [variant])
+
+  if (variant === 'background') {
+    return (
+      <div className={styles.bgWrap} aria-hidden="true">
+        <canvas ref={canvasRef} className={styles.bgCanvas} />
+      </div>
+    )
+  }
 
   return (
     <div className={styles.wrap} aria-hidden="true">
