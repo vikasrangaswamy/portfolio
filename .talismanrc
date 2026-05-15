@@ -1,16 +1,4 @@
 fileignoreconfig:
-- filename: src/routes/Learnings.tsx
-  checksum: febdaae67d0086ebf2bb85dccd2909609df6c92f939b1638a7868d0421bef628
-- filename: src/routes/About.tsx
-  checksum: 495196826f69729fef30bd26f693fe8c49e9a6447f48b462a3f4e448b7f48691
-- filename: src/components/widgets/LeetCodeWidget.tsx
-  checksum: 548a131d42a57c814f2b945107480e8b9ae4780d97da711a5e6b9ef1c9810ed6
-- filename: src/routes/Home.tsx
-  checksum: 13934fb958456c6ca1f20f69a669fd1efc5f82ecec4aa921b3bbadbfa20eb5a6
-- filename: src/components/layout/Header.tsx
-  checksum: 45f9e0936aa158a6da0e129ed66b7442d804502e87f5e3b711a64575a4ce85e2
-- filename: src/components/widgets/GitHubWidget.tsx
-  checksum: c9e6bdb8ac8d763d104c1876599fa4ce9d08e73c17b3528b25815a4ed775837d
-- filename: src/routes/Experience.tsx
-  checksum: e58d811a56cd25c6ba3cb53583b8dc9937604850ca1fad662ca4422d62b4a80a
+- filename: src/components/widgets/RainbowArcCanvas.tsx
+  checksum: aab537b3abfcf42e1480168f97e5224a259dd084db01c9e79d60bc935c06a1af
 version: "1.0"

@@ -32,6 +32,14 @@ export function RainbowArcCanvas() {
     let running = true
     let dpr = window.devicePixelRatio || 1
 
+    // Cursor reactivity. mxRaw/myRaw are the live target values normalized to
+    // -1..1 across the canvas; mxSmooth/mySmooth lerp toward them each frame
+    // so the response feels weighted, not jittery.
+    let mxRaw = 0
+    let myRaw = 0
+    let mxSmooth = 0
+    let mySmooth = 0
+
     function resize() {
       if (!canvas) return
       const rect = canvas.getBoundingClientRect()
@@ -47,12 +55,26 @@ export function RainbowArcCanvas() {
       const h = canvas.clientHeight
       ctx!.clearRect(0, 0, w, h)
 
+      // Ease the smoothed cursor toward the raw target.
+      mxSmooth += (mxRaw - mxSmooth) * 0.08
+      mySmooth += (myRaw - mySmooth) * 0.08
+
       // Arc focal point — sits low and slightly right so the arc sweeps up
       // and across, like Josh's. Adjust if hero layout changes.
-      const cx = w * 0.5
-      const cy = h * 0.9
+      // Apply a subtle cursor parallax so the whole arc drifts toward the
+      // mouse — keeps the structure intact while feeling reactive.
+      const cx = w * 0.5 + mxSmooth * 22
+      const cy = h * 0.9 + mySmooth * 14
       const innerRadius = Math.min(w, h) * 0.18
       const outerRadius = Math.max(w, h) * 0.95
+
+      // Cursor energy: distance of cursor from canvas center, 0..~1.5.
+      // Used to subtly amp up the wave when the user is moving around.
+      const cursorEnergy = Math.min(1.5, Math.hypot(mxSmooth, mySmooth))
+      const wobbleAmp = WOBBLE_AMP + cursorEnergy * 8
+      // Tilt offset: pills lean in the cursor's direction.
+      const cursorTiltX = mxSmooth * 0.18
+      const cursorTiltY = mySmooth * 0.12
 
       const t = time * 0.0006
 
@@ -68,15 +90,20 @@ export function RainbowArcCanvas() {
           const angle = ARC_START - pT * ARC_SPAN + Math.sin(ringPhase) * 0.04
 
           // Radial wobble per pill, phased by angle so it looks like a wave.
-          const wobble = Math.sin(t * 1.6 + ringPhase + angle * 3) * WOBBLE_AMP
+          const wobble = Math.sin(t * 1.6 + ringPhase + angle * 3) * wobbleAmp
           const r = radius + wobble
 
           const x = cx + Math.cos(angle) * r
           const y = cy + Math.sin(angle) * r
 
-          // Tilt off-tangent for the chevron/dynamic feel.
+          // Tilt off-tangent for the chevron/dynamic feel, plus a small
+          // cursor-direction lean weighted by ring index so the outer
+          // ribbons sweep more than the inner ones.
           const tilt =
-            angle + Math.PI / 2 + Math.sin(t * 1.2 + p * 0.4 + ring * 0.5) * ROTATION_AMP
+            angle +
+            Math.PI / 2 +
+            Math.sin(t * 1.2 + p * 0.4 + ring * 0.5) * ROTATION_AMP +
+            (cursorTiltX * Math.cos(angle) + cursorTiltY * Math.sin(angle)) * (0.5 + ringT * 0.8)
 
           ctx!.save()
           ctx!.translate(x, y)
@@ -146,11 +173,37 @@ export function RainbowArcCanvas() {
     }
     document.addEventListener('visibilitychange', onVis)
 
+    // Canvas has pointer-events: none so it never blocks underlying UI.
+    // Listen on window instead so we still react to cursor movement anywhere
+    // over the hero (and the rest of the page — feels alive when scrolling
+    // past too).
+    const onPointerMove = (e: PointerEvent) => {
+      if (!canvas) return
+      const rect = canvas.getBoundingClientRect()
+      // Skip non-mouse pointers (touch users get the gentle drift back to
+      // center instead).
+      if (e.pointerType !== 'mouse') return
+      const px = (e.clientX - rect.left) / rect.width
+      const py = (e.clientY - rect.top) / rect.height
+      // Map to -1..1, clamped lightly so off-canvas cursor still nudges.
+      mxRaw = Math.max(-1.5, Math.min(1.5, px * 2 - 1))
+      myRaw = Math.max(-1.5, Math.min(1.5, py * 2 - 1))
+    }
+    const onPointerLeave = () => {
+      // Drift back to the resting position when the cursor leaves the page.
+      mxRaw = 0
+      myRaw = 0
+    }
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
+    document.addEventListener('pointerleave', onPointerLeave)
+
     return () => {
       cancelAnimationFrame(raf)
       ro.disconnect()
       io.disconnect()
       document.removeEventListener('visibilitychange', onVis)
+      window.removeEventListener('pointermove', onPointerMove)
+      document.removeEventListener('pointerleave', onPointerLeave)
     }
   }, [])
 
