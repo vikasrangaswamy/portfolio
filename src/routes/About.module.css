@@ -46,7 +46,8 @@
   margin-top: var(--sp-7);
 }
 
-.skillBlock h2 {
+.skillBlock h2,
+.skillBlock h3 {
   font-size: 18px;
   font-weight: 500;
   color: var(--slate);

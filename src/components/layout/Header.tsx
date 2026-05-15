@@ -1,16 +1,19 @@
-import { NavLink, Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { ThemeToggle } from './ThemeToggle'
 import { SoundToggle } from './SoundToggle'
 import styles from './Header.module.css'
 
 const navItems = [
-  { to: '/about', label: 'About' },
-  { to: '/experience', label: 'Experience' },
-  { to: '/projects', label: 'Projects' },
-  { to: '/learnings', label: 'Learnings' },
+  { hash: 'about', label: 'About' },
+  { hash: 'experience', label: 'Experience' },
+  { hash: 'projects', label: 'Projects' },
+  { hash: 'learnings', label: 'Learnings' },
 ]
 
 export function Header() {
+  const { pathname, hash } = useLocation()
+  const onHome = pathname === '/'
+
   return (
     <header className={styles.header}>
       <Link to="/" className={styles.logo}>
@@ -18,17 +21,18 @@ export function Header() {
         Vikas Rangaswamy
       </Link>
       <nav className={styles.nav}>
-        {navItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            className={({ isActive }) =>
-              isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink
-            }
-          >
-            {item.label}
-          </NavLink>
-        ))}
+        {navItems.map((item) => {
+          const isActive = onHome && hash === `#${item.hash}`
+          return (
+            <Link
+              key={item.hash}
+              to={`/#${item.hash}`}
+              className={isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
+            >
+              {item.label}
+            </Link>
+          )
+        })}
         <SoundToggle />
         <ThemeToggle />
       </nav>

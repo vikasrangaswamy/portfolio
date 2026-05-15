@@ -1,0 +1,63 @@
+/* Shared styles for inline home-page sections.
+   Standalone routes use the existing Page.module.css patterns. */
+
+.section {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--sp-8) var(--sp-6);
+  scroll-margin-top: 80px; /* offset for sticky-ish nav anchor jumps */
+}
+
+.section + .section {
+  border-top: 1px solid var(--gray-300);
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-6);
+}
+
+.kicker {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--clay);
+  font-variant-numeric: tabular-nums;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--slate);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.sectionLink {
+  align-self: flex-start;
+  margin-top: var(--sp-5);
+  font-size: 13px;
+  color: var(--clay);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.sectionLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+  .section {
+    padding: var(--sp-7) var(--sp-5);
+  }
+  .title {
+    font-size: 24px;
+  }
+}

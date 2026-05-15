@@ -1,6 +1,10 @@
 fileignoreconfig:
-- filename: src/components/learnings/TopicGrid.tsx
-  checksum: 103e5d1efdf5854b36a98ef23634f8b1dbf0db53cfab8c69a4cf1cc7a8a9f01c
-- filename: src/routes/Home.tsx
-  checksum: fdb6d01211b84254f4991601515be0389b912ffd284aab1542ddf3e6200751c6
+- filename: src/components/layout/Header.tsx
+  checksum: a3fac1078b816f07005e24adf0c89181236ebf7c291637ca4e1af39d7d0ce0de
+- filename: src/components/sections/LearningsSection.tsx
+  checksum: cc82fb5888b68fd55be0454b15682e61c6e0867e30c0b4df1a127ab724e8ceef
+- filename: src/components/sections/ExperienceSection.tsx
+  checksum: 2f247d4ad8a4fd4b4042846c3f5549c68d6c1dcd30c2fe14335c89ee02fb6254
+- filename: src/components/sections/AboutSection.tsx
+  checksum: 9945bec8b01fb7a32dbe7cc5941456f1afccae53f7626e17d834d15bd6eb862d
 version: "1.0"
