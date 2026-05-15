@@ -1,9 +1,29 @@
-.hero {
+/* Full-width hero frame. The rainbow arc fills the entire viewport width
+   behind the content (no max-width box) and its top/bottom gradients fade
+   it into the page so the animation feels like part of the page, not an
+   element confined to a tile. */
+.heroFrame {
+  position: relative;
+  width: 100%;
+  min-height: 640px;
+  overflow: visible;
+}
+
+.heroText {
   position: relative;
   z-index: 1;
   max-width: var(--content-max);
   margin: 0 auto;
   padding: var(--sp-8) var(--sp-6) var(--sp-7);
+}
+
+@media (max-width: 860px) {
+  .heroFrame {
+    min-height: 520px;
+  }
+  .heroText {
+    padding-bottom: var(--sp-4);
+  }
 }
 
 .heroTag {

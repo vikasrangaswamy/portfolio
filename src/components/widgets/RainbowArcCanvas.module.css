@@ -1,0 +1,45 @@
+/* The arc canvas spans the entire viewport width of the hero frame.
+   No bounding box, no border — soft gradient masks at top and bottom let it
+   dissolve into the page background instead of cutting off at a hard edge. */
+.wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Top fade — softens where the canvas meets the header. */
+.fadeTop {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 20%;
+  background: linear-gradient(to bottom, var(--ivory) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Bottom fade — dissolves the arc into the widgets section below. */
+.fadeBottom {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 45%;
+  background: linear-gradient(to bottom, transparent, var(--ivory) 92%);
+  pointer-events: none;
+}
+
+@media (max-width: 860px) {
+  .fadeTop {
+    height: 12%;
+  }
+  .fadeBottom {
+    height: 35%;
+  }
+}
