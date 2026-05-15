@@ -1,7 +1,7 @@
 import ReduxSaga from './redux-saga.mdx'
 import type { LearningTopic } from '../../../components/learnings/LearningPage'
 
-const REPO_BASE = 'https://github.com/VikasRangaswamy/frontend-experiments/tree/main'
+const REPO_BASE = 'https://github.com/vikasrangaswamy/frontend-experiments/tree/main'
 
 export const frontendTopics: readonly LearningTopic[] = [
   {

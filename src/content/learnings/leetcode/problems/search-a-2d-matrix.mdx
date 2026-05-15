@@ -1,0 +1,34 @@
+Two nested binary searches. First, binary search across rows by comparing `target` with the row's first and last element to find the candidate row. Then, binary search within that row.
+
+```python
+def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+    itemRow = []
+    row, col = len(matrix), len(matrix[0])
+    top, bottom = 0, row - 1
+
+    while top <= bottom:
+        midrow = (top + bottom) // 2
+        if target < matrix[midrow][0]:
+            bottom = midrow - 1
+        elif target > matrix[midrow][-1]:
+            top = midrow + 1
+        else:
+            itemRow = matrix[midrow]
+            break
+
+    if not itemRow:
+        return False
+
+    left, right = 0, col - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if target < itemRow[mid]:
+            right = mid - 1
+        elif target > itemRow[mid]:
+            left = mid + 1
+        else:
+            return True
+    return False
+```
+
+**Complexity:** O(log m + log n) time, O(1) space.

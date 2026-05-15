@@ -1,0 +1,19 @@
+The two terms are different:
+
+- **Subarray** — a contiguous slice. For length `n`, there are `n*(n+1)/2` total.
+- **Subsequence** — derived by deleting any number of elements while keeping the order of those that remain.
+
+Generating all subarrays is a classic nested-loop exercise — pick a start `i`, then every end `j >= i` gives one subarray.
+
+```python
+array = [1, 2, 3, 4, 5, 6]
+subarrays = []
+
+for i in range(len(array)):
+    for j in range(i, len(array)):
+        subarrays.append(array[i:j + 1])
+
+# length of the subarrays = n*(n+1) / 2
+```
+
+This is O(n²) subarrays, each of O(n) length, so naive emission is O(n³). For most subarray problems (max sum, count with property X), you do not enumerate them — you use prefix sums, sliding windows, or DP instead.

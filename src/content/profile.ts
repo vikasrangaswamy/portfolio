@@ -4,7 +4,7 @@ export const profile = {
   company: 'Contentstack',
   tagline: 'Building thoughtful tools, studying systems, practicing the craft.',
   email: 'rangaswamy.vikas@contentstack.com',
-  github: 'https://github.com/VikasRangaswamy',
+  github: 'https://github.com/vikasrangaswamy',
   linkedin: '',
   resumeUrl: '/resume.pdf',
   about: [

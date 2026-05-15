@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FAF9F5"/>
+      <stop offset="100%" stop-color="#F0EEE6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#D97757"/>
+
+  <g transform="translate(80, 220)">
+    <circle cx="0" cy="-50" r="14" fill="#D97757"/>
+    <text x="34" y="-42" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="500" fill="#87867F" letter-spacing="2">VIKAS RANGASWAMY · PORTFOLIO</text>
+
+    <text x="0" y="40" font-family="Inter, system-ui, sans-serif" font-size="76" font-weight="500" fill="#141413" letter-spacing="-1">
+      Software engineer
+    </text>
+    <text x="0" y="125" font-family="Inter, system-ui, sans-serif" font-size="76" font-weight="500" fill="#141413" letter-spacing="-1">
+      at Contentstack.
+    </text>
+
+    <text x="0" y="200" font-family="Inter, system-ui, sans-serif" font-size="26" font-weight="430" fill="#3D3D3A">
+      Building thoughtful tools, studying systems, practicing the craft.
+    </text>
+  </g>
+
+  <text x="80" y="570" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="500" fill="#87867F" letter-spacing="1">
+    vikasrangaswamy.github.io/portfolio
+  </text>
+</svg>

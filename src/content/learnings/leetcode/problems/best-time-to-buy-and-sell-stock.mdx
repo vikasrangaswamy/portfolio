@@ -1,0 +1,18 @@
+A two-pointer sliding window. `left` marks the current "buy day" candidate; `right` scans forward. Whenever a higher price is seen, update the running max profit. If a lower price appears, jump `left` to it — that's a better candidate for a future profit.
+
+```python
+def maxProfit(self, prices: List[int]) -> int:
+    maxProfit = 0
+    left = 0
+    right = 0
+    while right < len(prices):
+        if prices[left] < prices[right]:
+            maxProfit = max(maxProfit, prices[right] - prices[left])
+        else:
+            left = right
+        right += 1
+
+    return maxProfit
+```
+
+**Complexity:** O(n) time, O(1) space.

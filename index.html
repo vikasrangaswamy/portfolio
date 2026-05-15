@@ -2,15 +2,43 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/portfolio/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Personal portfolio of Vikas Rangaswamy — software engineer at Contentstack." />
+    <meta name="description" content="Personal portfolio of Vikas Rangaswamy — software engineer at Contentstack. System-design notes, frontend deep dives, DSA practice." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Vikas Rangaswamy · Portfolio" />
+    <meta property="og:description" content="Software engineer at Contentstack. System-design notes, frontend deep dives, DSA practice." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://vikasrangaswamy.github.io/portfolio/" />
+    <meta property="og:image" content="https://vikasrangaswamy.github.io/portfolio/og-image.svg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Vikas Rangaswamy · Portfolio" />
+    <meta name="twitter:description" content="Software engineer at Contentstack. System-design notes, frontend deep dives, DSA practice." />
+    <meta name="twitter:image" content="https://vikasrangaswamy.github.io/portfolio/og-image.svg" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;430;500;600&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Prevent FOUC by setting initial theme before React mounts -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme')
+          var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          document.documentElement.dataset.theme = theme
+        } catch (e) {
+          document.documentElement.dataset.theme = 'light'
+        }
+      })()
+    </script>
+
     <title>Vikas Rangaswamy · Portfolio</title>
   </head>
   <body>

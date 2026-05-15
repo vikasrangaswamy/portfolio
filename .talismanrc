@@ -15,4 +15,18 @@ fileignoreconfig:
   checksum: 0e75c55c201f08a88a708c2314d0b50d363ed2407d32bd312c4155b51b2ad38c
 - filename: src/routes/Home.tsx
   checksum: ef270a1533bd1679ceb02706b577fa2ce771493c503b543fe8732592232526f3
+- filename: src/content/learnings/leetcode/problems/base62-encoding.mdx
+  checksum: 10a087553a8f35ba0c07365a52d0e64a58a2ac0d09de32c08cd71fe569fa3ae1
+- filename: src/content/learnings/leetcode/problems/product-of-array-except-self.mdx
+  checksum: 5ea9e28dfe2d647f969c20ef61677f1269fb6633c36ec3f88a13965e7ccb007d
+- filename: src/content/learnings/dsa/02-strings.mdx
+  checksum: 4311516e7e18b02af4116835ec7bcd23e89a5aea82fa9be27bd9cfc7dfbfba9b
+- filename: src/content/learnings/dsa/12-backtracking.mdx
+  checksum: 63f2d33489ccc9657a87147eec2e3b77767594c2b1e309292d91d9e2d2f0e7fa
+- filename: src/content/learnings/dsa/10-stacks.mdx
+  checksum: 70354cf0c3fece5cf78226629c8208d8d6602662860ff776cb493759c4393c81
+- filename: src/content/learnings/dsa/03-hashmaps.mdx
+  checksum: 5fc29cb0efd469f7eeabf533f95ade0a00382707db942732f4d8f6962b588a3f
+- filename: src/routes/LeetCode.tsx
+  checksum: 97f02f54565328543c1d4e479f8303efb4ccfa612aaa5a709d70abd5c64f00e1
 version: "1.0"

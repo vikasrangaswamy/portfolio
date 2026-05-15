@@ -1,0 +1,21 @@
+Convert an integer to a fixed-length string in base 62 (digits, lowercase, uppercase). Standard radix-conversion: repeatedly divide by the base, collecting remainders. Reverse at the end because the least significant digit comes out first.
+
+```python
+characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+reminder = []
+encoding_base = 62
+encoded_value = ''
+
+value = 1000
+n = value
+
+while n > 0:
+    reminder.append(n % encoding_base)
+    n = n // encoding_base
+reminder.reverse()
+
+for rem in reminder:
+    encoded_value = encoded_value + characters[rem]
+```
+
+This is the same pattern the URL shortener uses for its short codes — a sequential integer ID encoded into a compact, URL-safe string.

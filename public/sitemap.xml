@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/about</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/experience</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/projects</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/system-design</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/system-design/url-shortener</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/system-design/aws-batch</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/system-design/aws-lambda</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/frontend</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/frontend/redux-saga</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa/arrays</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa/strings</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa/hashmaps</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa/two-pointers</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa/linked-list</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa/sliding-window</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa/binary-search</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa/trees</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa/graphs</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa/stacks</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa/tries</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa/backtracking</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/dsa/practice</loc></url>
+  <url><loc>https://vikasrangaswamy.github.io/portfolio/learnings/leetcode</loc></url>
+</urlset>

@@ -1,0 +1,36 @@
+Hash tables are your go-to for O(1) lookups and O(1) insertions. Use `.get(key, default)` to avoid `KeyError`, and choose your keys carefully — sometimes it's the value itself, sometimes a tuple or remainder.
+
+## Key patterns
+
+| Pattern | Use case |
+|---------|----------|
+| Counter / defaultdict | Frequency of elements, top-K |
+| Two-pass hash | Two Sum — store complement |
+| Prefix sum + hash | Subarray sum equals K |
+| OrderedDict | LRU Cache — O(1) get/put |
+
+## Representative approach
+
+```python
+def two_sum(nums, target):
+    """Find two numbers that add to target in one pass."""
+    seen = {}
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in seen:
+            return [seen[complement], i]
+        seen[num] = i
+    return []
+
+def subarray_sum_k(nums, k):
+    """Count subarrays that sum to k using prefix sums."""
+    count = 0
+    prefix_sum = 0
+    prefix_map = {0: 1}
+    for num in nums:
+        prefix_sum += num
+        if (prefix_sum - k) in prefix_map:
+            count += prefix_map[prefix_sum - k]
+        prefix_map[prefix_sum] = prefix_map.get(prefix_sum, 0) + 1
+    return count
+```

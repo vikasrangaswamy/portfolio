@@ -1,4 +1,5 @@
 import { NavLink, Link } from 'react-router-dom'
+import { ThemeToggle } from './ThemeToggle'
 import styles from './Header.module.css'
 
 const navItems = [
@@ -27,6 +28,7 @@ export function Header() {
             {item.label}
           </NavLink>
         ))}
+        <ThemeToggle />
       </nav>
     </header>
   )

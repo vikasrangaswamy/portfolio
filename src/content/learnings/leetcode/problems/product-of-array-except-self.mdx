@@ -1,0 +1,24 @@
+The trick: for index `i`, the answer is `(product of everything left of i) * (product of everything right of i)`. Pre-compute prefix and postfix products in two passes, then combine.
+
+```python
+prefixarray = [1] * len(array)
+postfixarray = [1] * len(array)
+prodarray = [1] * len(array)
+prod = 1
+
+for i in range(len(array)):
+    prod = prod * array[i]
+    prefixarray[i] = prod
+prod = 1
+
+for i in range(len(array) - 1, -1, -1):
+    prod = prod * array[i]
+    postfixarray[i] = prod
+
+for i in range(len(array)):
+    left = prefixarray[i - 1] if i > 0 else 1
+    right = postfixarray[i + 1] if i < len(array) - 1 else 1
+    prodarray[i] = left * right
+```
+
+**Complexity:** O(n) time, O(n) auxiliary space. The follow-up is the O(1)-extra-space version that reuses the output array as the prefix and folds the postfix on the second pass.

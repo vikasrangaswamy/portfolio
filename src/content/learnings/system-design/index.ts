@@ -5,7 +5,7 @@ import type { LearningTopic } from '../../../components/learnings/LearningPage'
 
 // DUMMY repoUrls — point to local paths until the system-design-experiments repo is on GitHub.
 // Update per NEEDS-FROM-USER.md item #9.
-const REPO_BASE = 'https://github.com/VikasRangaswamy/system-design-experiments/tree/main'
+const REPO_BASE = 'https://github.com/vikasrangaswamy/system-design-experiments/tree/main'
 
 export const systemDesignTopics: readonly LearningTopic[] = [
   {

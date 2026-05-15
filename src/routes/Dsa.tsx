@@ -1,24 +1,24 @@
-import { Link } from 'react-router-dom'
-import styles from './Page.module.css'
+import { useParams } from 'react-router-dom'
+import { TopicGrid } from '../components/learnings/TopicGrid'
+import { LearningPage } from '../components/learnings/LearningPage'
+import { dsaTopics } from '../content/learnings/dsa'
+import NotFound from './NotFound'
 
-export default function Dsa() {
+export function DsaIndex() {
   return (
-    <div className={styles.container}>
-      <div className={styles.tag}>Learnings · DSA</div>
-      <h1 className={styles.title}>Data Structures & Algorithms</h1>
-      <p className={styles.summary}>
-        13 topics in Python — arrays, strings, hashmaps, trees, graphs, backtracking, and more.
-      </p>
-      <div className={styles.emptyState}>
-        <h2>Topic writeups coming soon</h2>
-        <p>
-          I'm porting my Python practice notes into curated topic-by-topic pages. Each topic will
-          include the core pattern and 1–2 inline code excerpts.
-        </p>
-        <Link to="/learnings" className={styles.linkBtn}>
-          ← Back to Learnings
-        </Link>
-      </div>
-    </div>
+    <TopicGrid
+      tag="Learnings · DSA"
+      title="Data Structures & Algorithms"
+      summary="13 topics in Python — refined notes, patterns, and canonical code excerpts."
+      trackPath="/learnings/dsa"
+      topics={dsaTopics}
+    />
   )
+}
+
+export function DsaTopicPage() {
+  const { slug } = useParams<{ slug: string }>()
+  const topic = dsaTopics.find((t) => t.slug === slug)
+  if (!topic) return <NotFound />
+  return <LearningPage trackLabel="DSA" trackHref="/learnings/dsa" topic={topic} />
 }

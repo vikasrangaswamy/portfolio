@@ -1,0 +1,23 @@
+For each bar, the water it can trap is `min(maxLeft, maxRight) - height[i]` (clamped to zero). This first version computes `maxLeft` / `maxRight` by re-scanning the array — straightforward to read but O(n²).
+
+```python
+def trap(self, height: List[int]) -> int:
+    def findHighest(array):
+        highest = 0
+        for ele in array:
+            if ele > highest:
+                highest = ele
+        return highest
+
+    water = 0
+    for i in range(len(height)):
+        leftHighest = findHighest(height[0:i])
+        rightHighest = findHighest(height[i:])
+        presentWater = min(leftHighest, rightHighest) - height[i]
+        if presentWater > 0:
+            water = water + presentWater
+
+    return water
+```
+
+**Complexity:** O(n²) time, O(1) extra space. The canonical follow-up is the two-pointer optimization that brings this to O(n) — same idea, but you walk inward from both ends and only ever update the side with the smaller running max.
