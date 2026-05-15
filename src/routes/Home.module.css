@@ -4,6 +4,31 @@
   max-width: var(--content-max);
   margin: 0 auto;
   padding: var(--sp-8) var(--sp-6) var(--sp-7);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+  gap: var(--sp-7);
+  align-items: center;
+}
+
+.heroText {
+  min-width: 0;
+}
+
+.heroSide {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+@media (max-width: 860px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: var(--sp-6);
+  }
+  .heroSide {
+    justify-content: stretch;
+  }
 }
 
 .heroTag {

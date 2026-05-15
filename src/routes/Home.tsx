@@ -6,7 +6,8 @@ import { GitHubWidget } from '../components/widgets/GitHubWidget'
 import { RoleWidget } from '../components/widgets/RoleWidget'
 import { NowWidget } from '../components/widgets/NowWidget'
 import { BoidsCanvas } from '../components/widgets/BoidsCanvas'
-import { useSpeed } from '../lib/speed'
+import { BoidsSettings } from '../components/widgets/BoidsSettings'
+import { useBoidsSettings } from '../lib/boidsSettings'
 import widgetStyles from '../components/widgets/Widget.module.css'
 import styles from './Home.module.css'
 
@@ -25,29 +26,38 @@ const widgets = [
 ]
 
 export default function Home() {
-  const { value: speed } = useSpeed()
+  const { speedValue, count } = useBoidsSettings()
 
   return (
     <>
-      <BoidsCanvas variant="background" speed={speed} />
-
       <motion.section
         className={styles.hero}
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
       >
-        <div className={styles.heroTag}>Portfolio</div>
-        <h1 className={styles.heroTitle}>{profile.name}</h1>
-        <div className={styles.heroRole}>
-          {profile.role} · {profile.company} · {profile.location}
+        <div className={styles.heroText}>
+          <div className={styles.heroTag}>Portfolio</div>
+          <h1 className={styles.heroTitle}>{profile.name}</h1>
+          <div className={styles.heroRole}>
+            {profile.role} · {profile.company} · {profile.location}
+          </div>
+          <p className={styles.heroDescription}>{profile.tagline}</p>
+          <div className={styles.heroActions}>
+            <Link to="/projects" className={styles.btnPrimary}>
+              See projects →
+            </Link>
+          </div>
         </div>
-        <p className={styles.heroDescription}>{profile.tagline}</p>
-        <div className={styles.heroActions}>
-          <Link to="/projects" className={styles.btnPrimary}>
-            See projects →
-          </Link>
-        </div>
+        <motion.div
+          className={styles.heroSide}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
+        >
+          <BoidsCanvas count={count} speed={speedValue} />
+          <BoidsSettings />
+        </motion.div>
       </motion.section>
 
       <section className={styles.section}>

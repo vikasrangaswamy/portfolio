@@ -1,29 +1,29 @@
 import { useEffect, useRef } from 'react'
+import { useSound } from '../../lib/sound'
 import styles from './BoidsCanvas.module.css'
 
-type Variant = 'card' | 'background'
-
 type Props = {
-  variant?: Variant
-  /** Speed multiplier applied to position integration. 0.5 = half speed, 2 = double. */
+  /** Number of boids in the flock. Changing this re-seeds the flock. */
+  count?: number
+  /** Position-integration multiplier. 0.5 = half, 2 = double. Hot-swappable. */
   speed?: number
 }
 
 /**
- * A small flock of dots running Craig Reynolds' boids rules: cohesion,
- * alignment, separation. The cursor attracts them; in card mode clicks create
- * a short scatter ripple. Pauses when off-screen or when the tab is hidden,
- * and respects prefers-reduced-motion (renders one static frame).
+ * Reynolds boids running on a transparent canvas — no chrome, no background,
+ * no border. The canvas paints over whatever's behind it; an alpha-only fade
+ * (destination-out) creates the trail without painting a colored rectangle
+ * that would look like a "box". Cursor attracts the flock; clicks send out a
+ * scatter ripple and play a unique flurry sound.
  *
- * variant='background' makes the canvas a fixed full-viewport layer that sits
- * behind page content, drawn at lower opacity so it blends into the page.
- * `speed` updates take effect on the next frame without rebuilding the flock.
+ * Pauses when off-screen / tab hidden. Respects prefers-reduced-motion.
  */
-export function BoidsCanvas({ variant = 'card', speed = 1 }: Props = {}) {
+export function BoidsCanvas({ count = 70, speed = 1 }: Props = {}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const speedRef = useRef(speed)
+  const { play } = useSound()
 
-  // Keep the latest speed accessible to the animation loop without resetting it.
+  // Keep the latest speed accessible to the animation loop without re-seeding.
   useEffect(() => {
     speedRef.current = speed
   }, [speed])
@@ -34,23 +34,20 @@ export function BoidsCanvas({ variant = 'card', speed = 1 }: Props = {}) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const isBackground = variant === 'background'
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     type Boid = { x: number; y: number; vx: number; vy: number }
-    const NUM_BOIDS = isBackground ? 90 : 70
-    const VISUAL_RANGE = isBackground ? 80 : 60
+    const NUM_BOIDS = Math.max(5, Math.floor(count))
+    const VISUAL_RANGE = 60
     const SEP_RANGE = 18
     const MAX_SPEED = 2.2
     const MIN_SPEED = 1.0
-    const EDGE_MARGIN = 40
+    const EDGE_MARGIN = 30
     const EDGE_TURN = 0.25
     const COHESION = 0.0045
     const ALIGNMENT = 0.05
     const SEPARATION = 0.06
-    const CURSOR_PULL = isBackground ? 0.0018 : 0.0028
-    const BOID_ALPHA = isBackground ? 0.45 : 1
-    const FADE_ALPHA = isBackground ? 0.12 : 0.18
+    const CURSOR_PULL = 0.0028
 
     const boids: Boid[] = []
     let cursor: { x: number; y: number } | null = null
@@ -84,26 +81,27 @@ export function BoidsCanvas({ variant = 'card', speed = 1 }: Props = {}) {
       }
     }
 
-    function readColors() {
+    function readClay() {
       const root = getComputedStyle(document.documentElement)
-      return {
-        clay: root.getPropertyValue('--clay').trim() || '#D97757',
-        bg: root.getPropertyValue(isBackground ? '--ivory' : '--white').trim() || '#FAF9F5',
-      }
+      return root.getPropertyValue('--clay').trim() || '#D97757'
     }
 
     function step() {
       if (!canvas) return
       const w = canvas.clientWidth
       const h = canvas.clientHeight
-      const { clay, bg } = readColors()
       const speedMul = speedRef.current
 
-      ctx!.fillStyle = bg
-      ctx!.globalAlpha = FADE_ALPHA
+      // Alpha-only fade for the trail — doesn't paint a colored rect, so the
+      // page background shows through cleanly.
+      ctx!.globalCompositeOperation = 'destination-out'
+      ctx!.fillStyle = 'rgba(0, 0, 0, 1)'
+      ctx!.globalAlpha = 0.1
       ctx!.fillRect(0, 0, w, h)
+      ctx!.globalCompositeOperation = 'source-over'
       ctx!.globalAlpha = 1
 
+      const clay = readClay()
       const now = performance.now()
       const scatterActive = scatter && now < scatter.until ? scatter : null
 
@@ -167,9 +165,9 @@ export function BoidsCanvas({ variant = 'card', speed = 1 }: Props = {}) {
           b.vy = (b.vy / v) * MIN_SPEED
         }
 
-        // Speed multiplier scales only the position integration, so the
-        // flocking forces still resolve at their normal rate — the boids
-        // *travel* slower/faster but still steer naturally.
+        // Speed scales only position integration — flocking forces still
+        // resolve at their normal rate, so the steering looks identical and
+        // only the travel distance changes.
         b.x += b.vx * speedMul
         b.y += b.vy * speedMul
 
@@ -182,7 +180,6 @@ export function BoidsCanvas({ variant = 'card', speed = 1 }: Props = {}) {
         ctx!.save()
         ctx!.translate(b.x, b.y)
         ctx!.rotate(angle)
-        ctx!.globalAlpha = BOID_ALPHA
         ctx!.fillStyle = clay
         ctx!.beginPath()
         ctx!.moveTo(4, 0)
@@ -200,25 +197,21 @@ export function BoidsCanvas({ variant = 'card', speed = 1 }: Props = {}) {
       raf = requestAnimationFrame(loop)
     }
 
-    function cursorFromEvent(e: PointerEvent): { x: number; y: number } | null {
-      if (!canvas) return null
-      const rect = canvas.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
-      if (x < 0 || y < 0 || x > rect.width || y > rect.height) return null
-      return { x, y }
-    }
-
     const onPointerMove = (e: PointerEvent) => {
-      cursor = cursorFromEvent(e)
+      const rect = canvas.getBoundingClientRect()
+      cursor = { x: e.clientX - rect.left, y: e.clientY - rect.top }
     }
     const onPointerLeave = () => {
       cursor = null
     }
     const onPointerDown = (e: PointerEvent) => {
-      const c = cursorFromEvent(e)
-      if (!c) return
-      scatter = { x: c.x, y: c.y, until: performance.now() + 700 }
+      const rect = canvas.getBoundingClientRect()
+      scatter = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+        until: performance.now() + 700,
+      }
+      play('flurry', 0.85)
     }
 
     resize()
@@ -259,38 +252,27 @@ export function BoidsCanvas({ variant = 'card', speed = 1 }: Props = {}) {
     }
     document.addEventListener('visibilitychange', onVis)
 
-    const target: Window | HTMLCanvasElement = isBackground ? window : canvas
-    target.addEventListener('pointermove', onPointerMove as EventListener)
-    target.addEventListener('pointerdown', onPointerDown as EventListener)
-    if (!isBackground) {
-      canvas.addEventListener('pointerleave', onPointerLeave)
-    }
+    canvas.addEventListener('pointermove', onPointerMove)
+    canvas.addEventListener('pointerleave', onPointerLeave)
+    canvas.addEventListener('pointerdown', onPointerDown)
 
     return () => {
       cancelAnimationFrame(raf)
       ro.disconnect()
       io.disconnect()
       document.removeEventListener('visibilitychange', onVis)
-      target.removeEventListener('pointermove', onPointerMove as EventListener)
-      target.removeEventListener('pointerdown', onPointerDown as EventListener)
-      if (!isBackground) {
-        canvas.removeEventListener('pointerleave', onPointerLeave)
-      }
+      canvas.removeEventListener('pointermove', onPointerMove)
+      canvas.removeEventListener('pointerleave', onPointerLeave)
+      canvas.removeEventListener('pointerdown', onPointerDown)
     }
-  }, [variant])
-
-  if (variant === 'background') {
-    return (
-      <div className={styles.bgWrap} aria-hidden="true">
-        <canvas ref={canvasRef} className={styles.bgCanvas} />
-      </div>
-    )
-  }
+    // count change re-seeds the flock; speed is read via ref so omitting it
+    // here is intentional (and matches the speedRef pattern above).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [count])
 
   return (
     <div className={styles.wrap} aria-hidden="true">
       <canvas ref={canvasRef} className={styles.canvas} />
-      <span className={styles.hint}>follow your cursor · click to scatter</span>
     </div>
   )
 }
