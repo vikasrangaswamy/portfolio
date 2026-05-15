@@ -1,7 +1,18 @@
 .row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
   gap: var(--sp-4);
+  align-items: stretch;
+}
+
+.row > * {
+  display: flex;
+}
+
+.row > * > .widget,
+.row > * > a.widget {
+  flex: 1;
 }
 
 @media (max-width: 960px) {
@@ -49,7 +60,9 @@
 
 .widget {
   position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   padding: var(--sp-5);
   background: var(--white);
   border: 1px solid var(--gray-300);
@@ -57,7 +70,11 @@
   transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
   text-decoration: none;
   color: inherit;
-  min-height: 132px;
+  min-height: 180px;
+}
+
+.widget > .widgetMeta {
+  margin-top: auto;
 }
 
 .widget:hover {

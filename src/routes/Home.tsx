@@ -5,6 +5,7 @@ import { LeetCodeWidget } from '../components/widgets/LeetCodeWidget'
 import { GitHubWidget } from '../components/widgets/GitHubWidget'
 import { RoleWidget } from '../components/widgets/RoleWidget'
 import { NowWidget } from '../components/widgets/NowWidget'
+import { BoidsCanvas } from '../components/widgets/BoidsCanvas'
 import widgetStyles from '../components/widgets/Widget.module.css'
 import styles from './Home.module.css'
 
@@ -31,20 +32,27 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
       >
-        <div className={styles.heroTag}>Portfolio</div>
-        <h1 className={styles.heroTitle}>{profile.name}</h1>
-        <div className={styles.heroRole}>
-          {profile.role} · {profile.company} · {profile.location}
+        <div className={styles.heroText}>
+          <div className={styles.heroTag}>Portfolio</div>
+          <h1 className={styles.heroTitle}>{profile.name}</h1>
+          <div className={styles.heroRole}>
+            {profile.role} · {profile.company} · {profile.location}
+          </div>
+          <p className={styles.heroDescription}>{profile.tagline}</p>
+          <div className={styles.heroActions}>
+            <Link to="/projects" className={styles.btnPrimary}>
+              See projects →
+            </Link>
+          </div>
         </div>
-        <p className={styles.heroDescription}>{profile.tagline}</p>
-        <div className={styles.heroActions}>
-          <Link to="/projects" className={styles.btnPrimary}>
-            See projects →
-          </Link>
-          <a href={profile.resumeUrl} className={styles.btnSecondary} target="_blank" rel="noreferrer">
-            Resume
-          </a>
-        </div>
+        <motion.div
+          className={styles.heroSide}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
+        >
+          <BoidsCanvas />
+        </motion.div>
       </motion.section>
 
       <section className={styles.section}>
