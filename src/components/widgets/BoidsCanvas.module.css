@@ -47,8 +47,6 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  /* On top of the body's --ivory background, so the canvas's own fade fill
-     becomes the visible page background. */
 }
 
 .bgCanvas {

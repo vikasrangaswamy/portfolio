@@ -3,6 +3,12 @@ import styles from './BoidsCanvas.module.css'
 
 type Variant = 'card' | 'background'
 
+type Props = {
+  variant?: Variant
+  /** Speed multiplier applied to position integration. 0.5 = half speed, 2 = double. */
+  speed?: number
+}
+
 /**
  * A small flock of dots running Craig Reynolds' boids rules: cohesion,
  * alignment, separation. The cursor attracts them; in card mode clicks create
@@ -10,10 +16,17 @@ type Variant = 'card' | 'background'
  * and respects prefers-reduced-motion (renders one static frame).
  *
  * variant='background' makes the canvas a fixed full-viewport layer that sits
- * behind page content, drawn at lower opacity so it blends in.
+ * behind page content, drawn at lower opacity so it blends into the page.
+ * `speed` updates take effect on the next frame without rebuilding the flock.
  */
-export function BoidsCanvas({ variant = 'card' }: { variant?: Variant } = {}) {
+export function BoidsCanvas({ variant = 'card', speed = 1 }: Props = {}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const speedRef = useRef(speed)
+
+  // Keep the latest speed accessible to the animation loop without resetting it.
+  useEffect(() => {
+    speedRef.current = speed
+  }, [speed])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -61,12 +74,12 @@ export function BoidsCanvas({ variant = 'card' }: { variant?: Variant } = {}) {
       const h = canvas.clientHeight
       for (let i = 0; i < NUM_BOIDS; i++) {
         const angle = Math.random() * Math.PI * 2
-        const speed = MIN_SPEED + Math.random() * (MAX_SPEED - MIN_SPEED)
+        const v = MIN_SPEED + Math.random() * (MAX_SPEED - MIN_SPEED)
         boids.push({
           x: Math.random() * w,
           y: Math.random() * h,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
+          vx: Math.cos(angle) * v,
+          vy: Math.sin(angle) * v,
         })
       }
     }
@@ -84,6 +97,7 @@ export function BoidsCanvas({ variant = 'card' }: { variant?: Variant } = {}) {
       const w = canvas.clientWidth
       const h = canvas.clientHeight
       const { clay, bg } = readColors()
+      const speedMul = speedRef.current
 
       ctx!.fillStyle = bg
       ctx!.globalAlpha = FADE_ALPHA
@@ -144,17 +158,20 @@ export function BoidsCanvas({ variant = 'card' }: { variant?: Variant } = {}) {
         if (b.y < EDGE_MARGIN) b.vy += EDGE_TURN
         if (b.y > h - EDGE_MARGIN) b.vy -= EDGE_TURN
 
-        const speed = Math.hypot(b.vx, b.vy)
-        if (speed > MAX_SPEED) {
-          b.vx = (b.vx / speed) * MAX_SPEED
-          b.vy = (b.vy / speed) * MAX_SPEED
-        } else if (speed < MIN_SPEED && speed > 0) {
-          b.vx = (b.vx / speed) * MIN_SPEED
-          b.vy = (b.vy / speed) * MIN_SPEED
+        const v = Math.hypot(b.vx, b.vy)
+        if (v > MAX_SPEED) {
+          b.vx = (b.vx / v) * MAX_SPEED
+          b.vy = (b.vy / v) * MAX_SPEED
+        } else if (v < MIN_SPEED && v > 0) {
+          b.vx = (b.vx / v) * MIN_SPEED
+          b.vy = (b.vy / v) * MIN_SPEED
         }
 
-        b.x += b.vx
-        b.y += b.vy
+        // Speed multiplier scales only the position integration, so the
+        // flocking forces still resolve at their normal rate — the boids
+        // *travel* slower/faster but still steer naturally.
+        b.x += b.vx * speedMul
+        b.y += b.vy * speedMul
 
         if (b.x < -10) b.x = w + 10
         if (b.x > w + 10) b.x = -10
@@ -242,9 +259,6 @@ export function BoidsCanvas({ variant = 'card' }: { variant?: Variant } = {}) {
     }
     document.addEventListener('visibilitychange', onVis)
 
-    // In background mode the canvas has pointer-events: none, so DOM events
-    // never reach it directly — listen on window instead so the cursor still
-    // attracts boids even when hovering text or widgets above the canvas.
     const target: Window | HTMLCanvasElement = isBackground ? window : canvas
     target.addEventListener('pointermove', onPointerMove as EventListener)
     target.addEventListener('pointerdown', onPointerDown as EventListener)

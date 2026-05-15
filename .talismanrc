@@ -1,4 +1,4 @@
 fileignoreconfig:
-- filename: src/components/widgets/RainbowArcCanvas.tsx
-  checksum: 0a89be40e8acc093f01477e985ae7e323184c66fde1e68cecf855e1014bc37b7
+- filename: src/lib/speed.ts
+  checksum: 81018f64372f8ca2f485f1ce53da63b9735f0cbb1722737771077df2f4ee54cc
 version: "1.0"

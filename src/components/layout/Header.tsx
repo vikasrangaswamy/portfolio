@@ -1,6 +1,7 @@
 import { NavLink, Link } from 'react-router-dom'
 import { ThemeToggle } from './ThemeToggle'
 import { SoundToggle } from './SoundToggle'
+import { SpeedToggle } from './SpeedToggle'
 import styles from './Header.module.css'
 
 const navItems = [
@@ -33,6 +34,7 @@ export function Header() {
         </nav>
       </div>
       <div className={styles.right}>
+        <SpeedToggle />
         <SoundToggle />
         <ThemeToggle />
       </div>
