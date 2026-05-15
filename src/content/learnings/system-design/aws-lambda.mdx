@@ -1,0 +1,43 @@
+import { Mermaid } from '../../../lib/Mermaid'
+
+## What I was learning
+
+How to think about AWS Lambda for short-lived, event-driven work — when it's the right tool, when it isn't, and the difference between calling external APIs with `axios` vs the built-in `fetch`.
+
+## Architecture
+
+<Mermaid chart={`flowchart LR
+  Trigger["Trigger<br/>(HTTP / Schedule / Event)"] --> Lambda["Lambda Function"]
+  Lambda --> External["External API"]
+  Lambda --> CloudWatch["CloudWatch Logs"]
+`} />
+
+Two flavours of the same function:
+
+- `lambda_with_axios.js` — uses the `axios` package (bundled with the deployment artifact). Familiar API, but adds bundle size.
+- `lambda_with_fetch.js` — uses the built-in `fetch` available in Node 18+ runtimes. Zero dependencies; smaller cold start.
+
+## Design decisions
+
+- **Stateless handler.** Every invocation re-runs the handler from scratch. No globals that mutate across calls.
+- **`fetch` over `axios`** for new functions. Native, no bundle bloat, no extra dependency to keep patched.
+- **Single responsibility per function.** One Lambda = one job. Composition happens at the orchestration layer (Step Functions / EventBridge), not inside the handler.
+
+## Lessons
+
+- Cold start vs warm start matters. Bundle size and module count both affect cold-start time noticeably.
+- Lambda's response timeout (default 3s, max 15min) is the hard ceiling. Long jobs belong on Batch / Fargate, not Lambda.
+- Memory setting is also a CPU setting on Lambda — bumping memory often makes CPU-bound work cheaper, not more expensive.
+
+## When Lambda fits
+
+- Webhook receivers
+- API Gateway → light backend logic
+- Scheduled cleanup jobs (CloudWatch Events → Lambda)
+- Event glue: S3 → Lambda → Kinesis, etc.
+
+## When it doesn't
+
+- Long-running workloads (use Batch / Fargate / EC2)
+- Workloads needing persistent connections (use a containerized service)
+- Heavy cold-start sensitivity at low traffic (use provisioned concurrency or move to a long-lived service)

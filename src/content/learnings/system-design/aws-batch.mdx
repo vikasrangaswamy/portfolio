@@ -1,0 +1,39 @@
+import { Mermaid } from '../../../lib/Mermaid'
+
+## What I was learning
+
+How to run scheduled / queue-driven work on AWS without managing servers. The goal was to take a simple "submit a job, watch it run, read the logs" flow and stand it up end-to-end on AWS Batch with Fargate.
+
+## Architecture
+
+<Mermaid chart={`flowchart LR
+  A["Your Computer<br/>batch_job_submit.js"] -->|Submit Job| B["AWS Batch<br/>Job Queue"]
+  B -->|Start Container| C["Fargate<br/>Container"]
+  C -->|Runs| D["batch_processor.js"]
+  D -->|Logs| E["CloudWatch<br/>Logs"]
+`} />
+
+Every job goes through six stages: submit → queue → schedule → run → log → status update. The submitter is a tiny Node script; the processor is another tiny Node script packaged into a Docker image; Batch + Fargate handle everything in between.
+
+## The three key files
+
+- `batch_job_submit.js` — your computer. Calls the AWS Batch API with input data, optionally polls until the job finishes.
+- `Dockerfile` + `batch_processor.js` — runs inside a Fargate container. Reads `INPUT_DATA` from the environment, does work, writes to stdout (which streams to CloudWatch).
+- IAM / Job Definition (configured in AWS console) — wires Batch to the right execution role and container image.
+
+## Design decisions
+
+- **Fargate over EC2 launch type.** No nodes to manage, scales to zero when idle.
+- **Job input via environment variable**, not S3. Keeps the demo small and avoids permissions plumbing.
+- **Polling for status** from the submitter rather than event-driven (EventBridge). Simpler for a learning exercise; EventBridge is the obvious next step for production.
+
+## Lessons
+
+- IAM is the long pole. Most time was spent on execution role + permissions, not on application code.
+- CloudWatch log groups are auto-created but log streams aren't — first run takes a beat before logs appear.
+- Fargate cold start is real: ~30s from submit to "Running" for a tiny container.
+
+## Next steps
+
+- Trigger jobs from S3 events instead of manual submit.
+- Wire failure-status alerts to Slack via EventBridge → Lambda.

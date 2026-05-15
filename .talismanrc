@@ -1,0 +1,18 @@
+fileignoreconfig:
+- filename: package-lock.json
+  checksum: 1a93b76f55eae537c0f02dc729b5cddfb1f81cfe37d01fda51ca074923d63330
+- filename: src/components/learnings/TopicGrid.tsx
+  checksum: 219ef9e41c743e49351e810b47295181d7a7ffcc696bb0d99a91c78ef1a6b466
+- filename: src/routes/About.tsx
+  checksum: 269fed4c3ce6bfb6e03f7a830a0934a1756c4fd48aa2ad46176e90d2e30db4a4
+- filename: src/components/layout/Header.tsx
+  checksum: 9e7112427c254c726dbd5fd6635ce49daa747c6c39b81d2ce2340d08a9c33ecf
+- filename: src/routes/Learnings.tsx
+  checksum: 8358f94c201e809bbd19ff451d5002afad899faa12159642a744b0763420c1ba
+- filename: src/components/learnings/LearningPage.tsx
+  checksum: 73fe39cdc7c2a73d09dd59f6564f733ed08ca4a6c3bb172374233c378b798729
+- filename: src/routes/Experience.tsx
+  checksum: 0e75c55c201f08a88a708c2314d0b50d363ed2407d32bd312c4155b51b2ad38c
+- filename: src/routes/Home.tsx
+  checksum: ef270a1533bd1679ceb02706b577fa2ce771493c503b543fe8732592232526f3
+version: "1.0"

@@ -1,0 +1,58 @@
+import { Mermaid } from '../../../lib/Mermaid'
+
+## What I was learning
+
+A classic system-design exercise: build a URL shortener that handles shortens, redirects, and observability. The point wasn't to ship a product — it was to feel out the tradeoffs (read vs write skew, caching, ID encoding, scaling reads) on a small but real system.
+
+## Problem statement
+
+| Capability | Behavior |
+| --- | --- |
+| Shorten | Accept a long https URL; return a short code and short URL |
+| Resolve | `GET /r/:code` redirects the browser to the original URL |
+| Observe | Click counts per code; list recent mappings |
+
+Traffic skews heavily toward reads (redirects) over writes (shortens) — a real-world property that shapes every interesting design choice.
+
+## High-level architecture
+
+<Mermaid chart={`flowchart LR
+  subgraph Browser
+    SPA["React SPA"]
+  end
+  subgraph Server["Node Server"]
+    Express["Express API"]
+  end
+  subgraph Data["Data Layer"]
+    SQLite[("SQLite")]
+    Redis[("Redis (optional)")]
+  end
+  SPA -->|"/api /r"| Express
+  Express --> SQLite
+  Express -.->|"cache reads"| Redis
+`} />
+
+In development, Vite (port 5173) proxies `/api` and `/r` to Express (port 3001). In production, Express serves the Vite build and the API from one origin.
+
+## Design decisions
+
+- **SQLite for the demo.** Single-file, zero-config, lets the focus stay on the system design instead of database ops. The schema swaps to Postgres without rewriting application code.
+- **Redis is optional.** The first version reads everything from SQLite. Redis gets layered in as a read-through cache once read volume becomes a real concern. The codebase has the seams; the demo doesn't enable it by default.
+- **Base62 encoding.** Short, URL-safe, dense. A 7-character base62 string is ~3.5 trillion codes — enough headroom that a sequential ID + base62 encoder is fine for a single shard.
+- **Sequential IDs, encoded at read time.** Avoids the "guess the next short code" attack you get from naive incrementing exposed directly, and stays predictable internally.
+- **Express, not a heavier framework.** Tiny surface area. Easier to reason about middleware order.
+
+## Scaling thoughts (not implemented)
+
+Documented in `scaling-architecture.html`:
+
+- Add Redis as a read-through cache. Codes are immutable once created — perfect cache shape (high hit rate, low invalidation).
+- Shard SQLite/Postgres by code prefix once write volume justifies it.
+- Move redirects behind a CDN; the redirect response is cacheable for a small TTL.
+- Async analytics: instead of incrementing a counter on every redirect, fire-and-forget to a queue; aggregate on a schedule.
+
+## Lessons
+
+- Reads vs writes asymmetry is *the* design driver. Once you internalize that, everything else (caching, sharding, replication topology) falls into place.
+- Picking the right ID encoding early avoids painful migrations later.
+- A demo doesn't need to scale, but its architecture should be one step away from scaling.

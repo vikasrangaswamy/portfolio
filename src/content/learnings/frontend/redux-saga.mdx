@@ -1,0 +1,47 @@
+import { Mermaid } from '../../../lib/Mermaid'
+
+## What I was learning
+
+How Redux Saga structures side effects in a React app, and how it compares to plain thunks. The goal was to feel the difference between *describing* effects (sagas) and *executing* them (thunks), and to see whether the testability payoff is real.
+
+## Mental model
+
+<Mermaid chart={`flowchart LR
+  UI["React Component"] -->|dispatch action| Store["Redux Store"]
+  Store -->|notify| Saga["Saga (generator)"]
+  Saga -->|put new action| Store
+  Saga -->|call API| API[("External API")]
+  API -.->|response| Saga
+`} />
+
+Sagas are long-running generator functions that watch for specific actions and respond with side effects. They don't *do* the I/O directly — they *yield* effect descriptors (`call`, `put`, `take`, `select`), and the middleware executes them. That separation is what makes them easy to test.
+
+## Patterns I worked through
+
+- **`takeEvery` vs `takeLatest`.** Every dispatch vs cancel-in-flight. Search-as-you-type wants `takeLatest`; analytics fire-and-forget wants `takeEvery`.
+- **`call(fn, args)` over `fn(args)`.** Yielding a descriptor instead of invoking directly is what makes the saga deterministic in tests.
+- **`select` for store reads** instead of closing over the store object. Keeps sagas pure descriptors.
+- **`race` and `cancel` for cancellation.** Real-world flows (modals, polling) need clean cancellation more often than I expected.
+
+## Design tradeoffs
+
+- **Sagas vs Thunks.** Sagas win on complex orchestration (cancellation, race, retry, debounce). Thunks win on simple async — the saga ceremony isn't worth it for "fetch list, set state."
+- **One root saga vs many.** Splitting per feature scales better than a monolithic root saga. `all([...])` composes them.
+- **Generator syntax** is the price of admission. Newcomers stumble on `yield`; familiar Promise/async-await code is more readable for simple cases.
+
+## Lessons
+
+- The testability claim is real — testing a saga is iterating the generator and asserting yielded values. No mocks needed.
+- Sagas shine when you have *flows*, not just async calls. If every reducer slice has a single fetch action, thunks are fine.
+- Debug tooling (redux-devtools-extension + saga action logging) makes a huge difference in complex apps.
+
+## When I'd reach for it
+
+- Multi-step workflows that need cancellation (search, multi-stage forms)
+- Polling and websocket integration
+- Apps with heavy cross-slice orchestration
+
+## When I wouldn't
+
+- Simple CRUD frontends — RTK Query or thunks are lighter
+- Teams unfamiliar with generators — onboarding cost is real
