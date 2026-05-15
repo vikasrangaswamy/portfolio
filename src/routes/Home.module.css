@@ -1,30 +1,35 @@
-.hero {
-  max-width: var(--content-max);
-  margin: 0 auto;
-  padding: var(--sp-8) var(--sp-6) var(--sp-7);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
-  gap: var(--sp-7);
-  align-items: center;
+/* The hero is now a full-width frame that lets the rainbow arc canvas
+   bleed past the content max-width. .heroText is the constrained inner
+   column that holds the actual text + CTAs. */
+.heroFrame {
+  position: relative;
+  width: 100%;
+  min-height: 520px;
+  overflow: hidden;
 }
 
 .heroText {
-  min-width: 0;
+  position: relative;
+  z-index: 1;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--sp-8) var(--sp-6) var(--sp-7);
+  /* Cap the text column on wide screens so it doesn't run into the arc. */
 }
 
-.heroSide {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+.heroText .heroTitle,
+.heroText .heroRole,
+.heroText .heroDescription,
+.heroText .heroActions {
+  max-width: 560px;
 }
 
 @media (max-width: 860px) {
-  .hero {
-    grid-template-columns: 1fr;
-    gap: var(--sp-6);
+  .heroFrame {
+    min-height: auto;
   }
-  .heroSide {
-    justify-content: stretch;
+  .heroText {
+    padding-bottom: var(--sp-4);
   }
 }
 

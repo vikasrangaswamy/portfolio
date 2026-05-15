@@ -1,0 +1,38 @@
+.wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  /* Extend past the hero container so the arc visually "flows off" the page,
+     no box, no border. */
+  width: clamp(420px, 60vw, 820px);
+  height: 100%;
+  min-height: 480px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Soft mask at the bottom so the arc dissolves into the page rather than
+   cutting off at a hard edge. */
+.fadeBottom {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 35%;
+  background: linear-gradient(to bottom, transparent, var(--ivory) 95%);
+  pointer-events: none;
+}
+
+@media (max-width: 860px) {
+  .wrap {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    min-height: 280px;
+    margin-top: var(--sp-5);
+  }
+}
