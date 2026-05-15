@@ -13,11 +13,14 @@
   "dependencies": {
     "@mdx-js/react": "^3.1.1",
     "@mdx-js/rollup": "^3.1.1",
+    "framer-motion": "^12.38.0",
     "mermaid": "^11.15.0",
     "react": "^19.2.6",
+    "react-activity-calendar": "^3.2.0",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.15.1",
-    "shiki": "^4.0.2"
+    "shiki": "^4.0.2",
+    "use-sound": "^5.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

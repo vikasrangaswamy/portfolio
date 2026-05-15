@@ -27,6 +27,11 @@ export default function About() {
             <a href={profile.github} target="_blank" rel="noreferrer">
               GitHub
             </a>
+            {profile.linkedin && (
+              <a href={profile.linkedin} target="_blank" rel="noreferrer">
+                LinkedIn
+              </a>
+            )}
             <a href={profile.resumeUrl} target="_blank" rel="noreferrer">
               Resume
             </a>

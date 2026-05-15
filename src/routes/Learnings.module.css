@@ -1,0 +1,65 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-4);
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  position: relative;
+  display: block;
+  padding: var(--sp-5);
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--r-md);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  text-decoration: none;
+}
+
+.card:hover {
+  border-color: var(--clay);
+  box-shadow: var(--shadow-md);
+}
+
+.cardSlug {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--clay);
+  margin-bottom: var(--sp-2);
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--slate);
+  margin-bottom: var(--sp-2);
+}
+
+.cardDesc {
+  font-size: 14px;
+  color: var(--gray-700);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.cardArrow {
+  position: absolute;
+  top: var(--sp-5);
+  right: var(--sp-5);
+  color: var(--clay);
+  font-size: 16px;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.card:hover .cardArrow {
+  opacity: 1;
+  transform: translateX(0);
+}

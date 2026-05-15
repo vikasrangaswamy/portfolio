@@ -3,22 +3,33 @@ export type SkillCategory = {
   skills: readonly string[]
 }
 
-// DUMMY — see NEEDS-FROM-USER.md item #3
 export const skills: readonly SkillCategory[] = [
   {
     category: 'Languages',
-    skills: ['TypeScript', 'JavaScript', 'Python'],
+    skills: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C'],
   },
   {
-    category: 'Frameworks',
-    skills: ['React', 'Node.js', 'Express', 'Redux Saga'],
+    category: 'Frontend',
+    skills: ['React', 'Remix', 'Shopify Polaris'],
   },
   {
-    category: 'Infrastructure',
-    skills: ['AWS Lambda', 'AWS Batch', 'Docker', 'Redis'],
+    category: 'Backend & APIs',
+    skills: ['Node.js', 'Express', 'MongoDB', 'REST', 'GraphQL', 'Webhooks', 'OAuth 2.0'],
+  },
+  {
+    category: 'Cloud & AWS',
+    skills: ['Lambda', 'KMS', 'Batch', 'EFS', 'S3'],
+  },
+  {
+    category: 'Platforms & Integrations',
+    skills: ['Contentstack', 'Shopify (embedded apps, Admin GraphQL)', 'MetaTrader 5'],
+  },
+  {
+    category: 'AI & Automation',
+    skills: ['Contentstack Automate', 'n8n'],
   },
   {
     category: 'Tools',
-    skills: ['Git', 'Vite', 'GitHub Actions'],
+    skills: ['Git', 'GitHub', 'Jira', 'Chrome DevTools'],
   },
 ]

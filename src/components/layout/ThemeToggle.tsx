@@ -1,13 +1,25 @@
+import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../../lib/useTheme'
+import { useSound } from '../../lib/sound'
 
 export function ThemeToggle() {
   const { theme, toggle } = useTheme()
+  const { play } = useSound()
+
+  const handleClick = () => {
+    play('boop')
+    toggle()
+  }
+
   return (
-    <button
+    <motion.button
       type="button"
-      onClick={toggle}
+      onClick={handleClick}
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
       title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+      whileHover={{ scale: 1.08, rotate: -6 }}
+      whileTap={{ scale: 0.92, rotate: 12 }}
+      transition={{ type: 'spring', stiffness: 360, damping: 16 }}
       style={{
         width: 32,
         height: 32,
@@ -20,18 +32,21 @@ export function ThemeToggle() {
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: 14,
-        transition: 'border-color var(--transition), color var(--transition), transform var(--transition)',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'var(--clay)'
-        e.currentTarget.style.color = 'var(--clay)'
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = 'var(--gray-300)'
-        e.currentTarget.style.color = 'var(--gray-700)'
+        overflow: 'hidden',
       }}
     >
-      {theme === 'light' ? '☾' : '☀'}
-    </button>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={theme}
+          initial={{ y: -12, opacity: 0, rotate: -90 }}
+          animate={{ y: 0, opacity: 1, rotate: 0 }}
+          exit={{ y: 12, opacity: 0, rotate: 90 }}
+          transition={{ duration: 0.22, ease: 'easeOut' }}
+          style={{ display: 'inline-block' }}
+        >
+          {theme === 'light' ? '☾' : '☀'}
+        </motion.span>
+      </AnimatePresence>
+    </motion.button>
   )
 }

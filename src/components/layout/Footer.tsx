@@ -1,3 +1,4 @@
+import { profile } from '../../content/profile'
 import styles from './Footer.module.css'
 
 export function Footer() {
@@ -5,12 +6,17 @@ export function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
-        <span>Vikas Rangaswamy · {year}</span>
+        <span>{profile.name} · {year}</span>
         <div className={styles.links}>
-          <a href="https://github.com/vikasrangaswamy" target="_blank" rel="noreferrer">
+          <a href={profile.github} target="_blank" rel="noreferrer">
             GitHub
           </a>
-          <a href="mailto:rangaswamy.vikas@contentstack.com">Email</a>
+          {profile.linkedin && (
+            <a href={profile.linkedin} target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+          )}
+          <a href={`mailto:${profile.email}`}>Email</a>
         </div>
       </div>
     </footer>
