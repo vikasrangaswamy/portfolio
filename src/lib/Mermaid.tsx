@@ -2,21 +2,20 @@ import { useEffect, useRef, useState } from 'react'
 
 let idCounter = 0
 
+type Theme = 'light' | 'dark'
+
 /**
- * Hand-drawn / Excalidraw-style Mermaid renderer.
+ * Mermaid renderer with a warm pastel theme + casual font.
  *
- * Mermaid 10.4+ supports `look: 'handDrawn'` (rough-js under the hood) which
- * makes flowcharts read like a whiteboard sketch instead of a corporate
- * powerpoint. Paired with a warm pastel palette so diagrams feel like part
- * of the page, not a black-and-white tech-doc figure.
+ * Tried `look: 'handDrawn'` first (rough-js) but its diagonal hachure
+ * fills looked terrible on the dark page background, and stripping them
+ * post-render was fragile. Dropped it in favor of plain Mermaid with a
+ * theme-aware color palette so node fills, text, and lines all swap with
+ * the page's data-theme. Without this, edge labels and lines were
+ * rendering near-black on the dark page background and disappearing.
  *
- * `handDrawnSeed` keeps the rough strokes deterministic across re-renders so
- * theme/route toggles don't redraw the lines every time.
- *
- * The default rough-js fillStyle is 'hachure' (diagonal hatch lines), which
- * looks busy on dark backgrounds. We post-process the rendered SVG to swap
- * those hatch fills for a solid pastel fill while keeping the hand-drawn
- * stroke outline intact.
+ * Watches `html[data-theme]` and re-renders whenever the user toggles
+ * the theme.
  */
 export function Mermaid({ chart }: { chart: string }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -24,47 +23,46 @@ export function Mermaid({ chart }: { chart: string }) {
 
   useEffect(() => {
     let cancelled = false
-    const id = `mermaid-${++idCounter}`
 
-    void import('mermaid')
-      .then(async ({ default: mermaid }) => {
-        if (cancelled) return null
-        mermaid.initialize({
-          startOnLoad: false,
-          look: 'handDrawn',
-          handDrawnSeed: 1,
-          theme: 'base',
-          themeVariables: {
-            fontFamily: '"Comic Sans MS", "Patrick Hand", "Caveat", "Inter", sans-serif',
-            fontSize: '15px',
-            primaryColor: '#FCE5D2',
-            primaryTextColor: '#3D3D3A',
-            primaryBorderColor: '#3D3D3A',
-            secondaryColor: '#D9E8F2',
-            tertiaryColor: '#E7F0DC',
-            lineColor: '#3D3D3A',
-            textColor: '#3D3D3A',
-            mainBkg: '#FCE5D2',
-            edgeLabelBackground: '#FAF9F5',
-            clusterBkg: '#F0EEE6',
-            clusterBorder: '#D1CFC5',
-          },
-          flowchart: { curve: 'basis', htmlLabels: true, padding: 12 },
-          sequence: { mirrorActors: false, useMaxWidth: true },
+    const run = () => {
+      const theme: Theme =
+        document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'
+      const id = `mermaid-${++idCounter}`
+
+      void import('mermaid')
+        .then(async ({ default: mermaid }) => {
+          if (cancelled) return null
+          mermaid.initialize({
+            startOnLoad: false,
+            theme: 'base',
+            themeVariables: buildThemeVars(theme),
+            flowchart: { curve: 'basis', htmlLabels: true, padding: 14 },
+            sequence: { mirrorActors: false, useMaxWidth: true },
+          })
+          return mermaid.render(id, chart)
         })
-        return mermaid.render(id, chart)
-      })
-      .then((result) => {
-        if (cancelled || !result || !ref.current) return
-        ref.current.innerHTML = result.svg
-        stripHachureFills(ref.current)
-      })
-      .catch((err: unknown) => {
-        if (!cancelled) setError(String(err))
-      })
+        .then((result) => {
+          if (cancelled || !result || !ref.current) return
+          ref.current.innerHTML = result.svg
+        })
+        .catch((err: unknown) => {
+          if (!cancelled) setError(String(err))
+        })
+    }
+
+    run()
+
+    // Re-render on theme toggle. The useTheme hook flips the
+    // html[data-theme] attribute; we watch for it.
+    const observer = new MutationObserver(run)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    })
 
     return () => {
       cancelled = true
+      observer.disconnect()
     }
   }, [chart])
 
@@ -91,38 +89,55 @@ export function Mermaid({ chart }: { chart: string }) {
 }
 
 /**
- * Replace rough-js hachure fill paths with solid pastel fills.
- *
- * Each handDrawn node renders as several short stroke paths (the hatching)
- * followed by a final outline path. We keep the outline (it's what gives the
- * sketch feel) and drop the rest, then apply a solid fill to the outline.
- * Run after every render — the SVG is re-generated each time.
+ * Theme-aware palette. Boxes always use a warm tint so the diagrams stay
+ * on-brand, but the tint inverts between light and dark modes so the
+ * contained text remains readable. Page-color tokens (edge label bg, line
+ * color) follow the page's dark/light state directly.
  */
-function stripHachureFills(host: HTMLElement) {
-  const svg = host.querySelector('svg')
-  if (!svg) return
+function buildThemeVars(theme: Theme) {
+  const font =
+    '"Patrick Hand", "Caveat", "Comic Sans MS", "Inter", sans-serif'
 
-  // Flowchart / state / class diagrams all use `.node` wrappers. Each node
-  // contains a group of <path> elements rendered by rough-js. The last path
-  // is conventionally the outline; everything before it is hachure fill.
-  svg.querySelectorAll<SVGElement>('g.node, g.cluster').forEach((node) => {
-    const paths = Array.from(node.querySelectorAll<SVGPathElement>('path'))
-    if (paths.length <= 1) return
-
-    const outline = paths[paths.length - 1]
-    if (!outline) return
-
-    // Drop every hachure stroke path; keep only the outline.
-    for (let i = 0; i < paths.length - 1; i++) {
-      const path = paths[i]
-      if (path) path.remove()
+  if (theme === 'dark') {
+    return {
+      fontFamily: font,
+      fontSize: '16px',
+      // Warm dark brown box fill — reads as "peach but in dark mode"
+      primaryColor: '#4A3326',
+      primaryTextColor: '#F0EEE6',
+      primaryBorderColor: '#C5C3BB',
+      secondaryColor: '#2D3E4A',
+      tertiaryColor: '#3D4630',
+      lineColor: '#C5C3BB',
+      textColor: '#F0EEE6',
+      mainBkg: '#4A3326',
+      edgeLabelBackground: '#2A2A26',
+      tertiaryTextColor: '#F0EEE6',
+      secondaryTextColor: '#F0EEE6',
+      clusterBkg: '#2E2E2A',
+      clusterBorder: '#3D3D3A',
+      nodeBorder: '#C5C3BB',
+      titleColor: '#F0EEE6',
     }
+  }
 
-    // The outline currently has fill="none" (since rough-js draws fills as
-    // separate hachure paths). Promote it to a solid filled shape.
-    const isCluster = node.classList.contains('cluster')
-    const fill = isCluster ? '#F0EEE6' : outline.dataset.fillColor || '#FCE5D2'
-    outline.setAttribute('fill', fill)
-    outline.setAttribute('fill-opacity', '1')
-  })
+  return {
+    fontFamily: font,
+    fontSize: '16px',
+    primaryColor: '#FCE5D2',
+    primaryTextColor: '#3D3D3A',
+    primaryBorderColor: '#3D3D3A',
+    secondaryColor: '#D9E8F2',
+    tertiaryColor: '#E7F0DC',
+    lineColor: '#3D3D3A',
+    textColor: '#3D3D3A',
+    mainBkg: '#FCE5D2',
+    edgeLabelBackground: '#FAF9F5',
+    tertiaryTextColor: '#3D3D3A',
+    secondaryTextColor: '#3D3D3A',
+    clusterBkg: '#F0EEE6',
+    clusterBorder: '#D1CFC5',
+    nodeBorder: '#3D3D3A',
+    titleColor: '#3D3D3A',
+  }
 }
