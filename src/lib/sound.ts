@@ -9,7 +9,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-type SoundName = 'boop' | 'pop' | 'click' | 'swish' | 'chord' | 'jump'
+type SoundName = 'boop' | 'pop' | 'click' | 'swish' | 'chord'
 
 let sharedCtx: AudioContext | null = null
 
@@ -58,13 +58,6 @@ const PRESETS: Record<SoundName, Voice[]> = {
     { type: 'sine', freq: 392, duration: 0.32, gain: 0.12, attack: 0.01, filter: 1800 },
     { type: 'sine', freq: 523, duration: 0.32, gain: 0.1, attack: 0.01, filter: 2000, delay: 0.06 },
     { type: 'triangle', freq: 784, duration: 0.32, gain: 0.05, attack: 0.01, filter: 2200, delay: 0.12 },
-  ],
-  // Cartoon-y jump — pitch sweeps up then down quickly, like a "boing".
-  // Used for the character click-to-jump.
-  jump: [
-    { type: 'triangle', freq: 280, duration: 0.05, gain: 0.18, attack: 0.002, filter: 2400 },
-    { type: 'sine', freq: 520, duration: 0.08, gain: 0.14, attack: 0.002, filter: 2800, delay: 0.04 },
-    { type: 'sine', freq: 360, duration: 0.1, gain: 0.08, attack: 0.005, filter: 2200, delay: 0.1 },
   ],
 }
 

@@ -5,7 +5,6 @@ import { LeetCodeWidget } from '../components/widgets/LeetCodeWidget'
 import { GitHubWidget } from '../components/widgets/GitHubWidget'
 import { RoleWidget } from '../components/widgets/RoleWidget'
 import { NowWidget } from '../components/widgets/NowWidget'
-import { CharacterWalker } from '../components/widgets/CharacterWalker'
 import widgetStyles from '../components/widgets/Widget.module.css'
 import styles from './Home.module.css'
 
@@ -44,8 +43,6 @@ export default function Home() {
           </Link>
         </div>
       </motion.section>
-
-      <CharacterWalker frameCount={8} facing="right" height={140} />
 
       <section className={styles.section}>
         <motion.div
