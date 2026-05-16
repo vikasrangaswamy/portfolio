@@ -1,0 +1,53 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  pointer-events: none;
+  /* Bleed past the content max-width so the character can walk the full
+     viewport width even though the hero text is column-constrained. */
+  margin-left: calc((100% - 100vw) / 2);
+  margin-right: calc((100% - 100vw) / 2);
+  width: 100vw;
+  max-width: 100vw;
+}
+
+.ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--gray-300) 15%,
+    var(--gray-300) 85%,
+    transparent
+  );
+}
+
+.character {
+  position: absolute;
+  bottom: 4px; /* the ground line + a small float */
+  left: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  /* Anchor scaleX flip around the bottom-center so the character pivots in
+     place when changing direction. */
+  transform-origin: center bottom;
+  /* The animation loop drives transform directly; keep no transition so the
+     rAF updates aren't smoothed/lagged. */
+  will-change: transform;
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.character:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 4px;
+  border-radius: 4px;
+}

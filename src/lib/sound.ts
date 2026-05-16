@@ -9,7 +9,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-type SoundName = 'boop' | 'pop' | 'click' | 'swish' | 'chord' | 'flurry'
+type SoundName = 'boop' | 'pop' | 'click' | 'swish' | 'chord' | 'jump'
 
 let sharedCtx: AudioContext | null = null
 
@@ -59,9 +59,13 @@ const PRESETS: Record<SoundName, Voice[]> = {
     { type: 'sine', freq: 523, duration: 0.32, gain: 0.1, attack: 0.01, filter: 2000, delay: 0.06 },
     { type: 'triangle', freq: 784, duration: 0.32, gain: 0.05, attack: 0.01, filter: 2200, delay: 0.12 },
   ],
-  // Flurry — handled separately in playFlurry to randomize pitches each call.
-  // Used for the boids scatter click: sounds like a small flock startling.
-  flurry: [],
+  // Cartoon-y jump — pitch sweeps up then down quickly, like a "boing".
+  // Used for the character click-to-jump.
+  jump: [
+    { type: 'triangle', freq: 280, duration: 0.05, gain: 0.18, attack: 0.002, filter: 2400 },
+    { type: 'sine', freq: 520, duration: 0.08, gain: 0.14, attack: 0.002, filter: 2800, delay: 0.04 },
+    { type: 'sine', freq: 360, duration: 0.1, gain: 0.08, attack: 0.005, filter: 2200, delay: 0.1 },
+  ],
 }
 
 function playVoice(ctx: AudioContext, voice: Voice, masterGain: number) {
@@ -90,32 +94,6 @@ function playVoice(ctx: AudioContext, voice: Voice, masterGain: number) {
 
   osc.start(now)
   osc.stop(now + voice.duration + 0.02)
-}
-
-function playFlurry(ctx: AudioContext, masterGain: number) {
-  // A staggered burst of short, bright triangle pings at randomized pitches
-  // around a pentatonic cluster — evokes a small flock startling and scattering.
-  const base = 660
-  const intervals = [0, 4, 7, 12, 14, 5, 9] // semitone offsets, lightly pentatonic
-  const PINGS = 6
-  for (let i = 0; i < PINGS; i++) {
-    const semi = intervals[Math.floor(Math.random() * intervals.length)] ?? 0
-    const detune = (Math.random() - 0.5) * 30
-    playVoice(
-      ctx,
-      {
-        type: i % 2 === 0 ? 'triangle' : 'sine',
-        freq: base * Math.pow(2, semi / 12),
-        detune,
-        duration: 0.16 + Math.random() * 0.08,
-        gain: 0.08 + Math.random() * 0.04,
-        attack: 0.003,
-        filter: 3200,
-        delay: i * 0.018 + Math.random() * 0.012,
-      },
-      masterGain,
-    )
-  }
 }
 
 function playNoise(ctx: AudioContext, masterGain: number) {
@@ -180,10 +158,6 @@ export function useSound() {
     if (ctx.state === 'suspended') void ctx.resume()
     if (name === 'swish') {
       playNoise(ctx, gain)
-      return
-    }
-    if (name === 'flurry') {
-      playFlurry(ctx, gain)
       return
     }
     const voices = PRESETS[name]
