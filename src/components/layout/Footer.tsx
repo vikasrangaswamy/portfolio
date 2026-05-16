@@ -16,6 +16,11 @@ export function Footer() {
               LinkedIn
             </a>
           )}
+          {profile.instagram && (
+            <a href={profile.instagram} target="_blank" rel="noreferrer">
+              Instagram
+            </a>
+          )}
           <a href={`mailto:${profile.email}`}>Email</a>
         </div>
       </div>

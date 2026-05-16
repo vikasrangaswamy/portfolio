@@ -8,9 +8,9 @@ export const profile = {
   email: 'vikasrangaswamyy@gmail.com',
   github: 'https://github.com/vikasrangaswamy',
   linkedin: 'https://www.linkedin.com/in/vikasrangaswamy/',
+  instagram: 'https://www.instagram.com/vikasrangaswamy/',
   leetcodeUsername: 'VIKAS_RANGASWAMY',
   githubUsername: 'vikasrangaswamy',
-  resumeUrl: '/resume.pdf',
   /** Short, present-tense status for the "Now" widget on the home page. */
   now: 'MT5 algorithmic trading EAs in Python',
   about: [

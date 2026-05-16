@@ -2,6 +2,37 @@
   margin-bottom: var(--sp-5);
 }
 
+/* Back link is its own row above the pill so it's an obvious, deliberate
+   nav element — not buried as inline text next to the track tag. */
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  margin-bottom: var(--sp-5);
+  margin-left: calc(var(--sp-3) * -1);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-700);
+  border-radius: var(--r-sm);
+  transition: background var(--transition), color var(--transition);
+}
+
+.backButton:hover {
+  background: var(--gray-100);
+  color: var(--slate);
+}
+
+.backButton span:first-child {
+  color: var(--clay);
+  font-weight: 600;
+  transition: transform var(--transition);
+}
+
+.backButton:hover span:first-child {
+  transform: translateX(-3px);
+}
+
 .tagRow {
   display: flex;
   align-items: center;
@@ -19,28 +50,20 @@
   border-radius: var(--r-lg);
 }
 
-.backLink {
-  font-size: 13px;
-  color: var(--gray-500);
-}
-
-.backLink:hover {
-  color: var(--slate);
-}
-
 .title {
-  font-size: 30px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-size: 36px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
   color: var(--slate);
   margin-bottom: var(--sp-3);
+  line-height: 1.15;
 }
 
 .summary {
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.65;
   color: var(--gray-700);
-  max-width: 640px;
+  max-width: 680px;
   margin-bottom: var(--sp-4);
 }
 
@@ -53,7 +76,7 @@
 }
 
 .techChip {
-  font-size: 12px;
+  font-size: 13px;
   background: var(--gray-100);
   border: 1px solid var(--gray-300);
   border-radius: var(--r-lg);

@@ -3,12 +3,12 @@
   z-index: 1;
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: var(--sp-8) var(--sp-6) var(--sp-5);
+  padding: var(--sp-8) var(--sp-6) var(--sp-8);
 }
 
 .heroTag {
   display: inline-block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.09em;
@@ -16,30 +16,30 @@
   background: rgba(217, 119, 87, 0.1);
   padding: var(--sp-1) var(--sp-3);
   border-radius: var(--r-lg);
-  margin-bottom: var(--sp-4);
+  margin-bottom: var(--sp-5);
 }
 
 .heroTitle {
-  font-size: 38px;
-  line-height: 1.1;
-  font-weight: 500;
+  font-size: 64px;
+  line-height: 1.05;
+  font-weight: 600;
   color: var(--slate);
-  margin-bottom: var(--sp-4);
-  letter-spacing: -0.01em;
+  margin-bottom: var(--sp-5);
+  letter-spacing: -0.02em;
 }
 
 .heroRole {
-  font-size: 16px;
+  font-size: 18px;
   color: var(--gray-500);
-  margin-bottom: var(--sp-3);
+  margin-bottom: var(--sp-4);
 }
 
 .heroDescription {
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.6;
   color: var(--gray-700);
-  max-width: 580px;
-  margin-bottom: var(--sp-6);
+  max-width: 620px;
+  margin-bottom: var(--sp-7);
 }
 
 .heroActions {
@@ -92,6 +92,6 @@
 
 @media (max-width: 720px) {
   .heroTitle {
-    font-size: 32px;
+    font-size: 44px;
   }
 }

@@ -37,9 +37,11 @@ export default function About() {
                 LinkedIn
               </a>
             )}
-            <a href={profile.resumeUrl} target="_blank" rel="noreferrer">
-              Resume
-            </a>
+            {profile.instagram && (
+              <a href={profile.instagram} target="_blank" rel="noreferrer">
+                Instagram
+              </a>
+            )}
           </div>
         </div>
       </motion.div>

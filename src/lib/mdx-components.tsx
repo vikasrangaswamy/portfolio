@@ -95,8 +95,8 @@ export const mdxComponents: MDXComponents = {
     <code
       style={{
         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-        fontSize: 13,
-        background: 'var(--gray-100)',
+        fontSize: 14,
+        background: 'var(--oat)',
         padding: '2px 6px',
         borderRadius: 4,
         color: 'var(--slate)',
@@ -104,18 +104,23 @@ export const mdxComponents: MDXComponents = {
       {...props}
     />
   ),
+  // Sketch-y code block: paper-cream background, hand-drawn-feel border with
+  // an offset clay shadow so it reads as a deliberate object on the page,
+  // not a corporate console window.
   pre: (props: ComponentPropsWithoutRef<'pre'>) => (
     <pre
       style={{
-        background: 'var(--slate)',
-        color: 'var(--ivory)',
-        padding: 'var(--sp-4)',
-        borderRadius: 'var(--r-sm)',
+        background: 'var(--ivory)',
+        color: 'var(--slate)',
+        padding: 'var(--sp-5)',
+        border: '1.5px solid var(--slate)',
+        borderRadius: 'var(--r-md)',
+        boxShadow: '4px 4px 0 0 var(--clay)',
         overflowX: 'auto',
-        fontSize: 13,
-        lineHeight: 1.55,
+        fontSize: 14,
+        lineHeight: 1.6,
         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-        margin: 'var(--sp-4) 0',
+        margin: 'var(--sp-5) 0',
       }}
       {...props}
     />

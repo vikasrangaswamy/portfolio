@@ -23,11 +23,12 @@ export function LearningPage({ trackLabel, trackHref, topic }: Props) {
   return (
     <div className={pageStyles.container}>
       <header className={styles.header}>
+        <Link to={trackHref} className={styles.backButton}>
+          <span aria-hidden="true">←</span>
+          <span>Back to {trackLabel}</span>
+        </Link>
         <div className={styles.tagRow}>
           <span className={styles.track}>{trackLabel}</span>
-          <Link to={trackHref} className={styles.backLink}>
-            ← Back to {trackLabel}
-          </Link>
         </div>
         <h1 className={styles.title}>{topic.title}</h1>
         <p className={styles.summary}>{topic.summary}</p>
