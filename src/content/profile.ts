@@ -8,7 +8,7 @@ export const profile = {
   email: 'vikasrangaswamyy@gmail.com',
   github: 'https://github.com/vikasrangaswamy',
   linkedin: 'https://www.linkedin.com/in/vikasrangaswamy/',
-  instagram: 'https://www.instagram.com/vikasrangaswamy/',
+  instagram: 'https://www.instagram.com/vikas_rangaswamy/',
   leetcodeUsername: 'VIKAS_RANGASWAMY',
   githubUsername: 'vikasrangaswamy',
   /** Short, present-tense status for the "Now" widget on the home page. */

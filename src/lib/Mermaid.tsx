@@ -12,6 +12,11 @@ let idCounter = 0
  *
  * `handDrawnSeed` keeps the rough strokes deterministic across re-renders so
  * theme/route toggles don't redraw the lines every time.
+ *
+ * The default rough-js fillStyle is 'hachure' (diagonal hatch lines), which
+ * looks busy on dark backgrounds. We post-process the rendered SVG to swap
+ * those hatch fills for a solid pastel fill while keeping the hand-drawn
+ * stroke outline intact.
  */
 export function Mermaid({ chart }: { chart: string }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -52,6 +57,7 @@ export function Mermaid({ chart }: { chart: string }) {
       .then((result) => {
         if (cancelled || !result || !ref.current) return
         ref.current.innerHTML = result.svg
+        stripHachureFills(ref.current)
       })
       .catch((err: unknown) => {
         if (!cancelled) setError(String(err))
@@ -82,4 +88,41 @@ export function Mermaid({ chart }: { chart: string }) {
       }}
     />
   )
+}
+
+/**
+ * Replace rough-js hachure fill paths with solid pastel fills.
+ *
+ * Each handDrawn node renders as several short stroke paths (the hatching)
+ * followed by a final outline path. We keep the outline (it's what gives the
+ * sketch feel) and drop the rest, then apply a solid fill to the outline.
+ * Run after every render — the SVG is re-generated each time.
+ */
+function stripHachureFills(host: HTMLElement) {
+  const svg = host.querySelector('svg')
+  if (!svg) return
+
+  // Flowchart / state / class diagrams all use `.node` wrappers. Each node
+  // contains a group of <path> elements rendered by rough-js. The last path
+  // is conventionally the outline; everything before it is hachure fill.
+  svg.querySelectorAll<SVGElement>('g.node, g.cluster').forEach((node) => {
+    const paths = Array.from(node.querySelectorAll<SVGPathElement>('path'))
+    if (paths.length <= 1) return
+
+    const outline = paths[paths.length - 1]
+    if (!outline) return
+
+    // Drop every hachure stroke path; keep only the outline.
+    for (let i = 0; i < paths.length - 1; i++) {
+      const path = paths[i]
+      if (path) path.remove()
+    }
+
+    // The outline currently has fill="none" (since rough-js draws fills as
+    // separate hachure paths). Promote it to a solid filled shape.
+    const isCluster = node.classList.contains('cluster')
+    const fill = isCluster ? '#F0EEE6' : outline.dataset.fillColor || '#FCE5D2'
+    outline.setAttribute('fill', fill)
+    outline.setAttribute('fill-opacity', '1')
+  })
 }

@@ -29,21 +29,28 @@
 }
 
 .logo {
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 19px;
+  font-weight: 600;
   color: var(--slate);
   display: flex;
   align-items: center;
   gap: var(--sp-2);
   white-space: nowrap;
+  letter-spacing: -0.005em;
 }
 
 .logoDot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: var(--clay);
   flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .logo {
+    font-size: 16px;
+  }
 }
 
 .nav {
