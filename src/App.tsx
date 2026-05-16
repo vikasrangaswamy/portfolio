@@ -4,6 +4,7 @@ import Home from './routes/Home'
 import About from './routes/About'
 import Experience from './routes/Experience'
 import Projects from './routes/Projects'
+import ProjectDetail from './routes/ProjectDetail'
 import Learnings from './routes/Learnings'
 import { SystemDesignIndex, SystemDesignTopicPage } from './routes/SystemDesign'
 import LeetCodeStats from './routes/LeetCodeStats'
@@ -16,7 +17,10 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
         <Route path="experience" element={<Experience />} />
-        <Route path="projects" element={<Projects />} />
+        <Route path="projects">
+          <Route index element={<Projects />} />
+          <Route path=":slug" element={<ProjectDetail />} />
+        </Route>
         <Route path="learnings">
           <Route index element={<Learnings />} />
           <Route path="system-design">

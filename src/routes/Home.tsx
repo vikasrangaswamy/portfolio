@@ -8,13 +8,6 @@ import { NowWidget } from '../components/widgets/NowWidget'
 import widgetStyles from '../components/widgets/Widget.module.css'
 import styles from './Home.module.css'
 
-const ctaItems = [
-  { to: '/about', label: 'About', desc: 'Bio, location, contact.' },
-  { to: '/experience', label: 'Experience', desc: '3 YOE across Contentstack ladder.' },
-  { to: '/projects', label: 'Projects', desc: 'Real shipped work, lands soon.' },
-  { to: '/learnings', label: 'Learnings', desc: 'System design + LeetCode stats.' },
-] as const
-
 const widgets = [
   { Component: LeetCodeWidget, key: 'leetcode' },
   { Component: GitHubWidget, key: 'github' },
@@ -70,35 +63,6 @@ export default function Home() {
             </motion.div>
           ))}
         </div>
-      </section>
-
-      <section className={styles.section}>
-        <motion.h2
-          className={styles.ctaTitle}
-          initial={{ opacity: 0, y: 6 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-        >
-          Read more
-        </motion.h2>
-        <ul className={styles.ctaList}>
-          {ctaItems.map((item, i) => (
-            <motion.li
-              key={item.to}
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{ duration: 0.4, delay: i * 0.05, ease: 'easeOut' }}
-            >
-              <Link to={item.to} className={styles.ctaLink}>
-                <span className={styles.ctaLabel}>{item.label}</span>
-                <span className={styles.ctaDesc}>{item.desc}</span>
-                <span className={styles.ctaArrow}>→</span>
-              </Link>
-            </motion.li>
-          ))}
-        </ul>
       </section>
     </>
   )

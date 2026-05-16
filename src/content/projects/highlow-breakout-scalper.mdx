@@ -1,0 +1,82 @@
+import { Mermaid } from '../../lib/Mermaid'
+
+## The problem
+
+Markets spend most of their time consolidating between recent swing highs and lows, then break out hard once they leave that range. The trade is obvious in hindsight — buy the break above the recent high, sell the break below the recent low — but actually capturing it requires three uncomfortable things to be true at the same time: orders need to be parked precisely where the break would happen *before* it happens; a trend filter has to suppress entries during the chop that dominates most hours; and once a position is in profit, the exit has to advance with the move instead of giving back the gains.
+
+## How it works
+
+The strategy scans the last N bars on each new candle for the most recent swing high and swing low, where a swing is defined as a bar whose high (or low) is the highest (lowest) within a window of `BarsN` bars on each side. It then parks a `BUY STOP` a configurable buffer above the swing high and a `SELL STOP` below the swing low. Stop loss and take profit are sized in one of three modes (ATR-multiple, fixed points, or percentage of price) so the same logic adapts across forex, indices, and crypto without tuning.
+
+Two filters keep the strategy out of garbage trades. An **ADX trend gate** (default threshold 25) suppresses orders when the directional movement index is too weak to support a follow-through; `+DI > -DI` is also required for the buy side and vice versa for sells, so the bias of the move has to match the order direction. A **spread guard** rejects entries when the current spread blows past a sane ceiling, which kills the strategy's worst losses on news spikes.
+
+Once a position is open, the trailing-stop system advances the SL toward price as profit accrues. Trailing only starts after profit clears a threshold (`StartTrailATRMultiplier × ATR` by default), then moves the SL to `current_price − TrailATRMultiplier × ATR` for longs (mirrored for shorts). A throttle prevents thrashing the broker with modify requests — minimum 500ms between successful modifies per ticket, with a separate cooldown after rejections. Pending orders that don't fire within `PendingExpiryBars` get cancelled and re-evaluated on the next swing. If the broker cancels an order unilaterally (some do, under certain conditions), the EA retries after a short delay rather than giving up silently.
+
+## Architecture
+
+<Mermaid chart={`stateDiagram-v2
+  [*] --> Scanning
+  Scanning --> Placed: New swing levels found<br/>+ ADX gate passes
+  Placed --> Triggered: Price crosses<br/>swing-high/low buffer
+  Placed --> Cancelled: Expired<br/>(PendingExpiryBars)
+  Placed --> Cancelled: Broker cancel
+  Cancelled --> Scanning: Retry next bar
+  Triggered --> Trailing: Profit ≥ start threshold
+  Triggered --> Closed: SL hit / TP hit
+  Trailing --> Closed: Trailing SL hit / TP hit
+  Closed --> Scanning
+`} />
+
+## Core logic
+
+Swing detection is a sliding-window check: a bar is a swing high if no bar within `BarsN` on either side has a higher high. The same idea, inverted, for swing lows. Both run on every new bar over `SwingLookbackBars` of history.
+
+```python
+def detect_swing_levels(bars, bars_n, lookback):
+    """Find the most recent swing high and swing low within lookback bars.
+
+    A bar at index i is a swing high if no bar in [i-bars_n, i+bars_n]
+    has a higher high; symmetric for swing lows.
+    """
+    swing_high = swing_low = None
+    end = min(lookback, len(bars) - bars_n)
+    for i in range(bars_n, end):
+        window = bars[i - bars_n : i + bars_n + 1]
+        if swing_high is None and all(bars[i].high >= b.high for b in window):
+            swing_high = bars[i].high
+        if swing_low is None and all(bars[i].low <= b.low for b in window):
+            swing_low = bars[i].low
+        if swing_high is not None and swing_low is not None:
+            break
+    return swing_high, swing_low
+```
+
+Trailing is rate-limited per ticket so the broker doesn't see a flood of modify requests on a fast candle:
+
+```python
+def update_trailing_stop(position, atr, last_modify_ms, cooldown_ms=500):
+    """Advance SL toward price once profit clears the start threshold.
+    Returns the new SL price if modified, else None."""
+    now_ms = time_ms()
+    if now_ms - last_modify_ms < cooldown_ms:
+        return None  # throttled
+
+    profit_distance = (position.current_price - position.entry) * position.direction
+    start_distance = atr * START_TRAIL_ATR_MULT
+    if profit_distance < start_distance:
+        return None  # not in profit enough yet
+
+    trail_distance = atr * TRAIL_ATR_MULT
+    new_sl = position.current_price - trail_distance * position.direction
+    if (new_sl - position.sl) * position.direction <= 0:
+        return None  # only move SL in the favorable direction
+
+    position.modify_sl(new_sl)
+    return new_sl
+```
+
+## Tradeoffs
+
+Where it shines: sustained directional moves, especially the first hour or two after a session open or news release — the orders are pre-staged at exactly the breakout levels, so capture is essentially free. The trailing logic captures most of the move while still booking partial gains via the take-profit on the initial leg.
+
+Where it underperforms: ranging markets, where price slices through both swing levels without follow-through, paying small SLs on each direction. The ADX filter helps but doesn't eliminate this; an operator who knows the session character can tighten the threshold or disable buy/sell sides individually via `PreventBothOrders`. The session-time and day-of-week filters are the lever for "just don't trade rollover" or "skip Mondays" without code changes.

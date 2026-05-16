@@ -1,0 +1,65 @@
+import { Mermaid } from '../../lib/Mermaid'
+
+## The problem
+
+Unattended forex trading needs a strategy that earns from movement *in either direction* without picking a side, while keeping the worst-case loss bounded ahead of time. A naive grid that just stacks one-sided orders blows up when the market trends against it. The interesting design question: how do you set up a position whose payout structure is favorable across both up- and down-moves, and how do you book profits without manually babysitting the chart?
+
+## How it works
+
+The strategy maintains an ATR-spaced grid of **pending hedge orders** centered on the entry price. At each level above the center it sits with a `BUY STOP` (catches breakouts up) and a `SELL LIMIT` (catches mean-reverting pullbacks from above). At each level below the center it sits with a `SELL STOP` (catches breakouts down) and a `BUY LIMIT` (catches reversion from below). Whatever the market does next, some subset of those orders fires; each one has its take-profit set to the next grid level.
+
+The closing rule is the part that makes this defensible: instead of trying to evaluate each position separately, the EA tracks **total net P/L across the whole cycle** (realized + unrealized) and closes everything as soon as that figure crosses one grid value. Wins along the way get auto-booked at their TP; losers stay open and act as hedges. The aggregate has to cross the profit threshold before any cycle ends — which it generally does, because the grid layout means at least one direction is paying out at any time.
+
+Risk is bounded three ways: `RiskPercent` sizes each order against equity, `MaxOpenPositions` caps total concurrent exposure (default 25), and `MaxDrawdownPercent` (default 60%) triggers an emergency close if the cycle goes sideways longer than expected. The cycle's grid center, ATR-derived spacing, and start time are persisted to platform globals so a restart (recompile, reattach, or timeframe change) rehydrates state and resumes — important because crashing mid-cycle and losing the threshold reference would be catastrophic.
+
+## Architecture
+
+<Mermaid chart={`flowchart TD
+  Start["New cycle: ATR samples → grid_spacing"] --> Center["Pick grid center @ current price"]
+  Center --> LayoutAbove["Above center, at each level:<br/>BUY STOP + SELL LIMIT<br/>(TP = +1 grid)"]
+  Center --> LayoutBelow["Below center, at each level:<br/>SELL STOP + BUY LIMIT<br/>(TP = -1 grid)"]
+  LayoutAbove --> Wait
+  LayoutBelow --> Wait
+  Wait{"Market moves;<br/>orders fire, some<br/>positions hit TP"} -->|"net P/L ≥ +1 grid"| CloseAll["Close everything"]
+  Wait -->|"DD > 60%"| Emergency["Emergency close"]
+  Wait -->|"cycle ongoing"| Wait
+  CloseAll --> Restart{"AutoRestart?"}
+  Emergency --> Restart
+  Restart -->|"yes"| Start
+  Restart -->|"no"| Idle["Idle until manual restart"]
+`} />
+
+## Core logic
+
+The grid construction translates straight from ATR readings into level prices around the cycle center. Spacing is `ATR × multiplier`, levels are integer offsets from center.
+
+```python
+def build_grid_levels(center_price, atr, atr_multiplier, n_above, n_below):
+    """Compute the ATR-spaced grid prices around the current cycle center."""
+    spacing = atr * atr_multiplier
+    above = [center_price + spacing * (i + 1) for i in range(n_above)]
+    below = [center_price - spacing * (i + 1) for i in range(n_below)]
+    return spacing, above, below
+```
+
+The close-everything decision rolls up realized P/L (from already-booked TPs) and floating P/L (from still-open hedges) and compares to one grid value, where the grid value is `spacing × per-order lot size × point value`:
+
+```python
+def close_all_when_net_pnl_above_threshold(positions, spacing, lot_size, point_value):
+    """Trip the cycle exit as soon as aggregate P/L crosses one grid value."""
+    threshold = spacing * lot_size * point_value
+    realized = sum(p.realized_pl for p in positions if p.closed)
+    floating = sum(p.floating_pl for p in positions if not p.closed)
+    if realized + floating >= threshold:
+        for p in positions:
+            if not p.closed:
+                p.close()
+        return True
+    return False
+```
+
+## Tradeoffs
+
+Where it shines: choppy, range-bound markets where price oscillates across multiple grid levels — the hedge orders fire frequently and stack small wins toward the close threshold. The defined max-loss before the drawdown safeguard trips makes risk legible upfront, which is rare for grid strategies.
+
+Where it underperforms: low-volatility regimes where the ATR-derived spacing is wider than typical intraday range, so orders never fire and the cycle drags on. Equally, very strong one-directional trends without retracements can keep the hedge side open while the winner side closes out, dragging total P/L below the threshold for longer than is comfortable. The `TrendDirection` switch lets the operator manually bias toward one side when fundamentals justify it, but defaults to the symmetric layout because most edge here comes from being side-agnostic.

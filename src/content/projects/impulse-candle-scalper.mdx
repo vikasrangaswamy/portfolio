@@ -1,0 +1,93 @@
+import { Mermaid } from '../../lib/Mermaid'
+
+## The problem
+
+There's a particular shape of candle that almost always continues for a few bars: a single bar that's significantly larger than recent average range, has a body that takes up most of its range, and closes near the extreme in the direction of the move. These are the bars that print on news releases, session opens, and breakouts of psychological levels. The trade idea is straightforward — go in the direction of the impulse, place a stop beyond the bar, take profit at a fixed reward multiple — but the detection has to be precise (false positives cost a lot when you size by volatility), and the entry has to handle the case where price has already moved too far for a pending stop to be valid.
+
+## How it works
+
+After every bar close, the EA looks at the bar that just closed (bar 1) and asks three questions: is its **range** at least N times the average range of the last `candleLookback` bars *and* at least M times current ATR? Is the **body / range ratio** within a configured window (default 0.6–0.95 — the upper bound rules out bars with a tiny wick and weak follow-through structure)? Is the **continuation-side wick** (the wick on the side the move is going) inside its own min/max window? If all three pass, the bar is flagged as an impulse with a direction.
+
+Order placement is a two-step fallback chain. First preference: a pending stop order placed at the impulse high (for bullish) or low (for bearish), with a buffer of a few points to clear the broker's stop-level constraint. This lets the trade enter only on confirmed continuation. If price has already moved past that level by the time the order would be placed — common during fast news prints — the EA falls back to a **market order**, but only if the chase distance is within `MaxChasePercent` of the planned entry (default 0.10%). Anything beyond that and the trade is skipped: better to miss than to enter at a worse price than the strategy was designed for.
+
+Stop loss and take profit attach immediately on fill, sized via the same triple-mode system as the other strategies (ATR-multiple, fixed points, or percent of price) for cross-symbol portability. Trailing stops engage once profit clears a configurable threshold and advance with rate limiting on broker modify calls. Daily and overall drawdown limits (defaults 3% daily, 10% total) freeze new entries when hit; the goal is to survive bad days, not to trade through them.
+
+## Architecture
+
+<Mermaid chart={`flowchart TD
+  Bar["Bar closes"] --> ATR["Compute range, body,<br/>avg range over lookback"]
+  ATR --> Test{"range > size_mult × avg<br/>AND range > atr_mult × ATR<br/>AND body/range in [min, max]<br/>AND continuation wick in window?"}
+  Test -->|"no"| Wait["Wait for next bar"]
+  Test -->|"yes"| Direction["Direction = sign(close − open)"]
+  Direction --> StopOrder["Place pending stop<br/>at impulse high/low + buffer"]
+  StopOrder --> CheckDist{"Already moved past?"}
+  CheckDist -->|"no"| WaitFill["Wait for fill or expiry"]
+  CheckDist -->|"yes & within chase%"| Market["Market order fallback"]
+  CheckDist -->|"yes & beyond chase%"| Skip["Skip — too late"]
+  WaitFill --> Filled["Filled → SL + TP attached"]
+  Market --> Filled
+  Filled --> Trail["Trail SL when profit ≥ threshold"]
+`} />
+
+## Core logic
+
+Impulse detection has to be conservative — every false positive costs a stop loss sized to ATR, which is by definition not small. All four checks have to pass:
+
+```python
+def is_impulse_candle(bar, recent_bars, atr,
+                     size_vs_avg=2.0, size_vs_atr=1.5,
+                     min_body_ratio=0.6, max_body_ratio=0.95,
+                     min_wick=0.0, max_wick=0.4):
+    """Classify the just-closed bar as a bullish/bearish impulse, or None."""
+    range_ = bar.high - bar.low
+    body = abs(bar.close - bar.open)
+    if range_ <= 0 or body <= 0:
+        return None
+
+    avg_range = sum(b.high - b.low for b in recent_bars) / len(recent_bars)
+    if range_ < size_vs_avg * avg_range:    return None
+    if range_ < size_vs_atr * atr:          return None
+
+    body_ratio = body / range_
+    if not (min_body_ratio <= body_ratio <= max_body_ratio):
+        return None
+
+    is_bull = bar.close > bar.open
+    continuation_wick = (bar.high - bar.close) if is_bull else (bar.close - bar.low)
+    wick_ratio = continuation_wick / body
+    if not (min_wick <= wick_ratio <= max_wick):
+        return None
+
+    return 1 if is_bull else -1
+```
+
+The order-placement fallback handles the case where the market has already moved past the ideal pending-stop entry:
+
+```python
+def place_continuation_order_or_fallback(direction, bar, ask, bid,
+                                        buffer, max_chase_pct):
+    """Try pending stop first; fall back to market if chase is within limit."""
+    if direction == 1:
+        entry = bar.high + buffer
+        if ask <= entry:
+            return broker.place_buy_stop(entry)
+        # already past the trigger — market entry if chase is acceptable
+        chase = (ask - entry) / entry
+        if chase <= max_chase_pct:
+            return broker.market_buy(ask)
+        return None  # skip, too late
+    else:
+        entry = bar.low - buffer
+        if bid >= entry:
+            return broker.place_sell_stop(entry)
+        chase = (entry - bid) / entry
+        if chase <= max_chase_pct:
+            return broker.market_sell(bid)
+        return None
+```
+
+## Tradeoffs
+
+Where it shines: high-volatility periods — economic releases, central bank announcements, session opens with momentum. Bars expand, follow-through is real, and the rigid detection rules screen out the smaller "noise" candles that look exciting but don't continue.
+
+Where it underperforms: quiet hours, holiday-thinned sessions, and any market in a tight range. The detection rules will simply never pass, which is *by design* — the EA waits patiently instead of forcing trades against its own thesis. The downside is long stretches of zero activity. Pairing it with a different strategy on a separate magic number is the intended use, so something is always working the market while this sits dormant waiting for the moves it's actually good at.
