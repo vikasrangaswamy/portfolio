@@ -5,17 +5,22 @@ let idCounter = 0
 type Theme = 'light' | 'dark'
 
 /**
- * Mermaid renderer with a warm pastel theme + casual font.
+ * Excalidraw-style Mermaid renderer.
  *
- * Tried `look: 'handDrawn'` first (rough-js) but its diagonal hachure
- * fills looked terrible on the dark page background, and stripping them
- * post-render was fragile. Dropped it in favor of plain Mermaid with a
- * theme-aware color palette so node fills, text, and lines all swap with
- * the page's data-theme. Without this, edge labels and lines were
- * rendering near-black on the dark page background and disappearing.
+ * Uses `look: 'handDrawn'` to get rough-js's wavy hand-drawn outlines, then
+ * strips the diagonal hachure fills that rough-js paints inside every node
+ * (those looked extremely busy, especially in dark mode). The outline path
+ * is kept and given a solid pastel fill so each box ends up as a clean
+ * colored shape with a sketch-y border.
  *
- * Watches `html[data-theme]` and re-renders whenever the user toggles
- * the theme.
+ * Stripping strategy: for every shape group (g.node, g.cluster), find the
+ * <path> with the longest total length — that's the outline (it traces the
+ * whole perimeter). Remove every other path (those are single-line hachure
+ * strokes) and apply a solid fill to the outline.
+ *
+ * Theme-aware: watches `html[data-theme]` and re-renders on toggle so
+ * dark-mode boxes use deep warm-brown fills with light text, not peach
+ * with near-invisible dark text.
  */
 export function Mermaid({ chart }: { chart: string }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -34,6 +39,8 @@ export function Mermaid({ chart }: { chart: string }) {
           if (cancelled) return null
           mermaid.initialize({
             startOnLoad: false,
+            look: 'handDrawn',
+            handDrawnSeed: 1,
             theme: 'base',
             themeVariables: buildThemeVars(theme),
             flowchart: { curve: 'basis', htmlLabels: true, padding: 14 },
@@ -44,6 +51,7 @@ export function Mermaid({ chart }: { chart: string }) {
         .then((result) => {
           if (cancelled || !result || !ref.current) return
           ref.current.innerHTML = result.svg
+          stripHachureFills(ref.current, theme)
         })
         .catch((err: unknown) => {
           if (!cancelled) setError(String(err))
@@ -52,8 +60,6 @@ export function Mermaid({ chart }: { chart: string }) {
 
     run()
 
-    // Re-render on theme toggle. The useTheme hook flips the
-    // html[data-theme] attribute; we watch for it.
     const observer = new MutationObserver(run)
     observer.observe(document.documentElement, {
       attributes: true,
@@ -89,11 +95,56 @@ export function Mermaid({ chart }: { chart: string }) {
 }
 
 /**
- * Theme-aware palette. Boxes always use a warm tint so the diagrams stay
- * on-brand, but the tint inverts between light and dark modes so the
- * contained text remains readable. Page-color tokens (edge label bg, line
- * color) follow the page's dark/light state directly.
+ * Removes rough-js hachure fills, leaves only the wavy outline (now solid-
+ * filled). Identifies the outline as the path with the longest total length
+ * inside each shape group — perimeter-tracing path is always far longer
+ * than any single hachure stroke.
  */
+function stripHachureFills(host: HTMLElement, theme: Theme) {
+  const svg = host.querySelector<SVGSVGElement>('svg')
+  if (!svg) return
+
+  const nodeFill = theme === 'dark' ? '#4A3326' : '#FCE5D2'
+  const clusterFill = theme === 'dark' ? '#2E2E2A' : '#F0EEE6'
+
+  // g.node / g.cluster wrap flowchart shapes. For state diagrams, .state
+  // wraps each state. Casting a wide net so all common shape groups get
+  // cleaned up.
+  const groups = svg.querySelectorAll<SVGGElement>(
+    'g.node, g.cluster, g.state, g.statediagram-state',
+  )
+
+  groups.forEach((group) => {
+    const paths = Array.from(group.querySelectorAll<SVGPathElement>('path'))
+    if (paths.length === 0) return
+
+    let outline: SVGPathElement | null = null
+    let maxLen = -1
+    for (const p of paths) {
+      let len = 0
+      try {
+        len = p.getTotalLength()
+      } catch {
+        // getTotalLength throws on malformed paths; fall back to d length
+        len = (p.getAttribute('d') ?? '').length
+      }
+      if (len > maxLen) {
+        maxLen = len
+        outline = p
+      }
+    }
+    if (!outline) return
+
+    for (const p of paths) {
+      if (p !== outline) p.remove()
+    }
+
+    const isCluster = group.classList.contains('cluster')
+    outline.setAttribute('fill', isCluster ? clusterFill : nodeFill)
+    outline.setAttribute('fill-opacity', '1')
+  })
+}
+
 function buildThemeVars(theme: Theme) {
   const font =
     '"Patrick Hand", "Caveat", "Comic Sans MS", "Inter", sans-serif'
@@ -102,7 +153,6 @@ function buildThemeVars(theme: Theme) {
     return {
       fontFamily: font,
       fontSize: '16px',
-      // Warm dark brown box fill — reads as "peach but in dark mode"
       primaryColor: '#4A3326',
       primaryTextColor: '#F0EEE6',
       primaryBorderColor: '#C5C3BB',
