@@ -7,6 +7,9 @@ type Props = {
   spriteSrc?: string
   /** Number of frames in the walk sprite sheet. Each frame must be the same width. */
   frameCount?: number
+  /** Which way the un-flipped sprite is drawn facing. We mirror it when walking
+   *  the opposite direction. */
+  facing?: 'left' | 'right'
   /** Pixels per second the character walks. */
   walkSpeed?: number
   /** How long a single sprite frame stays on screen, in ms. */
@@ -28,6 +31,7 @@ type Props = {
 export function CharacterWalker({
   spriteSrc = `${import.meta.env.BASE_URL}character/walk.png`,
   frameCount = 4,
+  facing = 'right',
   walkSpeed = 70,
   frameDuration = 130,
   height = 96,
@@ -111,9 +115,11 @@ export function CharacterWalker({
         }
       }
 
-      // Mirror the sprite based on direction so the character actually faces
-      // where it's walking.
-      const flip = s.dir === 1 ? 1 : -1
+      // Mirror the sprite based on direction so the character faces where
+      // it's walking. The `facing` prop describes which way the un-flipped
+      // sprite is drawn; if it's drawn facing left, we invert.
+      const baseDir = facing === 'right' ? 1 : -1
+      const flip = s.dir === 1 ? baseDir : -baseDir
       ch!.style.transform = `translate3d(${s.x}px, ${jumpY}px, 0) scaleX(${flip})`
 
       // Sprite-sheet frame via background-position-x.
@@ -127,7 +133,7 @@ export function CharacterWalker({
 
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
-  }, [walkSpeed, frameDuration, frameCount, spriteOk, spriteSize])
+  }, [walkSpeed, frameDuration, frameCount, facing, spriteOk, spriteSize])
 
   const { play } = useSound()
   const handleClick = () => {
