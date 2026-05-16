@@ -1,6 +1,4 @@
 fileignoreconfig:
-- filename: src/lib/boidsSettings.ts
-  checksum: 01e8db549b94b9d68c38632e4e91c89b7bab0d32566c0596b21f424363b3ef5a
-- filename: src/components/widgets/BoidsSettings.tsx
-  checksum: c7e0d9a0f94f2cdcb7b8d0183d0386a7ab11dc3f26bb4ddabd4044567f06a8ec
+- filename: package-lock.json
+  checksum: 4975dd6d8a9c27ceaee555db094c5dcf47e7514a264f6d2d5cc168f0ff341fb2
 version: "1.0"
