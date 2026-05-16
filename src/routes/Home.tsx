@@ -45,7 +45,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <CharacterWalker frameCount={8} facing="left" height={140} />
+      <CharacterWalker frameCount={8} facing="right" height={140} />
 
       <section className={styles.section}>
         <motion.div
