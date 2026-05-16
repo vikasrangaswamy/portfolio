@@ -23,5 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 
-# Local-only tracking file for content placeholders
-NEEDS-FROM-USER.md
+# Local-only todos / placeholder tracking (NEEDS-FROM-USER.md, SEO.md, etc.)
+todos/
