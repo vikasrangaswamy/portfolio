@@ -3,7 +3,7 @@
   "realName": "VIKAS RANGASWAMY",
   "avatar": "https://assets.leetcode.com/users/VIKAS_RANGASWAMY/avatar_1626924383.png",
   "country": null,
-  "ranking": 2278970,
+  "ranking": 2281398,
   "totals": {
     "All": 57,
     "Easy": 22,
@@ -18,7 +18,7 @@
   },
   "calendar": {
     "streak": 4,
-    "totalActiveDays": 36,
+    "totalActiveDays": 37,
     "submissionCalendar": {
       "1762041600": 5,
       "1765324800": 3,
@@ -63,8 +63,9 @@
       "1778716800": 7,
       "1778803200": 2,
       "1778889600": 6,
-      "1779148800": 7
+      "1779148800": 7,
+      "1779580800": 1
     }
   },
-  "fetchedAt": "2026-05-24T08:44:18.565Z"
+  "fetchedAt": "2026-05-25T10:48:02.516Z"
 }
