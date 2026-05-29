@@ -25,6 +25,13 @@
   .row {
     grid-template-columns: 1fr;
   }
+  .widget {
+    min-height: 0;
+    padding: var(--sp-4);
+  }
+  .widgetValue {
+    font-size: 24px;
+  }
 }
 
 .rowHeader {

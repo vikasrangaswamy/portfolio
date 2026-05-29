@@ -80,3 +80,31 @@
 .linkBtn:hover {
   transform: translateY(-2px);
 }
+
+@media (max-width: 720px) {
+  .container {
+    padding: var(--sp-6) var(--sp-5);
+  }
+  .title {
+    font-size: 26px;
+  }
+  .summary {
+    font-size: 14px;
+  }
+  .emptyState {
+    padding: var(--sp-5);
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: var(--sp-5) var(--sp-4);
+  }
+  .title {
+    font-size: 23px;
+  }
+  .linkBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}

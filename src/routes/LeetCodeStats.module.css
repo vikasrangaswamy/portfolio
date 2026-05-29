@@ -41,6 +41,18 @@
   .statsGrid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .stat {
+    padding: var(--sp-4);
+  }
+  .statValue {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 380px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .stat {
@@ -109,6 +121,12 @@
 @media (max-width: 720px) {
   .secondaryStats {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .secondary {
+    padding: var(--sp-3);
+  }
+  .heatmapCard {
+    padding: var(--sp-4);
   }
 }
 

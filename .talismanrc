@@ -3,4 +3,6 @@ fileignoreconfig:
   checksum: 76731fdff03ca1b6736eb471011443609604390b2f2c8a02c2ebbdd5538753c3
 - filename: src/content/projects/impulse-candle-scalper.mdx
   checksum: a61ce13cb424ad606bccc93323b4cc05b549f3de72bbb57050a07fc0a3f4c390
+- filename: src/components/layout/Header.tsx
+  checksum: 598b503712e3581b8d5044a44665296e1c6046afc4d41caff7ea10970a15ab1c
 version: "1.0"

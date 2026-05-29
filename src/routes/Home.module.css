@@ -91,7 +91,39 @@
 }
 
 @media (max-width: 720px) {
+  .hero {
+    padding: var(--sp-7) var(--sp-5) var(--sp-6);
+  }
   .heroTitle {
     font-size: 44px;
+  }
+  .heroDescription {
+    font-size: 16px;
+  }
+  .section {
+    padding: var(--sp-5) var(--sp-5) var(--sp-6);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: var(--sp-6) var(--sp-4) var(--sp-5);
+  }
+  .heroTitle {
+    font-size: 34px;
+  }
+  .heroRole {
+    font-size: 15px;
+  }
+  .heroDescription {
+    font-size: 15px;
+  }
+  .btnPrimary,
+  .btnSecondary {
+    width: 100%;
+    justify-content: center;
+  }
+  .section {
+    padding: var(--sp-4) var(--sp-4) var(--sp-5);
   }
 }

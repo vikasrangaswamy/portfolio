@@ -13,25 +13,23 @@ const navItems = [
 export function Header() {
   return (
     <header className={styles.header}>
-      <div className={styles.left}>
-        <Link to="/" className={styles.logo}>
-          <span className={styles.logoDot} />
-          Vikas Rangaswamy
-        </Link>
-        <nav className={styles.nav}>
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
-      </div>
+      <Link to="/" className={styles.logo}>
+        <span className={styles.logoDot} />
+        Vikas Rangaswamy
+      </Link>
+      <nav className={styles.nav}>
+        {navItems.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink
+            }
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
       <div className={styles.right}>
         <SoundToggle />
         <ThemeToggle />

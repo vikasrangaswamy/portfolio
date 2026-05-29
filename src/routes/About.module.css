@@ -8,6 +8,13 @@
 @media (max-width: 720px) {
   .layout {
     grid-template-columns: 1fr;
+    gap: var(--sp-5);
+    justify-items: start;
+  }
+  .avatar {
+    width: 120px;
+    height: 120px;
+    font-size: 40px;
   }
 }
 
@@ -82,7 +89,8 @@
 
 .contactRow {
   display: flex;
-  gap: var(--sp-4);
+  flex-wrap: wrap;
+  gap: var(--sp-3) var(--sp-4);
   margin-top: var(--sp-5);
   font-size: 14px;
 }
