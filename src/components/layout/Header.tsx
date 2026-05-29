@@ -8,6 +8,7 @@ const navItems = [
   { to: '/experience', label: 'Experience' },
   { to: '/projects', label: 'Projects' },
   { to: '/learnings', label: 'Learnings' },
+  { to: '/colophon', label: 'Colophon' },
 ]
 
 export function Header() {

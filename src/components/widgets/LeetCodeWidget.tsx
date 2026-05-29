@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { profile } from '../../content/profile'
+import { WidgetInfoLink } from './WidgetInfoLink'
 import styles from './Widget.module.css'
 
 type LeetCodeData = {
@@ -33,11 +34,14 @@ export function LeetCodeWidget() {
     >
       <div className={styles.widgetHead}>
         <span className={styles.widgetLabel}>LeetCode</span>
-        <span className={styles.widgetIcon}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M7 17L17 7M17 7H8M17 7V16" />
-          </svg>
-        </span>
+        <div className={styles.widgetHeadActions}>
+          <WidgetInfoLink slug="leetcode-sync" label="How the LeetCode sync works" />
+          <span className={styles.widgetIcon}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M7 17L17 7M17 7H8M17 7V16" />
+            </svg>
+          </span>
+        </div>
       </div>
       <div className={styles.widgetValue}>
         {data ? data.totals.All : <span className={styles.skeleton} />}

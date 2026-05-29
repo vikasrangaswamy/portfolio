@@ -89,6 +89,34 @@
   box-shadow: var(--shadow-md);
 }
 
+.widgetHeadActions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.infoButton {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--gray-500);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 0;
+  transition: opacity var(--transition), color var(--transition), background var(--transition);
+}
+
+.infoButton:hover {
+  opacity: 1;
+  color: var(--clay);
+  background: var(--gray-100);
+}
+
 .widgetHead {
   display: flex;
   align-items: center;

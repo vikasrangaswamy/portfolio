@@ -5,4 +5,6 @@ fileignoreconfig:
   checksum: a61ce13cb424ad606bccc93323b4cc05b549f3de72bbb57050a07fc0a3f4c390
 - filename: src/components/layout/Header.tsx
   checksum: 598b503712e3581b8d5044a44665296e1c6046afc4d41caff7ea10970a15ab1c
+- filename: src/content/colophon/github-widget.mdx
+  checksum: fffc85202cbe940204eeebacfa335dc10d512d7f97d168fe01bce1846ed5af73
 version: "1.0"

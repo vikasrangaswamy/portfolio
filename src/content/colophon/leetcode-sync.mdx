@@ -1,0 +1,101 @@
+import { Mermaid } from '../../lib/Mermaid'
+
+## What's happening
+
+The LeetCode tile on the home page and the full stats page at `/learnings/leetcode` show real numbers from my profile — solved count, current streak, the submission heatmap. None of that lives in a database. There's no backend at all; the site is a static build deployed to GitHub Pages.
+
+What keeps the numbers fresh is a tiny pipeline that runs on a cron, writes a JSON file to the repo, and lets the next deploy pick it up. The build is allowed to be a little stale — usually less than 24 hours.
+
+## The data path
+
+<Mermaid chart={`flowchart LR
+  Cron["GitHub Actions cron<br/>(daily, 06:17 UTC)"]
+  Script["scripts/fetch-leetcode-stats.mjs"]
+  GQL[("LeetCode public<br/>GraphQL API")]
+  JSON[("public/data/leetcode.json<br/>(committed to main)")]
+  Deploy["Pages deploy workflow<br/>(on push)"]
+  Page["LeetCode widget +<br/>stats page (reads JSON)"]
+
+  Cron --> Script
+  Script -->|"query: matchedUser, userCalendar"| GQL
+  GQL -->|"submitStats + 2y submissionCalendar"| Script
+  Script -->|"commit if changed"| JSON
+  JSON --> Deploy
+  Deploy --> Page
+`} />
+
+## The script
+
+Two queries — one for totals, one for the submission calendar — and a small merge so the rolling 12-month heatmap covers a year boundary.
+
+```js
+const STATS_QUERY = `
+  query userStats($username: String!) {
+    matchedUser(username: $username) {
+      username
+      profile { ranking userAvatar realName countryName }
+      submitStatsGlobal {
+        acSubmissionNum { difficulty count submissions }
+      }
+    }
+    allQuestionsCount { difficulty count }
+  }
+`
+
+const CALENDAR_QUERY = `
+  query userCalendar($username: String!, $year: Int) {
+    matchedUser(username: $username) {
+      userCalendar(year: $year) {
+        streak
+        totalActiveDays
+        submissionCalendar
+      }
+    }
+  }
+`
+
+function mergeCalendars(stringArr) {
+  const merged = {}
+  for (const s of stringArr) {
+    if (!s) continue
+    const obj = JSON.parse(s)
+    for (const [ts, count] of Object.entries(obj)) {
+      merged[ts] = (merged[ts] ?? 0) + Number(count)
+    }
+  }
+  return merged
+}
+```
+
+The calendar comes back as a JSON-stringified object keyed by Unix timestamp. Calling for *this year* and *last year* and merging them gives a clean rolling-365-day view regardless of when in the year you're reading it.
+
+## The cron
+
+```yaml
+on:
+  schedule:
+    - cron: '17 6 * * *'   # daily at 06:17 UTC
+  workflow_dispatch:        # also runnable manually
+```
+
+The workflow runs the script, then commits `public/data/leetcode.json` if it changed:
+
+```yaml
+- name: Commit if changed
+  run: |
+    if [[ -n "$(git status --porcelain public/data/leetcode.json)" ]]; then
+      git config user.name "github-actions[bot]"
+      git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      git add public/data/leetcode.json
+      git commit -m "chore: refresh LeetCode stats"
+      git push
+    fi
+```
+
+That push to `main` triggers the deploy workflow, the build embeds the new JSON, and the site updates.
+
+## Why this shape
+
+The cheap alternative is to fetch from LeetCode at build time. That works until LeetCode is slow, rate-limited, or temporarily down — and then the deploy fails, possibly for unrelated reasons. With a committed JSON, the build never depends on the API. If a sync run breaks, the page just keeps showing the last successful snapshot until the next cron tick fixes it.
+
+The page itself reads `public/data/leetcode.json` over HTTP at load time (rather than baking the values into the bundle), so the same JSON serves both the home tile and the heatmap page with one fetch.

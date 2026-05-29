@@ -1,0 +1,78 @@
+## What's happening
+
+The GitHub tile on the home page shows a live `public_repos` count and follower count from `api.github.com`. There's no backend, no GitHub token, and no cron job — every visitor's browser hits the GitHub REST API directly on first visit.
+
+The whole thing is one `fetch` call and a small `localStorage` cache.
+
+## Why client-side is fine here
+
+The endpoint we hit — `GET /users/:username` — is public and unauthenticated. There's nothing sensitive in either the request or the response, and the data changes slowly. So the question becomes: is it polite?
+
+GitHub's [unauthenticated rate limit](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting) is **60 requests per hour per IP**. For a portfolio that gets, generously, a few visits an hour, that's plenty — even without a cache. With the cache it's basically free.
+
+## The cache
+
+```ts
+const CACHE_KEY = `gh:${profile.githubUsername}`
+const CACHE_TTL_MS = 6 * 60 * 60 * 1000 // 6h
+
+function readCache(): Cached | null {
+  if (typeof window === 'undefined') return null
+  try {
+    const raw = localStorage.getItem(CACHE_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw) as Cached
+    if (Date.now() - parsed.at > CACHE_TTL_MS) return null
+    return parsed
+  } catch {
+    return null
+  }
+}
+
+function writeCache(data: GitHubData) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ data, at: Date.now() }))
+  } catch {
+    // ignore (private browsing / quota exceeded)
+  }
+}
+```
+
+A returning visitor inside the 6-hour window never even makes the request — the widget renders from `localStorage` synchronously after mount. The TTL is short enough that a freshly-merged PR shows up the same day if you check back, and long enough that someone tab-cycling through my site doesn't ping the API every reload.
+
+## The fetch
+
+```ts
+useEffect(() => {
+  const cached = readCache()
+  if (cached) {
+    setData(cached.data)
+    return
+  }
+  fetch(`https://api.github.com/users/${profile.githubUsername}`)
+    .then((r) => (r.ok ? r.json() : null))
+    .then((json) => {
+      if (!json) return
+      const next = {
+        public_repos: json.public_repos ?? 0,
+        followers: json.followers ?? 0,
+        updated_at: json.updated_at ?? null,
+      }
+      setData(next)
+      writeCache(next)
+    })
+    .catch(() => setData(null))
+}, [])
+```
+
+If the fetch fails, the widget stays in its skeleton state and nothing else on the page is affected. Nothing in the rest of the site depends on this data resolving.
+
+## What about the other widgets?
+
+The other three tiles on the home page follow the same shape — a small data dependency declared next to the rendering — but with different sources:
+
+- **LeetCode** reads `public/data/leetcode.json`, which a [GitHub Actions cron writes daily](/colophon/leetcode-sync). Same component shape, different source of truth.
+- **Role** reads `experience[0]` from `src/content/experience.ts`. Static, but treated the same way (skeleton → value).
+- **Now** reads `profile.now` from `src/content/profile.ts`. A literal string I edit by hand.
+
+Treating data the same way across all four widgets — static, cron-fed, or live-fetched — keeps the rendering code identical and means swapping one widget's source out is a localized change.

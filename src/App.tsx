@@ -8,6 +8,8 @@ import ProjectDetail from './routes/ProjectDetail'
 import Learnings from './routes/Learnings'
 import { SystemDesignIndex, SystemDesignTopicPage } from './routes/SystemDesign'
 import LeetCodeStats from './routes/LeetCodeStats'
+import Colophon from './routes/Colophon'
+import ColophonDetail from './routes/ColophonDetail'
 import NotFound from './routes/NotFound'
 
 export default function App() {
@@ -28,6 +30,10 @@ export default function App() {
             <Route path=":slug" element={<SystemDesignTopicPage />} />
           </Route>
           <Route path="leetcode" element={<LeetCodeStats />} />
+        </Route>
+        <Route path="colophon">
+          <Route index element={<Colophon />} />
+          <Route path=":slug" element={<ColophonDetail />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Route>
