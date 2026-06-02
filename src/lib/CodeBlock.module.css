@@ -1,0 +1,88 @@
+/* CodeBlock — wraps the shiki-highlighted <pre> with a header bar, sits on a
+   dark surface regardless of site theme. Matches the docs/platform feel. */
+
+.figure {
+  margin: var(--sp-5) 0;
+  background: #1B1F23;            /* matches github-dark-dimmed bg */
+  border: 1px solid #2A2F36;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-2) var(--sp-4);
+  background: #15191D;
+  border-bottom: 1px solid #2A2F36;
+  min-height: 36px;
+}
+
+.lang {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8C96A3;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.copy {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  color: #8C96A3;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.copy:hover {
+  background: #2A2F36;
+  border-color: #3A4148;
+  color: #ADB6BD;
+}
+
+.copy:active {
+  background: #1F2329;
+}
+
+.pre {
+  margin: 0;
+  padding: var(--sp-4) var(--sp-5);
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #ADB6BD;
+}
+
+/* rehype-pretty-code wraps each line in <span data-line> — preserve newlines
+   in the rendered output. */
+.pre :global([data-line]) {
+  display: block;
+  /* Padding gives room for line highlights / diffs if we ever add them. */
+  padding: 0;
+}
+
+/* Inline `code` in prose stays the existing oat-on-slate pill; the dark
+   surface treatment is only for fenced blocks. The MDX `code` mapping
+   handles inline code. */
+
+@media (max-width: 720px) {
+  .pre {
+    font-size: 12.5px;
+    padding: var(--sp-3) var(--sp-4);
+  }
+  .header {
+    padding: var(--sp-2) var(--sp-3);
+  }
+}

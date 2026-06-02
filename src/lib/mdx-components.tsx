@@ -1,5 +1,6 @@
 import type { ComponentPropsWithoutRef } from 'react'
 import type { MDXComponents } from 'mdx/types'
+import { CodeBlock } from './CodeBlock'
 
 export const mdxComponents: MDXComponents = {
   h1: (props: ComponentPropsWithoutRef<'h1'>) => (
@@ -104,26 +105,9 @@ export const mdxComponents: MDXComponents = {
       {...props}
     />
   ),
-  // Sketch-y code block: paper-cream background, hand-drawn-feel border with
-  // an offset clay shadow so it reads as a deliberate object on the page,
-  // not a corporate console window.
-  pre: (props: ComponentPropsWithoutRef<'pre'>) => (
-    <pre
-      style={{
-        background: 'var(--ivory)',
-        color: 'var(--slate)',
-        padding: 'var(--sp-5)',
-        border: '1.5px solid var(--slate)',
-        borderRadius: 'var(--r-md)',
-        boxShadow: '4px 4px 0 0 var(--clay)',
-        overflowX: 'auto',
-        fontSize: 14,
-        lineHeight: 1.6,
-        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-        margin: 'var(--sp-5) 0',
-      }}
-      {...props}
-    />
-  ),
+  // Docs-style code block: dark surface with a header bar (language label +
+  // copy button) regardless of site theme. Syntax highlighting comes from
+  // rehype-pretty-code (Shiki, github-dark-dimmed) via vite.config.
+  pre: CodeBlock,
   hr: () => <hr style={{ border: 0, borderTop: '1px solid var(--oat)', margin: 'var(--sp-6) 0' }} />,
 }
