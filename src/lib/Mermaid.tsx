@@ -104,8 +104,12 @@ function stripHachureFills(host: HTMLElement, theme: Theme) {
   const svg = host.querySelector<SVGSVGElement>('svg')
   if (!svg) return
 
-  const nodeFill = theme === 'dark' ? '#4A3326' : '#FCE5D2'
-  const clusterFill = theme === 'dark' ? '#2E2E2A' : '#F0EEE6'
+  // Excalidraw-style high-contrast: light mode = solid dark nodes with light
+  // text; dark mode = solid light nodes with dark text. Cluster wrappers
+  // sit on the page background so they blend in (the wavy outline shows the
+  // grouping).
+  const nodeFill = theme === 'dark' ? '#D1CFC5' : '#141413'
+  const clusterFill = theme === 'dark' ? '#1A1A18' : '#FAF9F5'
 
   // g.node / g.cluster wrap flowchart shapes. For state diagrams, .state
   // wraps each state. Casting a wide net so all common shape groups get
@@ -149,45 +153,58 @@ function buildThemeVars(theme: Theme) {
   const font =
     '"Patrick Hand", "Caveat", "Comic Sans MS", "Inter", sans-serif'
 
+  // Dark mode — page is near-black, nodes are warm light-grey (#D1CFC5)
+  // with near-black text. Edges + arrows + general text are near-white so
+  // they read on the dark page bg.
   if (theme === 'dark') {
+    const node = '#D1CFC5'
+    const ink = '#141413'
+    const lineInk = '#F0EEE6'
+    const pageBg = '#1A1A18'
     return {
       fontFamily: font,
       fontSize: '16px',
-      primaryColor: '#4A3326',
-      primaryTextColor: '#F0EEE6',
-      primaryBorderColor: '#C5C3BB',
-      secondaryColor: '#2D3E4A',
-      tertiaryColor: '#3D4630',
-      lineColor: '#C5C3BB',
-      textColor: '#F0EEE6',
-      mainBkg: '#4A3326',
-      edgeLabelBackground: '#2A2A26',
-      tertiaryTextColor: '#F0EEE6',
-      secondaryTextColor: '#F0EEE6',
-      clusterBkg: '#2E2E2A',
-      clusterBorder: '#3D3D3A',
-      nodeBorder: '#C5C3BB',
-      titleColor: '#F0EEE6',
+      primaryColor: node,
+      primaryTextColor: ink,
+      primaryBorderColor: node,
+      secondaryColor: node,
+      tertiaryColor: node,
+      lineColor: lineInk,
+      textColor: lineInk,
+      mainBkg: node,
+      edgeLabelBackground: pageBg,
+      tertiaryTextColor: ink,
+      secondaryTextColor: ink,
+      clusterBkg: pageBg,
+      clusterBorder: lineInk,
+      nodeBorder: node,
+      titleColor: lineInk,
     }
   }
 
+  // Light mode — page is cream, nodes are near-black with cream text.
+  // Edges, arrows, and titles are near-black so they read on the page bg.
+  const node = '#141413'
+  const ink = '#FAF9F5'
+  const lineInk = '#141413'
+  const pageBg = '#FAF9F5'
   return {
     fontFamily: font,
     fontSize: '16px',
-    primaryColor: '#FCE5D2',
-    primaryTextColor: '#3D3D3A',
-    primaryBorderColor: '#3D3D3A',
-    secondaryColor: '#D9E8F2',
-    tertiaryColor: '#E7F0DC',
-    lineColor: '#3D3D3A',
-    textColor: '#3D3D3A',
-    mainBkg: '#FCE5D2',
-    edgeLabelBackground: '#FAF9F5',
-    tertiaryTextColor: '#3D3D3A',
-    secondaryTextColor: '#3D3D3A',
-    clusterBkg: '#F0EEE6',
-    clusterBorder: '#D1CFC5',
-    nodeBorder: '#3D3D3A',
-    titleColor: '#3D3D3A',
+    primaryColor: node,
+    primaryTextColor: ink,
+    primaryBorderColor: node,
+    secondaryColor: node,
+    tertiaryColor: node,
+    lineColor: lineInk,
+    textColor: lineInk,
+    mainBkg: node,
+    edgeLabelBackground: pageBg,
+    tertiaryTextColor: ink,
+    secondaryTextColor: ink,
+    clusterBkg: pageBg,
+    clusterBorder: lineInk,
+    nodeBorder: node,
+    titleColor: lineInk,
   }
 }
