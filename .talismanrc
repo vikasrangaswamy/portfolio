@@ -7,4 +7,6 @@ fileignoreconfig:
   checksum: 598b503712e3581b8d5044a44665296e1c6046afc4d41caff7ea10970a15ab1c
 - filename: src/content/colophon/github-widget.mdx
   checksum: fffc85202cbe940204eeebacfa335dc10d512d7f97d168fe01bce1846ed5af73
+- filename: src/lib/Mermaid.tsx
+  checksum: de28b9febe13904b0f8593ccc887dfcc89537e35c75bcecbba8826ab92f31063
 version: "1.0"
