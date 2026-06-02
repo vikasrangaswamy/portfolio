@@ -1,22 +1,93 @@
-.placeholder {
-  width: 100%;
-  height: 320px;
+/* Inline pan/zoom viewer for Excalidraw-rendered Mermaid diagrams.
+   The SVG fills the canvas at scale 1; panzoom layers a CSS transform on
+   top so the user can drag to pan and wheel/pinch to zoom — no modal, no
+   page reflow. */
+
+.viewer {
+  position: relative;
   margin: var(--sp-6) 0;
-  background: var(--gray-100);
+  border: 1px solid var(--gray-300);
   border-radius: var(--r-md);
-  animation: shimmer 1.4s ease-in-out infinite;
-  background: linear-gradient(
-    90deg,
-    var(--gray-100) 0%,
-    var(--gray-300) 50%,
-    var(--gray-100) 100%
-  );
-  background-size: 200% 100%;
+  background: var(--white);
+  overflow: hidden;
+  height: 480px;
+  box-shadow: var(--shadow-sm);
 }
 
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+.canvas {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: grab;
+  /* Touch users get native pinch/pan handed off to panzoom. */
+  touch-action: none;
+}
+
+.canvas:active {
+  cursor: grabbing;
+}
+
+.canvas > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  /* panzoom will set transform-origin and translate/scale via inline style. */
+}
+
+.controls {
+  position: absolute;
+  top: var(--sp-3);
+  right: var(--sp-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  z-index: 2;
+}
+
+.controls button {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--gray-700);
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  padding: 0;
+}
+
+.controls button + button {
+  border-left: 1px solid var(--gray-300);
+}
+
+.controls button:hover {
+  background: var(--gray-100);
+  color: var(--clay);
+}
+
+.hint {
+  position: absolute;
+  bottom: var(--sp-3);
+  left: var(--sp-3);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--gray-500);
+  background: color-mix(in srgb, var(--white) 80%, transparent);
+  padding: 2px 8px;
+  border-radius: var(--r-xs);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .error {
@@ -30,124 +101,11 @@
   white-space: pre-wrap;
 }
 
-/* Thumb: the compact in-flow render. Caps height so the page doesn't have to
-   scroll past a massive diagram; clicking expands to fullscreen. */
-.thumb {
-  display: block;
-  width: 100%;
-  margin: var(--sp-6) 0;
-  padding: var(--sp-4);
-  background: transparent;
-  border: 1px solid var(--gray-300);
-  border-radius: var(--r-md);
-  cursor: zoom-in;
-  transition: border-color var(--transition), background var(--transition);
-  position: relative;
-}
-
-.thumb:hover {
-  border-color: var(--clay);
-  background: var(--gray-100);
-}
-
-.thumb:hover::after {
-  content: 'Click to zoom';
-  position: absolute;
-  bottom: var(--sp-3);
-  right: var(--sp-3);
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--clay);
-  background: var(--white);
-  padding: var(--sp-1) var(--sp-3);
-  border-radius: var(--r-xs);
-  border: 1px solid var(--gray-300);
-}
-
-.thumb svg {
-  display: block;
-  margin: 0 auto;
-  max-width: 100%;
-  max-height: 340px;
-  width: auto;
-  height: auto;
-}
-
-/* Fullscreen modal */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(20, 20, 19, 0.86);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--sp-7);
-  cursor: zoom-out;
-  animation: fadeIn 0.18s ease both;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.close {
-  position: fixed;
-  top: var(--sp-5);
-  right: var(--sp-5);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--white);
-  border: 1px solid var(--gray-300);
-  color: var(--slate);
-  cursor: pointer;
-  font-size: 22px;
-  font-weight: 300;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1001;
-  transition: transform var(--transition), background var(--transition);
-}
-
-.close:hover {
-  background: var(--clay);
-  color: var(--white);
-  transform: scale(1.05);
-}
-
-.modalSvg {
-  max-width: 95vw;
-  max-height: 90vh;
-  overflow: auto;
-  background: var(--ivory);
-  border-radius: var(--r-md);
-  padding: var(--sp-6);
-  cursor: default;
-  box-shadow: var(--shadow-lg);
-}
-
-.modalSvg svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
 @media (max-width: 720px) {
-  .modal {
-    padding: var(--sp-4);
+  .viewer {
+    height: 360px;
   }
-  .modalSvg {
-    padding: var(--sp-4);
-  }
-  .thumb svg {
-    max-height: 260px;
+  .hint {
+    display: none;
   }
 }
