@@ -1,27 +1,51 @@
 import { useEffect, useRef, useState } from 'react'
 
-let idCounter = 0
-
 type Theme = 'light' | 'dark'
 
 /**
- * Excalidraw-style Mermaid renderer.
+ * Excalidraw-rendered Mermaid diagrams.
  *
- * Uses `look: 'handDrawn'` to get rough-js's wavy hand-drawn outlines, then
- * strips the diagonal hachure fills that rough-js paints inside every node
- * (those looked extremely busy, especially in dark mode). The outline path
- * is kept and given a solid pastel fill so each box ends up as a clean
- * colored shape with a sketch-y border.
+ * Authoring stays in Mermaid syntax (so existing MDX is unchanged), but the
+ * render path goes through Excalidraw's actual engine via
+ * @excalidraw/mermaid-to-excalidraw + @excalidraw/excalidraw's `exportToSvg`.
+ * That gives us the real hand-drawn shapes you see in the Excalidraw editor.
  *
- * Stripping strategy: for every shape group (g.node, g.cluster), find the
- * <path> with the longest total length — that's the outline (it traces the
- * whole perimeter). Remove every other path (those are single-line hachure
- * strokes) and apply a solid fill to the outline.
+ * After parsing, we walk the resulting elements and force a two-tone palette
+ * matching the rest of the site:
+ *   - Light theme: solid near-black nodes with cream text; clusters are
+ *     outline-only on the page bg; arrows + edge labels near-black.
+ *   - Dark theme: solid warm light-grey nodes with near-black text; clusters
+ *     outline-only on the dark page; arrows + edge labels near-white.
  *
- * Theme-aware: watches `html[data-theme]` and re-renders on toggle so
- * dark-mode boxes use deep warm-brown fills with light text, not peach
- * with near-invisible dark text.
+ * Both packages are dynamically imported so the heavy Excalidraw bundle stays
+ * out of the main JS chunk.
  */
+
+const PALETTE: Record<Theme, {
+  node: string
+  text: string
+  edge: string
+  edgeText: string
+  clusterStroke: string
+}> = {
+  light: {
+    node: '#141413',
+    text: '#FAF9F5',
+    edge: '#141413',
+    edgeText: '#141413',
+    clusterStroke: '#141413',
+  },
+  dark: {
+    node: '#D1CFC5',
+    text: '#141413',
+    edge: '#F0EEE6',
+    edgeText: '#F0EEE6',
+    clusterStroke: '#F0EEE6',
+  },
+}
+
+type AnyEl = Record<string, unknown> & { type: string }
+
 export function Mermaid({ chart }: { chart: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const [error, setError] = useState<string | null>(null)
@@ -29,38 +53,82 @@ export function Mermaid({ chart }: { chart: string }) {
   useEffect(() => {
     let cancelled = false
 
-    const run = () => {
+    const render = async () => {
       const theme: Theme =
         document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'
-      const id = `mermaid-${++idCounter}`
+      const palette = PALETTE[theme]
 
-      void import('mermaid')
-        .then(async ({ default: mermaid }) => {
-          if (cancelled) return null
-          mermaid.initialize({
-            startOnLoad: false,
-            look: 'handDrawn',
-            handDrawnSeed: 1,
-            theme: 'base',
-            themeVariables: buildThemeVars(theme),
-            flowchart: { curve: 'basis', htmlLabels: true, padding: 14 },
-            sequence: { mirrorActors: false, useMaxWidth: true },
-          })
-          return mermaid.render(id, chart)
+      try {
+        const [m2eMod, exMod] = await Promise.all([
+          import('@excalidraw/mermaid-to-excalidraw'),
+          import('@excalidraw/excalidraw'),
+        ])
+
+        const { elements: skeletons, files } = await m2eMod.parseMermaidToExcalidraw(chart, {
+          themeVariables: { fontSize: '18px' },
+          flowchart: { curve: 'basis' },
         })
-        .then((result) => {
-          if (cancelled || !result || !ref.current) return
-          ref.current.innerHTML = result.svg
-          stripHachureFills(ref.current, theme)
+
+        const elements = exMod.convertToExcalidrawElements(skeletons) as unknown as AnyEl[]
+
+        // Recolor every element to the two-tone palette. Clusters are detected
+        // by absent / transparent backgroundColor (Mermaid emits subgraph
+        // containers without a fill). Nodes get filled + stroked the same
+        // colour so the wavy outline blends with the body.
+        for (const el of elements) {
+          if (el.type === 'text') {
+            // Text sitting inside a labelled container is a node label; text
+            // floating with no containerId is an edge label.
+            const inContainer = typeof el.containerId === 'string' && !!el.containerId
+            el.strokeColor = inContainer ? palette.text : palette.edgeText
+          } else if (
+            el.type === 'rectangle' ||
+            el.type === 'ellipse' ||
+            el.type === 'diamond'
+          ) {
+            const bg = (el.backgroundColor as string | undefined) ?? ''
+            const isCluster = !bg || bg === 'transparent'
+            if (isCluster) {
+              el.backgroundColor = 'transparent'
+              el.strokeColor = palette.clusterStroke
+            } else {
+              el.backgroundColor = palette.node
+              el.strokeColor = palette.node
+            }
+            el.fillStyle = 'solid'
+          } else if (el.type === 'arrow' || el.type === 'line') {
+            el.strokeColor = palette.edge
+          }
+        }
+
+        const svg = await exMod.exportToSvg({
+          elements: elements as unknown as Parameters<typeof exMod.exportToSvg>[0]['elements'],
+          appState: {
+            exportBackground: false,
+            viewBackgroundColor: 'transparent',
+            theme: theme === 'dark' ? exMod.THEME.DARK : exMod.THEME.LIGHT,
+          },
+          files: files ?? null,
+          exportPadding: 18,
         })
-        .catch((err: unknown) => {
-          if (!cancelled) setError(String(err))
-        })
+
+        if (cancelled || !ref.current) return
+        svg.style.maxWidth = '100%'
+        svg.style.height = 'auto'
+        svg.style.display = 'block'
+        svg.style.margin = '0 auto'
+        ref.current.innerHTML = ''
+        ref.current.appendChild(svg)
+      } catch (err: unknown) {
+        if (!cancelled) setError(String(err))
+      }
     }
 
-    run()
+    void render()
 
-    const observer = new MutationObserver(run)
+    const observer = new MutationObserver(() => {
+      void render()
+    })
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ['data-theme'],
@@ -75,7 +143,7 @@ export function Mermaid({ chart }: { chart: string }) {
   if (error) {
     return (
       <pre style={{ color: 'var(--danger)', fontSize: 12, padding: 'var(--sp-3)' }}>
-        Mermaid error: {error}
+        Diagram error: {error}
       </pre>
     )
   }
@@ -92,119 +160,4 @@ export function Mermaid({ chart }: { chart: string }) {
       }}
     />
   )
-}
-
-/**
- * Removes rough-js hachure fills, leaves only the wavy outline (now solid-
- * filled). Identifies the outline as the path with the longest total length
- * inside each shape group — perimeter-tracing path is always far longer
- * than any single hachure stroke.
- */
-function stripHachureFills(host: HTMLElement, theme: Theme) {
-  const svg = host.querySelector<SVGSVGElement>('svg')
-  if (!svg) return
-
-  // Excalidraw-style high-contrast: light mode = solid dark nodes with light
-  // text; dark mode = solid light nodes with dark text. Cluster wrappers
-  // sit on the page background so they blend in (the wavy outline shows the
-  // grouping).
-  const nodeFill = theme === 'dark' ? '#D1CFC5' : '#141413'
-  const clusterFill = theme === 'dark' ? '#1A1A18' : '#FAF9F5'
-
-  // g.node / g.cluster wrap flowchart shapes. For state diagrams, .state
-  // wraps each state. Casting a wide net so all common shape groups get
-  // cleaned up.
-  const groups = svg.querySelectorAll<SVGGElement>(
-    'g.node, g.cluster, g.state, g.statediagram-state',
-  )
-
-  groups.forEach((group) => {
-    const paths = Array.from(group.querySelectorAll<SVGPathElement>('path'))
-    if (paths.length === 0) return
-
-    let outline: SVGPathElement | null = null
-    let maxLen = -1
-    for (const p of paths) {
-      let len = 0
-      try {
-        len = p.getTotalLength()
-      } catch {
-        // getTotalLength throws on malformed paths; fall back to d length
-        len = (p.getAttribute('d') ?? '').length
-      }
-      if (len > maxLen) {
-        maxLen = len
-        outline = p
-      }
-    }
-    if (!outline) return
-
-    for (const p of paths) {
-      if (p !== outline) p.remove()
-    }
-
-    const isCluster = group.classList.contains('cluster')
-    outline.setAttribute('fill', isCluster ? clusterFill : nodeFill)
-    outline.setAttribute('fill-opacity', '1')
-  })
-}
-
-function buildThemeVars(theme: Theme) {
-  const font =
-    '"Patrick Hand", "Caveat", "Comic Sans MS", "Inter", sans-serif'
-
-  // Dark mode — page is near-black, nodes are warm light-grey (#D1CFC5)
-  // with near-black text. Edges + arrows + general text are near-white so
-  // they read on the dark page bg.
-  if (theme === 'dark') {
-    const node = '#D1CFC5'
-    const ink = '#141413'
-    const lineInk = '#F0EEE6'
-    const pageBg = '#1A1A18'
-    return {
-      fontFamily: font,
-      fontSize: '16px',
-      primaryColor: node,
-      primaryTextColor: ink,
-      primaryBorderColor: node,
-      secondaryColor: node,
-      tertiaryColor: node,
-      lineColor: lineInk,
-      textColor: lineInk,
-      mainBkg: node,
-      edgeLabelBackground: pageBg,
-      tertiaryTextColor: ink,
-      secondaryTextColor: ink,
-      clusterBkg: pageBg,
-      clusterBorder: lineInk,
-      nodeBorder: node,
-      titleColor: lineInk,
-    }
-  }
-
-  // Light mode — page is cream, nodes are near-black with cream text.
-  // Edges, arrows, and titles are near-black so they read on the page bg.
-  const node = '#141413'
-  const ink = '#FAF9F5'
-  const lineInk = '#141413'
-  const pageBg = '#FAF9F5'
-  return {
-    fontFamily: font,
-    fontSize: '16px',
-    primaryColor: node,
-    primaryTextColor: ink,
-    primaryBorderColor: node,
-    secondaryColor: node,
-    tertiaryColor: node,
-    lineColor: lineInk,
-    textColor: lineInk,
-    mainBkg: node,
-    edgeLabelBackground: pageBg,
-    tertiaryTextColor: ink,
-    secondaryTextColor: ink,
-    clusterBkg: pageBg,
-    clusterBorder: lineInk,
-    nodeBorder: node,
-    titleColor: lineInk,
-  }
 }
