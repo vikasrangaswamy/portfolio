@@ -1,6 +1,6 @@
 fileignoreconfig:
 - filename: package-lock.json
-  checksum: 924799f3cad4ceeb70d5eeae894049528643c3394948ff544a13640e9e376d31
+  checksum: 4cd7477d19530f5bc8dcfeac35ce3ede63b5a883d5837ac7f44b39d71cf6818b
 - filename: src/content/projects/impulse-candle-scalper.mdx
   checksum: a61ce13cb424ad606bccc93323b4cc05b549f3de72bbb57050a07fc0a3f4c390
 - filename: src/components/layout/Header.tsx
