@@ -104,8 +104,10 @@ function stripHachureFills(host: HTMLElement, theme: Theme) {
   const svg = host.querySelector<SVGSVGElement>('svg')
   if (!svg) return
 
-  const nodeFill = theme === 'dark' ? '#4A3326' : '#FCE5D2'
-  const clusterFill = theme === 'dark' ? '#2E2E2A' : '#F0EEE6'
+  // Monochrome: white-on-black for dark, black-on-white for light. Cluster
+  // gets a fractionally different shade so nested clusters stay readable.
+  const nodeFill = theme === 'dark' ? '#1A1A18' : '#FFFFFF'
+  const clusterFill = theme === 'dark' ? '#242421' : '#F5F4EE'
 
   // g.node / g.cluster wrap flowchart shapes. For state diagrams, .state
   // wraps each state. Casting a wide net so all common shape groups get
@@ -149,45 +151,55 @@ function buildThemeVars(theme: Theme) {
   const font =
     '"Patrick Hand", "Caveat", "Comic Sans MS", "Inter", sans-serif'
 
+  // Monochrome palette — everything is either near-black or near-white based
+  // on theme. Nodes/secondary/tertiary all share the same fill so the
+  // diagrams read as pure black-and-white sketches regardless of which node
+  // role Mermaid picks for a given shape.
   if (theme === 'dark') {
+    const ink = '#F0EEE6' // near-white
+    const paper = '#1A1A18' // near-black
+    const subtle = '#242421' // slightly lighter near-black for clusters
     return {
       fontFamily: font,
       fontSize: '16px',
-      primaryColor: '#4A3326',
-      primaryTextColor: '#F0EEE6',
-      primaryBorderColor: '#C5C3BB',
-      secondaryColor: '#2D3E4A',
-      tertiaryColor: '#3D4630',
-      lineColor: '#C5C3BB',
-      textColor: '#F0EEE6',
-      mainBkg: '#4A3326',
-      edgeLabelBackground: '#2A2A26',
-      tertiaryTextColor: '#F0EEE6',
-      secondaryTextColor: '#F0EEE6',
-      clusterBkg: '#2E2E2A',
-      clusterBorder: '#3D3D3A',
-      nodeBorder: '#C5C3BB',
-      titleColor: '#F0EEE6',
+      primaryColor: paper,
+      primaryTextColor: ink,
+      primaryBorderColor: ink,
+      secondaryColor: paper,
+      tertiaryColor: paper,
+      lineColor: ink,
+      textColor: ink,
+      mainBkg: paper,
+      edgeLabelBackground: paper,
+      tertiaryTextColor: ink,
+      secondaryTextColor: ink,
+      clusterBkg: subtle,
+      clusterBorder: ink,
+      nodeBorder: ink,
+      titleColor: ink,
     }
   }
 
+  const ink = '#141413' // near-black
+  const paper = '#FFFFFF' // white
+  const subtle = '#F5F4EE' // slightly darker than white for clusters
   return {
     fontFamily: font,
     fontSize: '16px',
-    primaryColor: '#FCE5D2',
-    primaryTextColor: '#3D3D3A',
-    primaryBorderColor: '#3D3D3A',
-    secondaryColor: '#D9E8F2',
-    tertiaryColor: '#E7F0DC',
-    lineColor: '#3D3D3A',
-    textColor: '#3D3D3A',
-    mainBkg: '#FCE5D2',
-    edgeLabelBackground: '#FAF9F5',
-    tertiaryTextColor: '#3D3D3A',
-    secondaryTextColor: '#3D3D3A',
-    clusterBkg: '#F0EEE6',
-    clusterBorder: '#D1CFC5',
-    nodeBorder: '#3D3D3A',
-    titleColor: '#3D3D3A',
+    primaryColor: paper,
+    primaryTextColor: ink,
+    primaryBorderColor: ink,
+    secondaryColor: paper,
+    tertiaryColor: paper,
+    lineColor: ink,
+    textColor: ink,
+    mainBkg: paper,
+    edgeLabelBackground: paper,
+    tertiaryTextColor: ink,
+    secondaryTextColor: ink,
+    clusterBkg: subtle,
+    clusterBorder: ink,
+    nodeBorder: ink,
+    titleColor: ink,
   }
 }
