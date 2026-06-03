@@ -191,6 +191,8 @@ export function FlowDiagram({ nodes, edges, direction = 'LR', height = 420 }: Fl
         zoomOnPinch
         nodesDraggable={false}
         nodesConnectable={false}
+        nodesFocusable={false}
+        edgesFocusable={false}
         elementsSelectable={false}
         minZoom={0.4}
         maxZoom={2.5}

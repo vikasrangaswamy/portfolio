@@ -46,6 +46,43 @@
   overflow: visible;
 }
 
+/* React Flow ships a built-in stylesheet for the `default` / `input` /
+   `output` / `group` node *kinds* that applies a white background, 1px
+   border, 10px padding, and a fixed 150px width to the wrapper element
+   (the wrapper is shared even when you supply a custom node component for
+   that kind via nodeTypes). With our custom rendering filling the wrapper,
+   those built-in styles bleed through as a bright halo around any node
+   whose type happens to be "default" (and similar for "input"/"output").
+   Strip them so the wrapper is invisible and our .node controls the look. */
+.wrap :global(.react-flow__node-default),
+.wrap :global(.react-flow__node-input),
+.wrap :global(.react-flow__node-output),
+.wrap :global(.react-flow__node-group),
+.wrap :global(.react-flow__node-decision),
+.wrap :global(.react-flow__node-data) {
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+  text-align: inherit;
+  font-size: inherit;
+  width: auto;
+  box-shadow: none;
+}
+
+/* And clear any focus / selection ring xyflow paints on nodes — we set
+   selectable: false / nodesFocusable: false in code, but defensive CSS keeps
+   stray browser focus styling away. */
+.wrap :global(.react-flow__node):focus,
+.wrap :global(.react-flow__node):focus-visible,
+.wrap :global(.react-flow__node.selected),
+.wrap :global(.react-flow__node.selectable):focus,
+.wrap :global(.react-flow__node.selectable):focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
 .wrap :global(.react-flow__edge-path),
 .wrap :global(.react-flow__connection-path) {
   stroke: var(--flow-edge);
