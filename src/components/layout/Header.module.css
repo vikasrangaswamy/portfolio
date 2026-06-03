@@ -1,3 +1,10 @@
+/* Header — three regions in a single row on desktop:
+   logo (name) on the far left, nav clustered on the right adjacent to the
+   toggles. Clear visual hierarchy: the name dominates, nav recedes.
+
+   On phones (≤640px) it wraps into two rows: logo + toggles on top,
+   nav spanning the full width on the second row. */
+
 .header {
   position: sticky;
   top: 0;
@@ -6,77 +13,95 @@
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--oat);
-  padding: var(--sp-4) var(--sp-6);
+  padding: var(--sp-4) var(--sp-7);
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-areas: 'logo nav right';
   align-items: center;
-  gap: var(--sp-5);
+  column-gap: var(--sp-6);
   animation: fadeIn 0.35s ease both;
 }
 
+/* ---------- Logo (name) ---------- */
+
 .logo {
   grid-area: logo;
-  font-size: 19px;
-  font-weight: 600;
-  color: var(--slate);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--slate);
   white-space: nowrap;
-  letter-spacing: -0.005em;
+  transition: opacity var(--transition);
+}
+
+.logo:hover {
+  opacity: 0.75;
 }
 
 .logoDot {
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: var(--clay);
   flex-shrink: 0;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--clay) 22%, transparent);
 }
+
+/* ---------- Nav ---------- */
 
 .nav {
   grid-area: nav;
-  display: flex;
-  gap: var(--sp-5);
+  justify-self: end;
+  display: inline-flex;
   align-items: center;
-  justify-self: start;
-}
-
-.right {
-  grid-area: right;
-  display: flex;
-  align-items: center;
-  gap: var(--sp-3);
+  gap: var(--sp-6);
 }
 
 .navLink {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--gray-700);
+  font-size: 13.5px;
+  font-weight: 450;
+  letter-spacing: 0;
+  color: var(--gray-500);
   transition: color var(--transition);
+  position: relative;
+  padding: 2px 0;
 }
 
 .navLink:hover {
-  color: var(--slate);
+  color: var(--gray-700);
 }
 
 .navLinkActive {
   color: var(--clay);
+  font-weight: 500;
 }
 
-/* Tablet — tighten gaps before the wrap kicks in */
+/* ---------- Toggles cluster ---------- */
+
+.right {
+  grid-area: right;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+/* ---------- Tablet (≤820px) — tighten gaps before wrap kicks in. */
+
 @media (max-width: 820px) {
   .header {
-    gap: var(--sp-4);
-    padding: var(--sp-3) var(--sp-5);
+    padding: var(--sp-4) var(--sp-5);
+    column-gap: var(--sp-5);
   }
   .nav {
-    gap: var(--sp-4);
+    gap: var(--sp-5);
   }
 }
 
-/* Phone — wrap nav onto its own row below the logo + toggles */
+/* ---------- Phone (≤640px) — wrap nav onto its own row. */
+
 @media (max-width: 640px) {
   .header {
     grid-template-columns: 1fr auto;
@@ -86,6 +111,13 @@
     row-gap: var(--sp-3);
     padding: var(--sp-3) var(--sp-4);
   }
+  .logo {
+    font-size: 17px;
+  }
+  .logoDot {
+    width: 8px;
+    height: 8px;
+  }
   .nav {
     justify-self: stretch;
     justify-content: space-between;
@@ -93,7 +125,6 @@
     padding-top: var(--sp-3);
     border-top: 1px solid var(--gray-300);
     overflow-x: auto;
-    /* Hide scrollbar so the touch-scroll feels native if items ever overflow */
     scrollbar-width: none;
   }
   .nav::-webkit-scrollbar {
@@ -102,8 +133,5 @@
   .navLink {
     font-size: 13px;
     white-space: nowrap;
-  }
-  .logo {
-    font-size: 16px;
   }
 }
