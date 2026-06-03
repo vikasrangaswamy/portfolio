@@ -172,7 +172,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 18%;
+  /* The bounding box is now sized so the diamond's inscribed rectangle
+     (~50% × 50% of the box) comfortably fits the label. Use a percentage
+     padding so it scales with the diamond. */
+  padding: 0 22%;
   font-size: 12px;
   font-weight: 500;
   color: var(--flow-node-text);
