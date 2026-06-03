@@ -1,4 +1,5 @@
-import { Mermaid } from '../../../lib/Mermaid'
+import { FlowDiagram } from '../../../components/diagrams/FlowDiagram'
+import { awsBatchFlow } from './aws-batch.flow'
 
 ## What I was learning
 
@@ -6,12 +7,7 @@ How to run scheduled / queue-driven work on AWS without managing servers. The go
 
 ## Architecture
 
-<Mermaid chart={`flowchart LR
-  A["Your Computer<br/>batch_job_submit.js"] -->|Submit Job| B["AWS Batch<br/>Job Queue"]
-  B -->|Start Container| C["Fargate<br/>Container"]
-  C -->|Runs| D["batch_processor.js"]
-  D -->|Logs| E["CloudWatch<br/>Logs"]
-`} />
+<FlowDiagram {...awsBatchFlow} />
 
 Every job goes through six stages: submit → queue → schedule → run → log → status update. The submitter is a tiny Node script; the processor is another tiny Node script packaged into a Docker image; Batch + Fargate handle everything in between.
 

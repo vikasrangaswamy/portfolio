@@ -1,4 +1,5 @@
-import { Mermaid } from '../../lib/Mermaid'
+import { FlowDiagram } from '../../components/diagrams/FlowDiagram'
+import { bidirectionalGridHedgeFlow } from './bidirectional-grid-hedge.flow'
 
 ## The problem
 
@@ -14,20 +15,7 @@ Risk is bounded three ways: `RiskPercent` sizes each order against equity, `MaxO
 
 ## Architecture
 
-<Mermaid chart={`flowchart TD
-  Start["New cycle: ATR samples → grid_spacing"] --> Center["Pick grid center @ current price"]
-  Center --> LayoutAbove["Above center, at each level:<br/>BUY STOP + SELL LIMIT<br/>(TP = +1 grid)"]
-  Center --> LayoutBelow["Below center, at each level:<br/>SELL STOP + BUY LIMIT<br/>(TP = -1 grid)"]
-  LayoutAbove --> Wait
-  LayoutBelow --> Wait
-  Wait{"Market moves;<br/>orders fire, some<br/>positions hit TP"} -->|"net P/L ≥ +1 grid"| CloseAll["Close everything"]
-  Wait -->|"DD > 60%"| Emergency["Emergency close"]
-  Wait -->|"cycle ongoing"| Wait
-  CloseAll --> Restart{"AutoRestart?"}
-  Emergency --> Restart
-  Restart -->|"yes"| Start
-  Restart -->|"no"| Idle["Idle until manual restart"]
-`} />
+<FlowDiagram {...bidirectionalGridHedgeFlow} />
 
 ## Core logic
 

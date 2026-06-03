@@ -1,4 +1,5 @@
-import { Mermaid } from '../../lib/Mermaid'
+import { FlowDiagram } from '../../components/diagrams/FlowDiagram'
+import { impulseCandleScalperFlow } from './impulse-candle-scalper.flow'
 
 ## The problem
 
@@ -14,20 +15,7 @@ Stop loss and take profit attach immediately on fill, sized via the same triple-
 
 ## Architecture
 
-<Mermaid chart={`flowchart TD
-  Bar["Bar closes"] --> ATR["Compute range, body,<br/>avg range over lookback"]
-  ATR --> Test{"range > size_mult × avg<br/>AND range > atr_mult × ATR<br/>AND body/range in [min, max]<br/>AND continuation wick in window?"}
-  Test -->|"no"| Wait["Wait for next bar"]
-  Test -->|"yes"| Direction["Direction = sign(close − open)"]
-  Direction --> StopOrder["Place pending stop<br/>at impulse high/low + buffer"]
-  StopOrder --> CheckDist{"Already moved past?"}
-  CheckDist -->|"no"| WaitFill["Wait for fill or expiry"]
-  CheckDist -->|"yes & within chase%"| Market["Market order fallback"]
-  CheckDist -->|"yes & beyond chase%"| Skip["Skip — too late"]
-  WaitFill --> Filled["Filled → SL + TP attached"]
-  Market --> Filled
-  Filled --> Trail["Trail SL when profit ≥ threshold"]
-`} />
+<FlowDiagram {...impulseCandleScalperFlow} />
 
 ## Core logic
 

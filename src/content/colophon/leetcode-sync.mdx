@@ -1,4 +1,5 @@
-import { Mermaid } from '../../lib/Mermaid'
+import { FlowDiagram } from '../../components/diagrams/FlowDiagram'
+import { leetcodeSyncFlow } from './leetcode-sync.flow'
 
 ## What's happening
 
@@ -8,21 +9,7 @@ What keeps the numbers fresh is a tiny pipeline that runs on a cron, writes a JS
 
 ## The data path
 
-<Mermaid chart={`flowchart LR
-  Cron["GitHub Actions cron<br/>(daily, 06:17 UTC)"]
-  Script["scripts/fetch-leetcode-stats.mjs"]
-  GQL[("LeetCode public<br/>GraphQL API")]
-  JSON[("public/data/leetcode.json<br/>(committed to main)")]
-  Deploy["Pages deploy workflow<br/>(on push)"]
-  Page["LeetCode widget +<br/>stats page (reads JSON)"]
-
-  Cron --> Script
-  Script -->|"query: matchedUser, userCalendar"| GQL
-  GQL -->|"submitStats + 2y submissionCalendar"| Script
-  Script -->|"commit if changed"| JSON
-  JSON --> Deploy
-  Deploy --> Page
-`} />
+<FlowDiagram {...leetcodeSyncFlow} />
 
 ## The script
 

@@ -1,4 +1,5 @@
-import { Mermaid } from '../../lib/Mermaid'
+import { FlowDiagram } from '../../components/diagrams/FlowDiagram'
+import { highlowBreakoutScalperFlow } from './highlow-breakout-scalper.flow'
 
 ## The problem
 
@@ -14,18 +15,7 @@ Once a position is open, the trailing-stop system advances the SL toward price a
 
 ## Architecture
 
-<Mermaid chart={`stateDiagram-v2
-  [*] --> Scanning
-  Scanning --> Placed: New swing levels found<br/>+ ADX gate passes
-  Placed --> Triggered: Price crosses<br/>swing-high/low buffer
-  Placed --> Cancelled: Expired<br/>(PendingExpiryBars)
-  Placed --> Cancelled: Broker cancel
-  Cancelled --> Scanning: Retry next bar
-  Triggered --> Trailing: Profit ≥ start threshold
-  Triggered --> Closed: SL hit / TP hit
-  Trailing --> Closed: Trailing SL hit / TP hit
-  Closed --> Scanning
-`} />
+<FlowDiagram {...highlowBreakoutScalperFlow} />
 
 ## Core logic
 

@@ -1,0 +1,174 @@
+/* Theme variables — these get read by React Flow's inline `style.fill` etc.
+   via the `var(...)` references in FlowDiagram.tsx. Light/dark just swaps
+   the values. */
+.wrap {
+  --flow-bg: var(--white);
+  --flow-grid: color-mix(in srgb, var(--gray-300) 55%, transparent);
+  --flow-node-bg: var(--white);
+  --flow-node-border: var(--slate);
+  --flow-node-text: var(--slate);
+  --flow-node-shadow: var(--shadow-sm);
+  --flow-edge: var(--slate);
+  --flow-edge-label-bg: var(--white);
+  --flow-edge-label-text: var(--slate);
+
+  position: relative;
+  width: 100%;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--r-md);
+  background: var(--flow-bg);
+  overflow: hidden;
+  margin: var(--sp-6) 0;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Override React Flow internal styles to use our theme variables. */
+.wrap :global(.react-flow) {
+  background: var(--flow-bg);
+}
+
+.wrap :global(.react-flow__edge-path),
+.wrap :global(.react-flow__connection-path) {
+  stroke: var(--flow-edge);
+  stroke-width: 1.5;
+}
+
+.wrap :global(.react-flow__arrowhead) {
+  fill: var(--flow-edge);
+}
+
+.wrap :global(.react-flow__edge-text) {
+  fill: var(--flow-edge-label-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.wrap :global(.react-flow__edge-textbg) {
+  fill: var(--flow-edge-label-bg);
+}
+
+.bg :global(circle),
+.wrap :global(.react-flow__background) :global(circle) {
+  fill: var(--flow-grid);
+}
+
+/* Controls panel — tuck it into the bottom-left, restyle to match the rest of
+   the site. */
+.controls :global(button),
+.wrap :global(.react-flow__controls button) {
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+  color: var(--gray-700);
+  width: 28px;
+  height: 28px;
+  transition: background var(--transition), color var(--transition);
+}
+
+.controls :global(button):hover,
+.wrap :global(.react-flow__controls button):hover {
+  background: var(--gray-100);
+  color: var(--clay);
+}
+
+.controls :global(button) svg,
+.wrap :global(.react-flow__controls button) svg {
+  fill: currentColor;
+}
+
+/* ---------- Node shapes ---------- */
+
+.node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--flow-node-bg);
+  color: var(--flow-node-text);
+  border: 1.5px solid var(--flow-node-border);
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: center;
+  box-shadow: var(--flow-node-shadow);
+  min-height: 100%;
+  width: 100%;
+}
+
+.nodeLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+}
+
+.nodeLine {
+  white-space: nowrap;
+}
+
+/* Database / data store — rounded "cylinder" feel via top cap. */
+.data {
+  border-radius: 999px / 18px;
+  background: var(--flow-node-bg);
+}
+
+/* Decision diamond — actually a rotated square is fragile with text, so we
+   apply a clip-path diamond instead. Slightly larger min size so labels fit. */
+.decision {
+  background: transparent;
+  border: none;
+  padding: 0;
+  position: relative;
+  box-shadow: none;
+}
+
+.decision::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--flow-node-bg);
+  border: 1.5px solid var(--flow-node-border);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  box-shadow: var(--flow-node-shadow);
+}
+
+.decisionInner {
+  position: relative;
+  z-index: 1;
+  padding: 0 24px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--flow-node-text);
+  text-align: center;
+}
+
+/* Tiny dots for the connection handles. We don't render them visibly. */
+.handle {
+  opacity: 0;
+  width: 6px;
+  height: 6px;
+}
+
+/* Dark theme — recolor the variables. */
+:global(html[data-theme='dark']) .wrap {
+  --flow-bg: var(--white);
+  --flow-grid: color-mix(in srgb, var(--gray-300) 35%, transparent);
+  --flow-node-bg: var(--gray-100);
+  --flow-node-border: var(--gray-700);
+  --flow-node-text: var(--slate);
+  --flow-edge: var(--gray-700);
+  --flow-edge-label-bg: var(--white);
+  --flow-edge-label-text: var(--slate);
+}
+
+@media (max-width: 720px) {
+  .wrap {
+    /* Override the inline height for phones — dense diagrams need less. */
+    height: 320px !important;
+  }
+  .node {
+    font-size: 12px;
+    padding: var(--sp-1) var(--sp-3);
+  }
+}

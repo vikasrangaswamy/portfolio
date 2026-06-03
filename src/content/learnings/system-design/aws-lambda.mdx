@@ -1,4 +1,5 @@
-import { Mermaid } from '../../../lib/Mermaid'
+import { FlowDiagram } from '../../../components/diagrams/FlowDiagram'
+import { awsLambdaFlow } from './aws-lambda.flow'
 
 ## What I was learning
 
@@ -6,11 +7,7 @@ How to think about AWS Lambda for short-lived, event-driven work — when it's t
 
 ## Architecture
 
-<Mermaid chart={`flowchart LR
-  Trigger["Trigger<br/>(HTTP / Schedule / Event)"] --> Lambda["Lambda Function"]
-  Lambda --> External["External API"]
-  Lambda --> CloudWatch["CloudWatch Logs"]
-`} />
+<FlowDiagram {...awsLambdaFlow} />
 
 Two flavours of the same function:
 

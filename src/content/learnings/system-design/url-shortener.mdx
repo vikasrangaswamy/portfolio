@@ -1,4 +1,5 @@
-import { Mermaid } from '../../../lib/Mermaid'
+import { FlowDiagram } from '../../../components/diagrams/FlowDiagram'
+import { urlShortenerFlow } from './url-shortener.flow'
 
 ## What I was learning
 
@@ -16,21 +17,7 @@ Traffic skews heavily toward reads (redirects) over writes (shortens) — a real
 
 ## High-level architecture
 
-<Mermaid chart={`flowchart LR
-  subgraph Browser
-    SPA["React SPA"]
-  end
-  subgraph Server["Node Server"]
-    Express["Express API"]
-  end
-  subgraph Data["Data Layer"]
-    SQLite[("SQLite")]
-    Redis[("Redis (optional)")]
-  end
-  SPA -->|"/api /r"| Express
-  Express --> SQLite
-  Express -.->|"cache reads"| Redis
-`} />
+<FlowDiagram {...urlShortenerFlow} />
 
 In development, Vite (port 5173) proxies `/api` and `/r` to Express (port 3001). In production, Express serves the Vite build and the API from one origin.
 
