@@ -167,7 +167,7 @@ export default function LeetCodeStats() {
         </div>
         {data.fetchedAt && (
           <footer className={styles.heatmapFooter}>
-            Last updated {new Date(data.fetchedAt).toLocaleString()}
+            Updated {formatRelative(data.fetchedAt)} · synced daily at 06:17 UTC
           </footer>
         )}
       </motion.section>
@@ -250,4 +250,31 @@ function isoDate(d: Date): string {
   const m = String(d.getUTCMonth() + 1).padStart(2, '0')
   const day = String(d.getUTCDate()).padStart(2, '0')
   return `${y}-${m}-${day}`
+}
+
+/** "8 hours ago", "yesterday", "3 days ago" — anything fresher than 24h
+ *  reads as recent rather than as a stale timestamp. */
+function formatRelative(iso: string): string {
+  const then = new Date(iso).getTime()
+  const now = Date.now()
+  const seconds = Math.max(0, (now - then) / 1000)
+  const minutes = seconds / 60
+  const hours = minutes / 60
+  const days = hours / 24
+
+  if (minutes < 1) return 'just now'
+  if (minutes < 60) {
+    const n = Math.round(minutes)
+    return `${n} minute${n === 1 ? '' : 's'} ago`
+  }
+  if (hours < 24) {
+    const n = Math.round(hours)
+    return `${n} hour${n === 1 ? '' : 's'} ago`
+  }
+  if (days < 2) return 'yesterday'
+  if (days < 30) {
+    const n = Math.round(days)
+    return `${n} days ago`
+  }
+  return new Date(iso).toLocaleDateString()
 }

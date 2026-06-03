@@ -5,6 +5,11 @@ import { MDXProvider } from '@mdx-js/react'
 import './styles/reset.css'
 import './styles/tokens.css'
 import './styles/global.css'
+// React Flow base stylesheet — needs to be a top-level global import so it
+// isn't tree-shaken when FlowDiagram lands on an MDX chunk boundary. The
+// stylesheet sets `position: absolute` on .react-flow__handle and similar,
+// without which edges render at zero size.
+import '@xyflow/react/dist/style.css'
 import App from './App.tsx'
 import { mdxComponents } from './lib/mdx-components'
 

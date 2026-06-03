@@ -40,12 +40,28 @@ export function DefaultNode({ data }: NodeProps) {
   )
 }
 
-/** Diamond — used for decision points (Mermaid `{...}` syntax). */
+/** Diamond — used for decision points (Mermaid `{...}` syntax). Rendered as
+ *  an inline SVG polygon so the stroke survives (clip-path eats CSS
+ *  borders). The polygon coordinates work for any size because the SVG uses
+ *  preserveAspectRatio="none" — it stretches with the node's width/height. */
 export function DecisionNode({ data }: NodeProps) {
   const { label, direction } = data as Data
   const { target, source } = positions(direction)
   return (
     <div className={`${styles.node} ${styles.decision}`}>
+      <svg
+        className={styles.decisionSvg}
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <polygon points="50,2 98,50 50,98 2,50" className={styles.decisionFill} />
+        <polygon
+          points="50,2 98,50 50,98 2,50"
+          className={styles.decisionStroke}
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
       <Handle type="target" position={target} className={styles.handle} />
       <div className={styles.decisionInner}>
         <Label text={label} />

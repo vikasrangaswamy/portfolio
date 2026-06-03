@@ -10,7 +10,8 @@ import {
   Position,
 } from '@xyflow/react'
 import dagre from 'dagre'
-import '@xyflow/react/dist/style.css'
+// Base stylesheet is imported globally in src/main.tsx so it survives MDX
+// chunk-splitting; do NOT re-import it here.
 import { DefaultNode, DecisionNode, DataNode } from './FlowNodes'
 import styles from './FlowDiagram.module.css'
 

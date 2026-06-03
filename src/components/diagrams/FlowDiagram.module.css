@@ -27,6 +27,25 @@
   background: var(--flow-bg);
 }
 
+/* Belt-and-suspenders positioning. xyflow's base.css already sets these, but
+   if it ever gets tree-shaken or out-ordered on a chunk boundary, edges
+   silently disappear (handles end up at 0,0; paths collapse to 0 length).
+   Restating them here keeps the diagram functional regardless. */
+.wrap :global(.react-flow__handle) {
+  position: absolute;
+}
+
+.wrap :global(.react-flow__edges) {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.wrap :global(.react-flow__edges svg) {
+  overflow: visible;
+}
+
 .wrap :global(.react-flow__edge-path),
 .wrap :global(.react-flow__connection-path) {
   stroke: var(--flow-edge);
@@ -113,41 +132,62 @@
   background: var(--flow-node-bg);
 }
 
-/* Decision diamond — actually a rotated square is fragile with text, so we
-   apply a clip-path diamond instead. Slightly larger min size so labels fit. */
+/* Decision diamond — rendered as an inline SVG polygon inside the node so
+   the stroke survives. clip-path eats CSS borders, so a bordered diamond
+   needs SVG. The polygon's stroke + fill come from React Flow theme vars
+   resolved as currentColor. */
 .decision {
   background: transparent;
   border: none;
   padding: 0;
   position: relative;
   box-shadow: none;
+  width: 100%;
+  height: 100%;
 }
 
-.decision::before {
-  content: '';
+.decisionSvg {
   position: absolute;
   inset: 0;
-  background: var(--flow-node-bg);
-  border: 1.5px solid var(--flow-node-border);
-  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
-  box-shadow: var(--flow-node-shadow);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.decisionFill {
+  fill: var(--flow-node-bg);
+}
+
+.decisionStroke {
+  fill: none;
+  stroke: var(--flow-node-border);
+  stroke-width: 1.5;
 }
 
 .decisionInner {
   position: relative;
   z-index: 1;
-  padding: 0 24px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18%;
   font-size: 12px;
   font-weight: 500;
   color: var(--flow-node-text);
   text-align: center;
+  line-height: 1.3;
 }
 
-/* Tiny dots for the connection handles. We don't render them visibly. */
+/* Tiny dots for the connection handles. We don't render them visibly, but
+   we keep them at xyflow's default positioning (do NOT override
+   position/top/left/transform here — xyflow needs them). */
 .handle {
   opacity: 0;
   width: 6px;
   height: 6px;
+  pointer-events: none;
 }
 
 /* Dark theme — recolor the variables. */
