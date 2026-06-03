@@ -95,7 +95,9 @@ function autoLayout(
         x: positioned.x - positioned.width / 2,
         y: positioned.y - positioned.height / 2,
       },
-      data: { label: node.label },
+      // direction flows through to the custom node component so it can render
+      // its single source + single target handle on the right edges.
+      data: { label: node.label, direction },
       sourcePosition: direction === 'TD' ? Position.Bottom : Position.Right,
       targetPosition: direction === 'TD' ? Position.Top : Position.Left,
       draggable: false,
