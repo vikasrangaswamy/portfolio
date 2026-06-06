@@ -1,7 +1,7 @@
 .wrap {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-4);
+  gap: var(--sp-3);
 }
 
 /* ---------- Insight callouts ---------- */
@@ -42,6 +42,7 @@
 
 /* ---------- Grid ---------- */
 .gridScroll {
+  position: relative;
   width: 100%;
   overflow-x: auto;
   scrollbar-width: none;
@@ -71,6 +72,18 @@
   transform-box: fill-box;
   transform-origin: center;
   animation: cellPop 0.4s ease both;
+  cursor: pointer;
+  transition: filter var(--transition);
+}
+
+/* Hover glow — brighten + a soft clay halo + a thin outline so the hovered
+   day reads instantly. Animation has `both` fill so it settles before hover,
+   no conflict with the pop transform. */
+.cell:hover {
+  filter: brightness(1.12) drop-shadow(0 0 4px color-mix(in srgb, var(--clay) 65%, transparent));
+  stroke: var(--clay);
+  stroke-width: 1.5;
+  paint-order: stroke;
 }
 
 @keyframes cellPop {
@@ -90,19 +103,59 @@
   }
 }
 
-/* ---------- Footer (total + legend) ---------- */
-.footer {
+/* ---------- Hover tooltip ---------- */
+.tooltip {
+  position: absolute;
+  z-index: 5;
+  transform: translate(-50%, calc(-100% - 10px));
+  pointer-events: none;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--sp-3);
-  font-size: 12px;
-  color: var(--gray-500);
+  flex-direction: column;
+  gap: 1px;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--slate);
+  color: var(--ivory);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-md);
+  white-space: nowrap;
+  animation: tipIn 0.12s ease both;
 }
 
-.total {
+.tooltip::after {
+  /* little pointer triangle */
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 8px;
+  height: 8px;
+  background: var(--slate);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+@keyframes tipIn {
+  from { opacity: 0; transform: translate(-50%, calc(-100% - 6px)); }
+  to { opacity: 1; transform: translate(-50%, calc(-100% - 10px)); }
+}
+
+.tooltipCount {
+  font-size: 13px;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
+}
+
+.tooltipDate {
+  font-size: 11px;
+  color: color-mix(in srgb, var(--ivory) 70%, transparent);
+}
+
+/* ---------- Footer (legend only) ---------- */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 12px;
+  color: var(--gray-500);
 }
 
 .legend {

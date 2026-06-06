@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import styles from './SubmissionHeatmap.module.css'
 
 export type ActivityDay = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 }
@@ -9,7 +9,10 @@ type Props = {
 }
 
 const PALETTE: Record<'light' | 'dark', [string, string, string, string, string]> = {
-  light: ['#EBE8DD', '#EDD8C7', '#E5B594', '#D97757', '#A04E2E'],
+  // Light: a clear warm grey for empty days, climbing through soft clay tints
+  // to a mid clay — deliberately never near-black, so the grid stays easy to
+  // read on the cream page.
+  light: ['#E6E4DC', '#F2D8C6', '#EAB592', '#DD8A64', '#CC6E45'],
   dark: ['#2A2A26', '#5A3D2E', '#92583A', '#D97757', '#E68B6F'],
 }
 
@@ -66,7 +69,33 @@ function formatBest(date: string): string {
   return `${MONTHS[Number(m) - 1]} ${Number(d)}`
 }
 
+const WEEKDAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+/** "Mon, Jan 23 2026" for the hover tooltip. */
+function formatFull(date: string): string {
+  const d = new Date(`${date}T00:00:00Z`)
+  const [y, m, day] = date.split('-')
+  return `${WEEKDAY_NAMES[d.getUTCDay()]}, ${MONTHS[Number(m) - 1]} ${Number(day)} ${y}`
+}
+
+type Tooltip = { left: number; top: number; count: number; date: string }
+
 export function SubmissionHeatmap({ days, theme }: Props) {
+  const wrapRef = useRef<HTMLDivElement | null>(null)
+  const [tip, setTip] = useState<Tooltip | null>(null)
+
+  const showTip = (e: React.MouseEvent, day: ActivityDay) => {
+    const wrap = wrapRef.current
+    if (!wrap) return
+    const rect = wrap.getBoundingClientRect()
+    setTip({
+      left: e.clientX - rect.left,
+      top: e.clientY - rect.top,
+      count: day.count,
+      date: day.date,
+    })
+  }
+
   const { cells, columns, monthLabels, insights } = useMemo(() => {
     if (days.length === 0) {
       return { cells: [], columns: 0, monthLabels: [], insights: null as Insights | null }
@@ -112,7 +141,7 @@ export function SubmissionHeatmap({ days, theme }: Props) {
   const palette = PALETTE[theme]
 
   return (
-    <div className={styles.wrap}>
+    <div className={styles.wrap} ref={wrapRef}>
       <div className={styles.insights}>
         <Insight label="Longest streak" value={`${insights.longestStreak} days`} />
         <Insight
@@ -159,19 +188,28 @@ export function SubmissionHeatmap({ days, theme }: Props) {
               fill={palette[c.level]}
               className={styles.cell}
               style={{ animationDelay: `${(c.col + c.row) * 11}ms` }}
-            >
-              <title>
-                {c.count} submission{c.count === 1 ? '' : 's'} on {c.date}
-              </title>
-            </rect>
+              onMouseEnter={(e) => showTip(e, c)}
+              onMouseMove={(e) => showTip(e, c)}
+              onMouseLeave={() => setTip(null)}
+            />
           ))}
         </svg>
+
+        {tip && (
+          <div
+            className={styles.tooltip}
+            style={{ left: tip.left, top: tip.top }}
+            aria-hidden="true"
+          >
+            <span className={styles.tooltipCount}>
+              {tip.count} submission{tip.count === 1 ? '' : 's'}
+            </span>
+            <span className={styles.tooltipDate}>{formatFull(tip.date)}</span>
+          </div>
+        )}
       </div>
 
       <div className={styles.footer}>
-        <span className={styles.total}>
-          {insights.total} submissions in the last 12 months
-        </span>
         <span className={styles.legend}>
           Less
           {palette.map((color, i) => (
