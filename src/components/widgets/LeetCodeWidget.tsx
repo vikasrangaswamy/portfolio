@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { profile } from '../../content/profile'
+import { Link } from 'react-router-dom'
 import { WidgetInfoLink } from './WidgetInfoLink'
 import styles from './Widget.module.css'
 
@@ -26,19 +26,18 @@ export function LeetCodeWidget() {
   const max = bars.length ? Math.max(...bars, 1) : 1
 
   return (
-    <a
-      href={`https://leetcode.com/u/${profile.leetcodeUsername}/`}
-      target="_blank"
-      rel="noreferrer"
-      className={styles.widget}
-    >
+    <Link to="/learnings/leetcode" className={styles.widget}>
       <div className={styles.widgetHead}>
         <span className={styles.widgetLabel}>LeetCode</span>
         <div className={styles.widgetHeadActions}>
           <WidgetInfoLink slug="leetcode-sync" label="How the LeetCode sync works" />
           <span className={styles.widgetIcon}>
+            {/* Right-arrow (not the external-link glyph) — clicking the card
+                navigates to the in-site stats page, not leetcode.com. The
+                external link to leetcode.com lives on the stats page itself. */}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M7 17L17 7M17 7H8M17 7V16" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
             </svg>
           </span>
         </div>
@@ -70,7 +69,7 @@ export function LeetCodeWidget() {
           <span className={styles.smallSkeleton} />
         )}
       </div>
-    </a>
+    </Link>
   )
 }
 
