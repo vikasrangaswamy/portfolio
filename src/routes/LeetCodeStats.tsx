@@ -63,6 +63,7 @@ export default function LeetCodeStats() {
       <PageHeader
         tag="Learnings · LeetCode"
         title="LeetCode"
+        back={{ to: '/learnings', label: 'Learnings' }}
         summary="A daily problem-solving habit. The heatmap and stats below sync automatically from my LeetCode profile each morning."
       />
       <div className={styles.profileRow}>

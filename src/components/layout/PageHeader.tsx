@@ -1,17 +1,25 @@
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import styles from '../../routes/Page.module.css'
 
 type Props = {
   tag: string
   title: string
   summary?: string
+  /** Optional back link rendered above the kicker. */
+  back?: { to: string; label: string }
   /** Hides the bottom divider — useful when the next element provides its own boundary. */
   noDivider?: boolean
 }
 
-export function PageHeader({ tag, title, summary, noDivider }: Props) {
+export function PageHeader({ tag, title, summary, back, noDivider }: Props) {
   return (
     <header>
+      {back && (
+        <Link to={back.to} className={styles.backLink}>
+          <span aria-hidden="true">←</span> {back.label}
+        </Link>
+      )}
       <motion.div
         className={styles.tag}
         initial={{ opacity: 0, y: 6 }}

@@ -5,6 +5,32 @@
   animation: fadeUp 0.5s ease both;
 }
 
+/* Back link above the kicker. Mono, with the arrow sliding left on hover. */
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-4);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-700);
+  transition: color var(--transition);
+}
+
+.backLink:hover {
+  color: var(--clay);
+}
+
+.backLink span:first-child {
+  color: var(--clay);
+  transition: transform var(--transition);
+}
+
+.backLink:hover span:first-child {
+  transform: translateX(-3px);
+}
+
 /* Terminal-style page kicker: mono, lowercase, with a clay "$" prompt
    prefix. No pill background — reads like a command line. */
 .tag {

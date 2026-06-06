@@ -12,6 +12,7 @@ export function SystemDesignIndex() {
       summary="Hands-on infrastructure and architecture studies. Each topic links to a runnable repo."
       trackPath="/learnings/system-design"
       topics={systemDesignTopics}
+      back={{ to: '/learnings', label: 'Learnings' }}
     />
   )
 }

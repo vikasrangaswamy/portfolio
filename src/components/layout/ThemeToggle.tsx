@@ -17,7 +17,8 @@ export function ThemeToggle() {
       onClick={handleClick}
       data-no-sound
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
-      title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+      data-tip={`${theme === 'light' ? 'Dark' : 'Light'} mode`}
+      data-tip-below
       whileHover={{ scale: 1.08, rotate: -6 }}
       whileTap={{ scale: 0.92, rotate: 12 }}
       transition={{ type: 'spring', stiffness: 360, damping: 16 }}

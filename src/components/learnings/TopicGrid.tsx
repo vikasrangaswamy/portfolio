@@ -10,12 +10,13 @@ type Props = {
   summary: string
   trackPath: string
   topics: readonly LearningTopic[]
+  back?: { to: string; label: string }
 }
 
-export function TopicGrid({ tag, title, summary, trackPath, topics }: Props) {
+export function TopicGrid({ tag, title, summary, trackPath, topics, back }: Props) {
   return (
     <div className={pageStyles.container}>
-      <PageHeader tag={tag} title={title} summary={summary} />
+      <PageHeader tag={tag} title={title} summary={summary} back={back} />
       <ul style={{ display: 'grid', gap: 'var(--sp-3)' }}>
         {topics.map((topic, i) => (
           <motion.li

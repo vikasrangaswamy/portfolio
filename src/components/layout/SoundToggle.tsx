@@ -11,7 +11,8 @@ export function SoundToggle() {
       data-no-sound
       aria-label={muted ? 'Enable sounds' : 'Mute sounds'}
       aria-pressed={!muted}
-      title={muted ? 'Enable sounds' : 'Mute sounds'}
+      data-tip={muted ? 'Enable sounds' : 'Mute sounds'}
+      data-tip-below
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.92 }}
       transition={{ type: 'spring', stiffness: 360, damping: 16 }}

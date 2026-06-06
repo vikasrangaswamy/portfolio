@@ -74,3 +74,57 @@
   color: var(--clay);
   font-weight: 500;
 }
+
+/* ---------- Instant tooltip ---------- */
+/* Native title="" tooltips have a long browser delay. Use data-tip="" for an
+   instant (80ms) mono tooltip that appears above the element on hover/focus. */
+[data-tip] {
+  position: relative;
+}
+
+[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(3px);
+  background: var(--slate);
+  color: var(--ivory);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+  padding: 5px 8px;
+  border-radius: var(--r-xs);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 80ms ease, transform 80ms ease;
+  z-index: 60;
+}
+
+[data-tip]:hover::after,
+[data-tip]:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Below variant — for elements near the top of the viewport (e.g. header
+   toggles) where an above-tooltip would clip off-screen. */
+[data-tip][data-tip-below]::after {
+  bottom: auto;
+  top: calc(100% + 8px);
+  transform: translateX(-50%) translateY(-3px);
+}
+
+[data-tip][data-tip-below]:hover::after,
+[data-tip][data-tip-below]:focus-visible::after {
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-tip]::after {
+    transition: opacity 80ms ease;
+    transform: translateX(-50%);
+  }
+}
