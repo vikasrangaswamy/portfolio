@@ -65,9 +65,10 @@
 }
 
 .skillLabel {
+  font-family: var(--font-mono);
   font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
+  text-transform: lowercase;
+  letter-spacing: 0;
   color: var(--gray-500);
   margin-bottom: var(--sp-2);
 }
@@ -75,15 +76,18 @@
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--sp-2);
+  gap: var(--sp-2) var(--sp-3);
 }
 
+/* Keycap-style skill chip — mono, raised key with a thin bottom edge. */
 .chip {
+  font-family: var(--font-mono);
   background: var(--white);
   border: 1px solid var(--gray-300);
-  border-radius: var(--r-lg);
-  padding: var(--sp-1) var(--sp-3);
-  font-size: 13px;
+  border-radius: var(--r-xs);
+  box-shadow: 0 2px 0 0 var(--gray-300);
+  padding: 4px 10px;
+  font-size: 12.5px;
   color: var(--gray-700);
 }
 

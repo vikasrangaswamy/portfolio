@@ -61,9 +61,10 @@
 }
 
 .navLink {
-  font-size: 13.5px;
+  font-family: var(--font-mono);
+  font-size: 13px;
   font-weight: 450;
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
   color: var(--gray-500);
   transition: color var(--transition);
   position: relative;

@@ -51,19 +51,9 @@ export function TopicGrid({ tag, title, summary, trackPath, topics }: Props) {
               <p style={{ fontSize: 14, color: 'var(--gray-700)', marginBottom: 'var(--sp-3)' }}>
                 {topic.summary}
               </p>
-              <div style={{ display: 'flex', gap: 'var(--sp-2)', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: '8px 12px', flexWrap: 'wrap' }}>
                 {topic.tech.map((t) => (
-                  <span
-                    key={t}
-                    style={{
-                      fontSize: 12,
-                      background: 'var(--gray-100)',
-                      border: '1px solid var(--gray-300)',
-                      borderRadius: 'var(--r-lg)',
-                      padding: '2px var(--sp-3)',
-                      color: 'var(--gray-700)',
-                    }}
-                  >
+                  <span key={t} className="kbd-chip">
                     {t}
                   </span>
                 ))}

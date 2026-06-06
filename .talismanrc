@@ -15,4 +15,10 @@ fileignoreconfig:
   checksum: 1afbd5f65a9941a54b6485caebc37f3430f735ac43ec585c1cd1b8317b04c7b2
 - filename: src/components/home/Hero.module.css
   checksum: da3001275722a683b4c24baeb5fb976acc506e558c2fdb9cc3a02a28561bad6f
+- filename: src/components/learnings/TopicGrid.tsx
+  checksum: 1d5e3d83a340c87b8a7a53863fb70010ede55ac30d4dbc06e3fddc09ce7da4e1
+- filename: src/components/learnings/LearningPage.module.css
+  checksum: 6035f4cfb32381adef4980c285871ba65968c19ad26cf470fcd59f304ebaf28b
+- filename: src/routes/About.module.css
+  checksum: 461705d4bc04e1136e2766b60181dcea7454beb3513b34436b0ea4e0ecdf2e3e
 version: "1.0"

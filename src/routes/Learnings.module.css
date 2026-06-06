@@ -27,11 +27,17 @@
 }
 
 .cardSlug {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: lowercase;
+  letter-spacing: 0;
   color: var(--clay);
   margin-bottom: var(--sp-2);
+}
+
+.cardSlug::before {
+  content: '~/';
+  opacity: 0.6;
 }
 
 .cardTitle {

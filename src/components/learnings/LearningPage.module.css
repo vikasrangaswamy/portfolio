@@ -11,7 +11,8 @@
   padding: var(--sp-2) var(--sp-3);
   margin-bottom: var(--sp-5);
   margin-left: calc(var(--sp-3) * -1);
-  font-size: 14px;
+  font-family: var(--font-mono);
+  font-size: 13px;
   font-weight: 500;
   color: var(--gray-700);
   border-radius: var(--r-sm);
@@ -41,13 +42,16 @@
 }
 
 .track {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: lowercase;
+  letter-spacing: 0;
+  color: var(--gray-500);
+}
+
+.track::before {
+  content: '$ ';
   color: var(--clay);
-  background: rgba(217, 119, 87, 0.1);
-  padding: var(--sp-1) var(--sp-3);
-  border-radius: var(--r-lg);
 }
 
 .title {
@@ -75,30 +79,16 @@
   margin-bottom: var(--sp-4);
 }
 
+/* Keycap-style tech chip — mono, raised key with a thin bottom edge. */
 .techChip {
-  font-size: 13px;
-  background: var(--gray-100);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--white);
   border: 1px solid var(--gray-300);
-  border-radius: var(--r-lg);
-  padding: 2px var(--sp-3);
+  border-radius: var(--r-xs);
+  box-shadow: 0 2px 0 0 var(--gray-300);
+  padding: 3px 9px;
   color: var(--gray-700);
-}
-
-.viewCode {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-2);
-  padding: var(--sp-2) var(--sp-4);
-  background: var(--slate);
-  color: var(--ivory);
-  border-radius: var(--r-sm);
-  font-size: 13px;
-  font-weight: 500;
-  transition: transform var(--transition);
-}
-
-.viewCode:hover {
-  transform: translateY(-2px);
 }
 
 .body {

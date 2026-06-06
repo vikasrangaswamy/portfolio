@@ -39,7 +39,12 @@ export function LearningPage({ trackLabel, trackHref, topic }: Props) {
             </span>
           ))}
           {topic.repoUrl && (
-            <a href={topic.repoUrl} className={styles.viewCode} target="_blank" rel="noreferrer">
+            <a
+              href={topic.repoUrl}
+              className="kbd-btn kbd-btn--secondary"
+              target="_blank"
+              rel="noreferrer"
+            >
               View Code →
             </a>
           )}

@@ -1,0 +1,76 @@
+/* Shared "mechanical keyboard" UI language — global (non-module) classes so
+   every component can opt in with the same look. Two primitives:
+   - .kbd-btn      keycap-style button (bottom edge + press-down)
+   - .kbd-chip     keycap-style chip/tag (raised key with a thin edge)
+   Both are monospace. The audible half of the press is the existing global
+   click sound. */
+
+.kbd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-5);
+  border-radius: var(--r-sm);
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 90ms ease, box-shadow 90ms ease, background var(--transition),
+    color var(--transition), border-color var(--transition);
+}
+
+.kbd-btn:active {
+  transform: translateY(3px);
+}
+
+.kbd-btn--primary {
+  background: var(--clay);
+  color: var(--white);
+  box-shadow: 0 4px 0 0 var(--clay-edge);
+}
+
+.kbd-btn--primary:active {
+  box-shadow: 0 1px 0 0 var(--clay-edge);
+}
+
+.kbd-btn--secondary {
+  background: var(--white);
+  color: var(--slate);
+  border-color: var(--gray-300);
+  box-shadow: 0 4px 0 0 var(--gray-300);
+}
+
+.kbd-btn--secondary:hover {
+  border-color: var(--clay);
+  color: var(--clay);
+}
+
+.kbd-btn--secondary:active {
+  box-shadow: 0 1px 0 0 var(--gray-300);
+}
+
+/* ---------- Keycap chip / tag ---------- */
+.kbd-chip {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--gray-700);
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--r-xs);
+  padding: 3px 9px;
+  box-shadow: 0 2px 0 0 var(--gray-300);
+}
+
+/* ---------- Terminal prompt prefix ---------- */
+/* Add to a kicker/label element; renders a clay "$" before the text. */
+.kbd-prompt::before {
+  content: '$ ';
+  color: var(--clay);
+  font-weight: 500;
+}

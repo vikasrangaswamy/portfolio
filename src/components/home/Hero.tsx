@@ -21,7 +21,7 @@ export function Hero() {
         </div>
         <p className={styles.description}>{profile.tagline}</p>
         <div className={styles.actions}>
-          <Link to="/projects" className={`${styles.btn} ${styles.btnPrimary}`}>
+          <Link to="/projects" className="kbd-btn kbd-btn--primary">
             See projects →
           </Link>
           {profile.linkedin && (
@@ -29,7 +29,7 @@ export function Hero() {
               href={profile.linkedin}
               target="_blank"
               rel="noreferrer"
-              className={`${styles.btn} ${styles.btnSecondary}`}
+              className="kbd-btn kbd-btn--secondary"
             >
               Get in touch
             </a>

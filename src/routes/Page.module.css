@@ -5,17 +5,22 @@
   animation: fadeUp 0.5s ease both;
 }
 
+/* Terminal-style page kicker: mono, lowercase, with a clay "$" prompt
+   prefix. No pill background — reads like a command line. */
 .tag {
   display: inline-block;
-  font-size: 11px;
+  font-family: var(--font-mono);
+  font-size: 12px;
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: var(--clay);
-  background: rgba(217, 119, 87, 0.1);
-  padding: var(--sp-1) var(--sp-3);
-  border-radius: var(--r-lg);
+  text-transform: lowercase;
+  letter-spacing: 0;
+  color: var(--gray-500);
   margin-bottom: var(--sp-4);
+}
+
+.tag::before {
+  content: '$ ';
+  color: var(--clay);
 }
 
 .title {
