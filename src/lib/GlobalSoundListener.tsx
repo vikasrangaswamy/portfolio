@@ -20,7 +20,7 @@ export function GlobalSoundListener() {
       if (!el) return
       if (el.closest('[data-no-sound]')) return
       if (el instanceof HTMLButtonElement && el.disabled) return
-      play('click', 0.7)
+      play('click', 1)
     }
 
     document.addEventListener('click', onClick, true)

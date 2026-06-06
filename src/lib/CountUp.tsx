@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
  * async data lands). Eased, ~900ms. Honors prefers-reduced-motion by jumping
  * straight to the value.
  */
-export function CountUp({ value, duration = 2000 }: { value: number; duration?: number }) {
+export function CountUp({ value, duration = 2800 }: { value: number; duration?: number }) {
   const [display, setDisplay] = useState(0)
   const rafRef = useRef(0)
 

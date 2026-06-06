@@ -49,8 +49,13 @@ const PRESETS: Record<SoundName, Voice[]> = {
   ],
   // Tiny pop — for card hovers/clicks. Very short.
   pop: [{ type: 'sine', freq: 720, duration: 0.07, gain: 0.1, attack: 0.002, filter: 2200 }],
-  // Click — nav links etc.
-  click: [{ type: 'triangle', freq: 520, duration: 0.05, gain: 0.07, attack: 0.001, filter: 2000 }],
+  // Click — buttons, nav, etc. Two layers for a crisp mechanical "tick":
+  // a low triangle thock + a short high snap on top. Loud enough to clearly
+  // register (the previous single quiet voice was barely audible).
+  click: [
+    { type: 'triangle', freq: 480, duration: 0.06, gain: 0.32, attack: 0.001, filter: 2200 },
+    { type: 'sine', freq: 960, duration: 0.03, gain: 0.16, attack: 0.001, filter: 3200 },
+  ],
   // Filtered noise swish — page transition feel.
   swish: [], // handled separately in playNoise
   // A two-note rising chord — for affirmative actions / reveals.

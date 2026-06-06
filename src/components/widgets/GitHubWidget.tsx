@@ -6,12 +6,12 @@ import styles from './Widget.module.css'
 
 type GitHubData = {
   public_repos: number
-  followers: number
-  updated_at: string | null
+  created_at: string | null
 }
 
 const CACHE_KEY = `gh:${profile.githubUsername}`
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000 // 6h
+const CACHE_VERSION = 2 // bump to invalidate old cached shapes
 
 export function GitHubWidget() {
   const [data, setData] = useState<GitHubData | null>(null)
@@ -28,14 +28,17 @@ export function GitHubWidget() {
         if (!json) return
         const next: GitHubData = {
           public_repos: json.public_repos ?? 0,
-          followers: json.followers ?? 0,
-          updated_at: json.updated_at ?? null,
+          created_at: json.created_at ?? null,
         }
         setData(next)
         writeCache(next)
       })
       .catch(() => setData(null))
   }, [])
+
+  const yearsOnGitHub = data?.created_at
+    ? Math.max(1, Math.floor((Date.now() - new Date(data.created_at).getTime()) / (365.25 * 24 * 60 * 60 * 1000)))
+    : null
 
   return (
     <a href={profile.github} target="_blank" rel="noreferrer" className={styles.widget}>
@@ -55,14 +58,18 @@ export function GitHubWidget() {
         {data && <span style={{ fontSize: 14, color: 'var(--gray-500)' }}>repos</span>}
       </div>
       <div className={styles.widgetSub}>
-        {data ? `${data.followers} follower${data.followers === 1 ? '' : 's'}` : <span className={styles.smallSkeleton} />}
+        {data && yearsOnGitHub ? (
+          `${yearsOnGitHub}+ yrs on GitHub`
+        ) : (
+          <span className={styles.smallSkeleton} />
+        )}
       </div>
       <div className={styles.widgetMeta}>@{profile.githubUsername}</div>
     </a>
   )
 }
 
-type Cached = { data: GitHubData; at: number }
+type Cached = { data: GitHubData; at: number; v: number }
 
 function readCache(): Cached | null {
   if (typeof window === 'undefined') return null
@@ -70,6 +77,7 @@ function readCache(): Cached | null {
     const raw = localStorage.getItem(CACHE_KEY)
     if (!raw) return null
     const parsed = JSON.parse(raw) as Cached
+    if (parsed.v !== CACHE_VERSION) return null
     if (Date.now() - parsed.at > CACHE_TTL_MS) return null
     return parsed
   } catch {
@@ -79,7 +87,7 @@ function readCache(): Cached | null {
 
 function writeCache(data: GitHubData) {
   try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify({ data, at: Date.now() }))
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ data, at: Date.now(), v: CACHE_VERSION }))
   } catch {
     // ignore
   }

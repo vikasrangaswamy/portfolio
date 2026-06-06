@@ -21,4 +21,6 @@ fileignoreconfig:
   checksum: 6035f4cfb32381adef4980c285871ba65968c19ad26cf470fcd59f304ebaf28b
 - filename: src/routes/About.module.css
   checksum: 461705d4bc04e1136e2766b60181dcea7454beb3513b34436b0ea4e0ecdf2e3e
+- filename: src/components/widgets/GitHubWidget.tsx
+  checksum: f525347965bab63bb05f3f50edb1ba87441b0f336d8726ef39920dbb1c8860ae
 version: "1.0"
