@@ -13,4 +13,6 @@ fileignoreconfig:
   checksum: c496e6b9e9f8cedf4e3354e97eafca5e9ef9d3b600411c95e49a2b65fccc91ea
 - filename: src/components/home/Hero.tsx
   checksum: 1afbd5f65a9941a54b6485caebc37f3430f735ac43ec585c1cd1b8317b04c7b2
+- filename: src/components/home/Hero.module.css
+  checksum: da3001275722a683b4c24baeb5fb976acc506e558c2fdb9cc3a02a28561bad6f
 version: "1.0"

@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { profile } from '../../content/profile'
+import { Typewriter } from '../../lib/Typewriter'
 import styles from './Hero.module.css'
+
+const roleLine = `${profile.role} · ${profile.company} · ${profile.location}`
 
 export function Hero() {
   return (
@@ -14,16 +17,23 @@ export function Hero() {
       <div className={styles.content}>
         <h1 className={styles.title}>{profile.name}</h1>
         <div className={styles.role}>
-          {profile.role} · {profile.company} · {profile.location}
+          <Typewriter text={roleLine} />
         </div>
         <p className={styles.description}>{profile.tagline}</p>
         <div className={styles.actions}>
-          <Link to="/projects" className={styles.btnPrimary}>
+          <Link to="/projects" className={`${styles.btn} ${styles.btnPrimary}`}>
             See projects →
           </Link>
-          <a href={`mailto:${profile.email}`} className={styles.btnSecondary}>
-            Get in touch
-          </a>
+          {profile.linkedin && (
+            <a
+              href={profile.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className={`${styles.btn} ${styles.btnSecondary}`}
+            >
+              Get in touch
+            </a>
+          )}
         </div>
       </div>
     </motion.section>

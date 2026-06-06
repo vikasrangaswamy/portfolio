@@ -1,6 +1,7 @@
 :root,
 html[data-theme='light'] {
   --clay:     #D97757;
+  --clay-edge: #A85638;
   --slate:    #141413;
   --ivory:    #FAF9F5;
   --oat:      #E3DACC;
@@ -35,10 +36,13 @@ html[data-theme='light'] {
   --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
 
   --content-max: 1040px;
+
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 html[data-theme='dark'] {
   --clay:     #E68B6F;
+  --clay-edge: #B5654A;
   --slate:    #F0EEE6;
   --ivory:    #1A1A18;
   --oat:      #2A2A26;

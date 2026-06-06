@@ -42,6 +42,7 @@
 }
 
 .rowKicker {
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   text-transform: uppercase;
@@ -61,6 +62,7 @@
 }
 
 .rowHint {
+  font-family: var(--font-mono);
   font-size: 12px;
   color: var(--gray-500);
 }
@@ -125,6 +127,7 @@
 }
 
 .widgetLabel {
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   text-transform: uppercase;
@@ -180,6 +183,7 @@
 }
 
 .widgetMeta {
+  font-family: var(--font-mono);
   margin-top: var(--sp-3);
   font-size: 11px;
   color: var(--gray-500);

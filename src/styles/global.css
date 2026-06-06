@@ -11,6 +11,26 @@ body {
   flex-direction: column;
 }
 
+/* Static engineering-notebook dot grid behind everything. Fixed so it stays
+   put while the page scrolls; faint so it's texture, not noise. No animation. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(
+    var(--dot-color, rgba(20, 20, 19, 0.05)) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+  background-position: -1px -1px;
+}
+
+html[data-theme='dark'] body::before {
+  --dot-color: rgba(240, 238, 230, 0.045);
+}
+
 #root {
   flex: 1;
   display: flex;
