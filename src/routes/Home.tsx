@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { profile } from '../content/profile'
+import { Hero } from '../components/home/Hero'
 import { LeetCodeWidget } from '../components/widgets/LeetCodeWidget'
 import { GitHubWidget } from '../components/widgets/GitHubWidget'
 import { RoleWidget } from '../components/widgets/RoleWidget'
@@ -18,24 +17,7 @@ const widgets = [
 export default function Home() {
   return (
     <>
-      <motion.section
-        className={styles.hero}
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-      >
-        <div className={styles.heroTag}>Portfolio</div>
-        <h1 className={styles.heroTitle}>{profile.name}</h1>
-        <div className={styles.heroRole}>
-          {profile.role} · {profile.company} · {profile.location}
-        </div>
-        <p className={styles.heroDescription}>{profile.tagline}</p>
-        <div className={styles.heroActions}>
-          <Link to="/projects" className={styles.btnPrimary}>
-            See projects →
-          </Link>
-        </div>
-      </motion.section>
+      <Hero />
 
       <section className={styles.section}>
         <motion.div

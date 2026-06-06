@@ -139,6 +139,27 @@
   justify-content: center;
 }
 
+/* Streak flame — a gentle flicker (scale + opacity wobble) so the "live"
+   feel carries into the detail line. */
+.flame {
+  display: inline-block;
+  transform-origin: bottom center;
+  animation: flicker 2.4s ease-in-out infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  25% { transform: scale(1.12) rotate(-3deg); opacity: 0.88; }
+  50% { transform: scale(0.96) rotate(2deg); opacity: 1; }
+  75% { transform: scale(1.08) rotate(-1deg); opacity: 0.92; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flame {
+    animation: none;
+  }
+}
+
 .widgetValue {
   font-size: 28px;
   font-weight: 500;

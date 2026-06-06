@@ -1,87 +1,3 @@
-.hero {
-  position: relative;
-  z-index: 1;
-  max-width: var(--content-max);
-  margin: 0 auto;
-  padding: var(--sp-8) var(--sp-6) var(--sp-8);
-}
-
-.heroTag {
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: var(--clay);
-  background: rgba(217, 119, 87, 0.1);
-  padding: var(--sp-1) var(--sp-3);
-  border-radius: var(--r-lg);
-  margin-bottom: var(--sp-5);
-}
-
-.heroTitle {
-  font-size: 64px;
-  line-height: 1.05;
-  font-weight: 600;
-  color: var(--slate);
-  margin-bottom: var(--sp-5);
-  letter-spacing: -0.02em;
-}
-
-.heroRole {
-  font-size: 18px;
-  color: var(--gray-500);
-  margin-bottom: var(--sp-4);
-}
-
-.heroDescription {
-  font-size: 17px;
-  line-height: 1.6;
-  color: var(--gray-700);
-  max-width: 620px;
-  margin-bottom: var(--sp-7);
-}
-
-.heroActions {
-  display: flex;
-  gap: var(--sp-3);
-  flex-wrap: wrap;
-}
-
-.btnPrimary,
-.btnSecondary {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-2);
-  padding: var(--sp-3) var(--sp-5);
-  border-radius: var(--r-sm);
-  font-size: 14px;
-  font-weight: 500;
-  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
-}
-
-.btnPrimary {
-  background: var(--clay);
-  color: var(--white);
-  box-shadow: var(--shadow-sm);
-}
-
-.btnPrimary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.btnSecondary {
-  background: var(--white);
-  color: var(--slate);
-  border: 1px solid var(--gray-300);
-}
-
-.btnSecondary:hover {
-  border-color: var(--oat);
-  transform: translateY(-2px);
-}
-
 .section {
   position: relative;
   z-index: 1;
@@ -91,38 +7,12 @@
 }
 
 @media (max-width: 720px) {
-  .hero {
-    padding: var(--sp-7) var(--sp-5) var(--sp-6);
-  }
-  .heroTitle {
-    font-size: 44px;
-  }
-  .heroDescription {
-    font-size: 16px;
-  }
   .section {
     padding: var(--sp-5) var(--sp-5) var(--sp-6);
   }
 }
 
 @media (max-width: 480px) {
-  .hero {
-    padding: var(--sp-6) var(--sp-4) var(--sp-5);
-  }
-  .heroTitle {
-    font-size: 34px;
-  }
-  .heroRole {
-    font-size: 15px;
-  }
-  .heroDescription {
-    font-size: 15px;
-  }
-  .btnPrimary,
-  .btnSecondary {
-    width: 100%;
-    justify-content: center;
-  }
   .section {
     padding: var(--sp-4) var(--sp-4) var(--sp-5);
   }

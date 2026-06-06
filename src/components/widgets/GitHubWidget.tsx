@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { profile } from '../../content/profile'
 import { WidgetInfoLink } from './WidgetInfoLink'
+import { CountUp } from '../../lib/CountUp'
 import styles from './Widget.module.css'
 
 type GitHubData = {
@@ -50,7 +51,7 @@ export function GitHubWidget() {
         </div>
       </div>
       <div className={styles.widgetValue}>
-        {data ? data.public_repos : <span className={styles.skeleton} />}
+        {data ? <CountUp value={data.public_repos} /> : <span className={styles.skeleton} />}
         {data && <span style={{ fontSize: 14, color: 'var(--gray-500)' }}>repos</span>}
       </div>
       <div className={styles.widgetSub}>

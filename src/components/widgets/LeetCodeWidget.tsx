@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { WidgetInfoLink } from './WidgetInfoLink'
+import { CountUp } from '../../lib/CountUp'
 import styles from './Widget.module.css'
 
 type LeetCodeData = {
@@ -43,7 +44,7 @@ export function LeetCodeWidget() {
         </div>
       </div>
       <div className={styles.widgetValue}>
-        {data ? data.totals.All : <span className={styles.skeleton} />}
+        {data ? <CountUp value={data.totals.All} /> : <span className={styles.skeleton} />}
         {data && <span style={{ fontSize: 14, color: 'var(--gray-500)' }}>solved</span>}
       </div>
       <div className={styles.miniBars} aria-hidden="true">
@@ -64,7 +65,9 @@ export function LeetCodeWidget() {
       </div>
       <div className={styles.widgetMeta}>
         {data ? (
-          <>🔥 {data.calendar.streak}-day streak</>
+          <>
+            <span className={styles.flame}>🔥</span> {data.calendar.streak}-day streak
+          </>
         ) : (
           <span className={styles.smallSkeleton} />
         )}
