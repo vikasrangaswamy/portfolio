@@ -10,6 +10,17 @@
   display: flex;
 }
 
+/* Each grid cell is a stacking context (motion transform). Lift the hovered
+   one above its siblings so an info tooltip spilling toward the card edge
+   paints OVER the neighbouring card instead of behind it. */
+.cell {
+  position: relative;
+}
+
+.cell:hover {
+  z-index: 5;
+}
+
 .row > * > .widget,
 .row > * > a.widget {
   flex: 1;

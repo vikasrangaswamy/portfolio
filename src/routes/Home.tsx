@@ -36,6 +36,7 @@ export default function Home() {
           {widgets.map(({ Component, key }, i) => (
             <motion.div
               key={key}
+              className={widgetStyles.cell}
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.25 + i * 0.07, ease: 'easeOut' }}
