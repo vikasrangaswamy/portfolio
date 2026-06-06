@@ -6,7 +6,9 @@ fileignoreconfig:
 - filename: src/content/projects/impulse-candle-scalper.mdx
   checksum: a61ce13cb424ad606bccc93323b4cc05b549f3de72bbb57050a07fc0a3f4c390
 - filename: src/components/layout/Header.tsx
-  checksum: 598b503712e3581b8d5044a44665296e1c6046afc4d41caff7ea10970a15ab1c
+  checksum: 62288011d9b5232d02eebd75c87cb66025ac0a931e2e9887464fd286037843c1
+- filename: src/components/command/CommandPalette.tsx
+  checksum: 79f3675a376b637cb9683860944cb0ecaa21263717573809c2ab90f5e1b8b54a
 - filename: src/content/colophon/github-widget.mdx
   checksum: fffc85202cbe940204eeebacfa335dc10d512d7f97d168fe01bce1846ed5af73
 - filename: src/components/leetcode/SubmissionHeatmap.tsx
