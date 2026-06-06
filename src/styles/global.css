@@ -2,9 +2,9 @@ body {
   font-family: var(--font-sans);
   background: var(--ivory);
   color: var(--slate);
-  font-size: 17px;
+  font-size: 17.5px;
   line-height: 1.6;
-  font-weight: 400;
+  font-weight: 430;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   display: flex;
