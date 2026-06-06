@@ -1,84 +1,14 @@
 .hero {
-  --glow-opacity: 0;
   position: relative;
-  overflow: hidden;
-  isolation: isolate;
 }
 
 .content {
   position: relative;
-  z-index: 2;
   max-width: var(--content-max);
   margin: 0 auto;
   padding: var(--sp-8) var(--sp-6);
 }
 
-/* ---------- Ambient backdrop ---------- */
-/* Layered radial blooms in earth tones that slowly drift + breathe. Sits
-   behind everything, low-contrast, so it adds depth without fighting the
-   text. */
-.backdrop {
-  position: absolute;
-  inset: -20%;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(40% 40% at 18% 28%, rgba(217, 119, 87, 0.16), transparent 70%),
-    radial-gradient(38% 38% at 82% 22%, rgba(227, 218, 204, 0.55), transparent 70%),
-    radial-gradient(45% 45% at 70% 80%, rgba(217, 119, 87, 0.1), transparent 72%);
-  filter: blur(8px);
-  animation: drift 22s ease-in-out infinite alternate;
-}
-
-@keyframes drift {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(2%, -2%, 0) scale(1.06);
-  }
-  100% {
-    transform: translate3d(-2%, 2%, 0) scale(1.02);
-  }
-}
-
-/* ---------- Cursor warm-glow ---------- */
-.glow {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: var(--glow-opacity);
-  transition: opacity 0.4s ease;
-  background: radial-gradient(
-    260px 260px at var(--mx, 50%) var(--my, 30%),
-    rgba(217, 119, 87, 0.18),
-    transparent 70%
-  );
-}
-
-html[data-theme='dark'] .backdrop {
-  background:
-    radial-gradient(40% 40% at 18% 28%, rgba(217, 119, 87, 0.2), transparent 70%),
-    radial-gradient(38% 38% at 82% 22%, rgba(74, 51, 38, 0.55), transparent 70%),
-    radial-gradient(45% 45% at 70% 80%, rgba(217, 119, 87, 0.12), transparent 72%);
-}
-
-html[data-theme='dark'] .glow {
-  background: radial-gradient(
-    260px 260px at var(--mx, 50%) var(--my, 30%),
-    rgba(230, 139, 111, 0.16),
-    transparent 70%
-  );
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .backdrop {
-    animation: none;
-  }
-}
-
-/* ---------- Type ---------- */
 .title {
   font-size: 64px;
   line-height: 1.05;
@@ -86,51 +16,6 @@ html[data-theme='dark'] .glow {
   color: var(--slate);
   letter-spacing: -0.02em;
   margin: 0 0 var(--sp-5);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 0.28em;
-}
-
-/* Each word rises out of a clipped mask for the reveal. */
-.wordMask {
-  display: inline-block;
-  overflow: hidden;
-  padding-bottom: 0.08em; /* room for descenders while masking */
-}
-
-.word {
-  display: inline-block;
-  /* Slow clay shimmer sweeps across the name once after it lands. */
-  background: linear-gradient(
-    100deg,
-    var(--slate) 0%,
-    var(--slate) 38%,
-    var(--clay) 50%,
-    var(--slate) 62%,
-    var(--slate) 100%
-  );
-  background-size: 250% 100%;
-  background-position: 120% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 1.4s ease-out 0.9s 1 both;
-}
-
-@keyframes shimmer {
-  from {
-    background-position: 120% 0;
-  }
-  to {
-    background-position: -40% 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .word {
-    animation: none;
-    -webkit-text-fill-color: var(--slate);
-  }
 }
 
 .role {
@@ -147,7 +32,6 @@ html[data-theme='dark'] .glow {
   margin-bottom: var(--sp-7);
 }
 
-/* ---------- Actions ---------- */
 .actions {
   display: flex;
   gap: var(--sp-3);
@@ -163,7 +47,7 @@ html[data-theme='dark'] .glow {
   border-radius: var(--r-sm);
   font-size: 14px;
   font-weight: 500;
-  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition), color var(--transition);
 }
 
 .btnPrimary {
