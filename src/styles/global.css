@@ -1,12 +1,6 @@
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  /* Static engineering-notebook dot grid, painted straight onto the body
-     background so it can't hide behind a stacking context. Fixed attachment
-     keeps it still while the page scrolls. */
-  background-color: var(--ivory);
-  background-image: radial-gradient(var(--dot-color, rgba(20, 20, 19, 0.12)) 1.3px, transparent 1.4px);
-  background-size: 24px 24px;
-  background-attachment: fixed;
+  background: var(--ivory);
   color: var(--slate);
   font-size: 17.5px;
   line-height: 1.6;
@@ -15,10 +9,6 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-html[data-theme='dark'] body {
-  --dot-color: rgba(240, 238, 230, 0.10);
 }
 
 #root {
