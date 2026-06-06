@@ -5,7 +5,6 @@ import { CountUp } from '../../lib/CountUp'
 import styles from './Widget.module.css'
 
 type LeetCodeData = {
-  totals: { All: number }
   calendar: {
     streak: number
     submissionCalendar: Record<string, number>
@@ -25,6 +24,7 @@ export function LeetCodeWidget() {
 
   const bars = data ? lastSevenDays(data.calendar.submissionCalendar) : []
   const max = bars.length ? Math.max(...bars, 1) : 1
+  const submissions = data ? lastYearTotal(data.calendar.submissionCalendar) : 0
 
   return (
     <Link to="/learnings/leetcode" className={styles.widget}>
@@ -44,8 +44,8 @@ export function LeetCodeWidget() {
         </div>
       </div>
       <div className={styles.widgetValue}>
-        {data ? <CountUp value={data.totals.All} /> : <span className={styles.skeleton} />}
-        {data && <span style={{ fontSize: 14, color: 'var(--gray-500)' }}>solved</span>}
+        {data ? <CountUp value={submissions} /> : <span className={styles.skeleton} />}
+        {data && <span style={{ fontSize: 14, color: 'var(--gray-500)' }}>submissions</span>}
       </div>
       <div className={styles.miniBars} aria-hidden="true">
         {bars.length === 0
@@ -74,6 +74,17 @@ export function LeetCodeWidget() {
       </div>
     </Link>
   )
+}
+
+/** Total submissions in the last 365 days — matches the stats page framing
+ *  (consistency, not problem counts). */
+function lastYearTotal(submissionCalendar: Record<string, number>): number {
+  const cutoff = Date.now() / 1000 - 365 * 24 * 60 * 60
+  let total = 0
+  for (const [ts, count] of Object.entries(submissionCalendar)) {
+    if (Number(ts) >= cutoff) total += Number(count)
+  }
+  return total
 }
 
 function lastSevenDays(submissionCalendar: Record<string, number>): number[] {
