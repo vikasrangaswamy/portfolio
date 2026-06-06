@@ -95,7 +95,7 @@
 
 .wrap :global(.react-flow__edge-text) {
   fill: var(--flow-edge-label-text);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 500;
 }
