@@ -194,20 +194,20 @@ export function SubmissionHeatmap({ days, theme }: Props) {
             />
           ))}
         </svg>
-
-        {tip && (
-          <div
-            className={styles.tooltip}
-            style={{ left: tip.left, top: tip.top }}
-            aria-hidden="true"
-          >
-            <span className={styles.tooltipCount}>
-              {tip.count} submission{tip.count === 1 ? '' : 's'}
-            </span>
-            <span className={styles.tooltipDate}>{formatFull(tip.date)}</span>
-          </div>
-        )}
       </div>
+
+      {tip && (
+        <div
+          className={styles.tooltip}
+          style={{ left: tip.left, top: tip.top }}
+          aria-hidden="true"
+        >
+          <span className={styles.tooltipCount}>
+            {tip.count} submission{tip.count === 1 ? '' : 's'}
+          </span>
+          <span className={styles.tooltipDate}>{formatFull(tip.date)}</span>
+        </div>
+      )}
 
       <div className={styles.footer}>
         <span className={styles.legend}>
