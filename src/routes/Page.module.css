@@ -5,9 +5,11 @@
   animation: fadeUp 0.5s ease both;
 }
 
-/* Back link above the kicker. Mono, with the arrow sliding left on hover. */
+/* Back link above the kicker — block-level so it sits on its own row, but
+   only as wide as its content so the click target stays tight. */
 .backLink {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   align-items: center;
   gap: var(--sp-2);
   margin-bottom: var(--sp-4);
