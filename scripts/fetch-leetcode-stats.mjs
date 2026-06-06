@@ -28,6 +28,10 @@ const STATS_QUERY = `
       submitStatsGlobal {
         acSubmissionNum { difficulty count submissions }
       }
+      languageProblemCount {
+        languageName
+        problemsSolved
+      }
     }
     allQuestionsCount { difficulty count }
   }
@@ -101,6 +105,7 @@ async function main() {
     ranking: user.profile?.ranking ?? null,
     totals: normalizeTotals(user.submitStatsGlobal?.acSubmissionNum ?? []),
     questionTotals: normalizeTotals(statsData.allQuestionsCount ?? []),
+    languages: normalizeLanguages(user.languageProblemCount ?? []),
     calendar: {
       streak: calendarThis.matchedUser?.userCalendar?.streak ?? 0,
       totalActiveDays: calendarThis.matchedUser?.userCalendar?.totalActiveDays ?? 0,
@@ -126,6 +131,18 @@ function normalizeTotals(arr) {
     if (row?.difficulty && row.difficulty in out) out[row.difficulty] = row.count
   }
   return out
+}
+
+/**
+ * LeetCode returns one row per language *per submission language tag*, which
+ * can include near-duplicates and zero-count rows. Collapse to a clean
+ * { languageName, problemsSolved } list sorted by count desc, dropping zeros.
+ */
+function normalizeLanguages(arr) {
+  return arr
+    .filter((row) => row?.languageName && (row.problemsSolved ?? 0) > 0)
+    .map((row) => ({ languageName: row.languageName, problemsSolved: row.problemsSolved }))
+    .sort((a, b) => b.problemsSolved - a.problemsSolved)
 }
 
 function mergeCalendars(stringArr) {

@@ -3,7 +3,7 @@
   "realName": "VIKAS RANGASWAMY",
   "avatar": "https://assets.leetcode.com/users/VIKAS_RANGASWAMY/avatar_1626924383.png",
   "country": null,
-  "ranking": 2269452,
+  "ranking": 2270980,
   "totals": {
     "All": 58,
     "Easy": 23,
@@ -16,9 +16,23 @@
     "Medium": 2063,
     "Hard": 939
   },
+  "languages": [
+    {
+      "languageName": "Python3",
+      "problemsSolved": 52
+    },
+    {
+      "languageName": "JavaScript",
+      "problemsSolved": 10
+    },
+    {
+      "languageName": "MySQL",
+      "problemsSolved": 4
+    }
+  ],
   "calendar": {
     "streak": 4,
-    "totalActiveDays": 41,
+    "totalActiveDays": 42,
     "submissionCalendar": {
       "1762041600": 5,
       "1765324800": 3,
@@ -68,8 +82,9 @@
       "1779667200": 2,
       "1779840000": 2,
       "1779926400": 1,
-      "1780444800": 1
+      "1780444800": 1,
+      "1780704000": 1
     }
   },
-  "fetchedAt": "2026-06-05T10:15:54.401Z"
+  "fetchedAt": "2026-06-06T02:45:56.030Z"
 }

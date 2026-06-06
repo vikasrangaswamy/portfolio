@@ -1,20 +1,17 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ActivityCalendar, type Activity, type ThemeInput } from 'react-activity-calendar'
-import { profile } from '../content/profile'
 import { useTheme } from '../lib/useTheme'
 import { PageHeader } from '../components/layout/PageHeader'
 import pageStyles from './Page.module.css'
 import styles from './LeetCodeStats.module.css'
 
-type Totals = { All: number; Easy: number; Medium: number; Hard: number }
+type Language = { languageName: string; problemsSolved: number }
 
 type LeetCodeData = {
   username: string | null
   realName: string | null
-  ranking: number | null
-  totals: Totals
-  questionTotals: Totals
+  languages: Language[]
   calendar: {
     streak: number
     totalActiveDays: number
@@ -48,8 +45,7 @@ export default function LeetCodeStats() {
   if (error) {
     return (
       <div className={pageStyles.container}>
-        <div className={pageStyles.tag}>Learnings · LeetCode</div>
-        <h1 className={pageStyles.title}>LeetCode</h1>
+        <PageHeader tag="Learnings · LeetCode" title="LeetCode" />
         <p className={pageStyles.summary}>Stats couldn't load right now. {error}</p>
       </div>
     )
@@ -69,18 +65,19 @@ export default function LeetCodeStats() {
   const profileUrl = data.username
     ? `https://leetcode.com/u/${data.username}/`
     : 'https://leetcode.com'
-  const handle = data.username ?? profile.leetcodeUsername
+  const languages = data.languages ?? []
+  const maxLang = languages.reduce((m, l) => Math.max(m, l.problemsSolved), 0) || 1
 
   return (
     <div className={pageStyles.container}>
       <PageHeader
         tag="Learnings · LeetCode"
         title="LeetCode"
-        summary={`Practice across ${data.questionTotals.All.toLocaleString()} problems. Stats and submission heatmap synced daily from leetcode.com/u/${handle}.`}
+        summary="A daily problem-solving habit. The heatmap and stats below sync automatically from my LeetCode profile each morning."
       />
       <div className={styles.profileRow}>
         <a href={profileUrl} target="_blank" rel="noreferrer" className={styles.profileLink}>
-          View profile on leetcode.com ↗
+          View full profile on leetcode.com ↗
         </a>
       </div>
 
@@ -92,43 +89,39 @@ export default function LeetCodeStats() {
         </div>
       )}
 
-      <section className={styles.statsGrid}>
-        <StatCard
-          label="Total Solved"
-          value={data.totals.All}
-          sub={`of ${data.questionTotals.All.toLocaleString()}`}
-          accent="clay"
-          delay={0}
-        />
-        <StatCard
-          label="Easy"
-          value={data.totals.Easy}
-          sub={`of ${data.questionTotals.Easy.toLocaleString()}`}
-          accent="success"
-          delay={0.05}
-        />
-        <StatCard
-          label="Medium"
-          value={data.totals.Medium}
-          sub={`of ${data.questionTotals.Medium.toLocaleString()}`}
-          accent="warning"
-          delay={0.1}
-        />
-        <StatCard
-          label="Hard"
-          value={data.totals.Hard}
-          sub={`of ${data.questionTotals.Hard.toLocaleString()}`}
-          accent="danger"
-          delay={0.15}
-        />
+      <section className={styles.consistencyRow}>
+        <ConsistencyStat label="Current Streak" value={`${data.calendar.streak}`} unit="days" delay={0} />
+        <ConsistencyStat label="Active Days" value={`${data.calendar.totalActiveDays}`} unit="this year" delay={0.05} />
+        <ConsistencyStat label="Submissions" value={`${lastYear}`} unit="last 12 mo" delay={0.1} />
       </section>
 
-      <section className={styles.secondaryStats}>
-        <SecondaryStat label="Current Streak" value={`${data.calendar.streak} days`} />
-        <SecondaryStat label="Active Days" value={`${data.calendar.totalActiveDays}`} />
-        <SecondaryStat label="Submissions (1y)" value={`${lastYear}`} />
-        <SecondaryStat label="Global Ranking" value={data.ranking ? `#${data.ranking.toLocaleString()}` : '—'} />
-      </section>
+      {languages.length > 0 && (
+        <motion.section
+          className={styles.langCard}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.15, ease: 'easeOut' }}
+        >
+          <header className={styles.cardHeader}>
+            <h2 className={styles.cardTitle}>Languages</h2>
+            <span className={styles.cardMeta}>by problems solved</span>
+          </header>
+          <ul className={styles.langList}>
+            {languages.map((lang) => (
+              <li key={lang.languageName} className={styles.langRow}>
+                <span className={styles.langName}>{lang.languageName}</span>
+                <span className={styles.langBarTrack}>
+                  <span
+                    className={styles.langBarFill}
+                    style={{ width: `${(lang.problemsSolved / maxLang) * 100}%` }}
+                  />
+                </span>
+                <span className={styles.langCount}>{lang.problemsSolved}</span>
+              </li>
+            ))}
+          </ul>
+        </motion.section>
+      )}
 
       <motion.section
         className={styles.heatmapCard}
@@ -136,9 +129,9 @@ export default function LeetCodeStats() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.25, ease: 'easeOut' }}
       >
-        <header className={styles.heatmapHeader}>
-          <h2 className={styles.heatmapTitle}>Submission activity</h2>
-          <span className={styles.heatmapMeta}>last 12 months</span>
+        <header className={styles.cardHeader}>
+          <h2 className={styles.cardTitle}>Submission activity</h2>
+          <span className={styles.cardMeta}>last 12 months</span>
         </header>
         <div className={styles.heatmapWrap}>
           <ActivityCalendar
@@ -175,40 +168,31 @@ export default function LeetCodeStats() {
   )
 }
 
-function StatCard({
+function ConsistencyStat({
   label,
   value,
-  sub,
-  accent,
+  unit,
   delay,
 }: {
   label: string
-  value: number
-  sub?: string
-  accent: 'clay' | 'success' | 'warning' | 'danger'
+  value: string
+  unit: string
   delay: number
 }) {
   return (
     <motion.div
-      className={`${styles.stat} ${styles[`stat-${accent}`]}`}
+      className={styles.consistency}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay, ease: 'easeOut' }}
       whileHover={{ y: -3 }}
     >
-      <div className={styles.statLabel}>{label}</div>
-      <div className={styles.statValue}>{value}</div>
-      {sub && <div className={styles.statSub}>{sub}</div>}
+      <div className={styles.consistencyLabel}>{label}</div>
+      <div className={styles.consistencyValue}>
+        {value}
+        <span className={styles.consistencyUnit}>{unit}</span>
+      </div>
     </motion.div>
-  )
-}
-
-function SecondaryStat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className={styles.secondary}>
-      <span className={styles.secondaryLabel}>{label}</span>
-      <span className={styles.secondaryValue}>{value}</span>
-    </div>
   )
 }
 
