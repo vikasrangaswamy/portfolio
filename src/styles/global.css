@@ -1,6 +1,12 @@
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: var(--ivory);
+  /* Static engineering-notebook dot grid, painted straight onto the body
+     background so it can't hide behind a stacking context. Fixed attachment
+     keeps it still while the page scrolls. */
+  background-color: var(--ivory);
+  background-image: radial-gradient(var(--dot-color, rgba(20, 20, 19, 0.12)) 1.3px, transparent 1.4px);
+  background-size: 24px 24px;
+  background-attachment: fixed;
   color: var(--slate);
   font-size: 17.5px;
   line-height: 1.6;
@@ -11,24 +17,8 @@ body {
   flex-direction: column;
 }
 
-/* Static engineering-notebook dot grid behind everything. Fixed so it stays
-   put while the page scrolls; faint so it's texture, not noise. No animation. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: radial-gradient(
-    var(--dot-color, rgba(20, 20, 19, 0.05)) 1px,
-    transparent 1px
-  );
-  background-size: 22px 22px;
-  background-position: -1px -1px;
-}
-
-html[data-theme='dark'] body::before {
-  --dot-color: rgba(240, 238, 230, 0.045);
+html[data-theme='dark'] body {
+  --dot-color: rgba(240, 238, 230, 0.10);
 }
 
 #root {
