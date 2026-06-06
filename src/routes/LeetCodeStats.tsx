@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ActivityCalendar, type Activity, type ThemeInput } from 'react-activity-calendar'
 import { useTheme } from '../lib/useTheme'
 import { PageHeader } from '../components/layout/PageHeader'
+import { SubmissionHeatmap, type ActivityDay } from '../components/leetcode/SubmissionHeatmap'
 import pageStyles from './Page.module.css'
 import styles from './LeetCodeStats.module.css'
-
-type Language = { languageName: string; problemsSolved: number }
 
 type LeetCodeData = {
   username: string | null
   realName: string | null
-  languages: Language[]
   calendar: {
     streak: number
     totalActiveDays: number
@@ -19,11 +16,6 @@ type LeetCodeData = {
   }
   fetchedAt: string | null
   _placeholder?: boolean
-}
-
-const HEATMAP_THEME: ThemeInput = {
-  light: ['#F0EEE6', '#EDD8C7', '#E5B594', '#D97757', '#A04E2E'],
-  dark: ['#2E2E2A', '#5A3D2E', '#92583A', '#D97757', '#E68B6F'],
 }
 
 export default function LeetCodeStats() {
@@ -65,8 +57,6 @@ export default function LeetCodeStats() {
   const profileUrl = data.username
     ? `https://leetcode.com/u/${data.username}/`
     : 'https://leetcode.com'
-  const languages = data.languages ?? []
-  const maxLang = languages.reduce((m, l) => Math.max(m, l.problemsSolved), 0) || 1
 
   return (
     <div className={pageStyles.container}>
@@ -95,34 +85,6 @@ export default function LeetCodeStats() {
         <ConsistencyStat label="Submissions" value={`${lastYear}`} unit="last 12 mo" delay={0.1} />
       </section>
 
-      {languages.length > 0 && (
-        <motion.section
-          className={styles.langCard}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.15, ease: 'easeOut' }}
-        >
-          <header className={styles.cardHeader}>
-            <h2 className={styles.cardTitle}>Languages</h2>
-            <span className={styles.cardMeta}>by problems solved</span>
-          </header>
-          <ul className={styles.langList}>
-            {languages.map((lang) => (
-              <li key={lang.languageName} className={styles.langRow}>
-                <span className={styles.langName}>{lang.languageName}</span>
-                <span className={styles.langBarTrack}>
-                  <span
-                    className={styles.langBarFill}
-                    style={{ width: `${(lang.problemsSolved / maxLang) * 100}%` }}
-                  />
-                </span>
-                <span className={styles.langCount}>{lang.problemsSolved}</span>
-              </li>
-            ))}
-          </ul>
-        </motion.section>
-      )}
-
       <motion.section
         className={styles.heatmapCard}
         initial={{ opacity: 0, y: 12 }}
@@ -133,31 +95,7 @@ export default function LeetCodeStats() {
           <h2 className={styles.cardTitle}>Submission activity</h2>
           <span className={styles.cardMeta}>last 12 months</span>
         </header>
-        <div className={styles.heatmapWrap}>
-          <ActivityCalendar
-            data={activities}
-            theme={HEATMAP_THEME}
-            colorScheme={theme}
-            blockSize={12}
-            blockMargin={3}
-            fontSize={12}
-            showWeekdayLabels
-            labels={{
-              totalCount: '{{count}} submissions in {{year}}',
-            }}
-            renderBlock={(block, activity) => {
-              if (activity.count === 0) return block
-              return (
-                <g>
-                  {block}
-                  <title>
-                    {activity.count} submission{activity.count === 1 ? '' : 's'} on {activity.date}
-                  </title>
-                </g>
-              )
-            }}
-          />
-        </div>
+        <SubmissionHeatmap days={activities} theme={theme} />
         {data.fetchedAt && (
           <footer className={styles.heatmapFooter}>
             Updated {formatRelative(data.fetchedAt)} · synced daily at 06:17 UTC
@@ -196,7 +134,7 @@ function ConsistencyStat({
   )
 }
 
-function toActivities(submissionCalendar: Record<string, number>): Activity[] {
+function toActivities(submissionCalendar: Record<string, number>): ActivityDay[] {
   const today = new Date()
   const end = new Date(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())
   const start = new Date(end)
@@ -210,7 +148,7 @@ function toActivities(submissionCalendar: Record<string, number>): Activity[] {
     map.set(key, (map.get(key) ?? 0) + Number(count))
   }
 
-  const out: Activity[] = []
+  const out: ActivityDay[] = []
   const cursor = new Date(start)
   while (cursor <= end) {
     const key = isoDate(cursor)

@@ -1,6 +1,6 @@
 fileignoreconfig:
 - filename: package-lock.json
-  checksum: e0493dbad4f7e225c9e9318431e0dbcdd4bca8bfb1d985aa76ce8543f2febbc6
+  checksum: b22e222a8cf114cf46e48cafa4b4b09f42321f9a6fc8fcf488142f34db9859d8
 - filename: src/components/diagrams/FlowNodes.tsx
   checksum: a46152f1d5035b331262f50cddca290a2ddf8658d3ab1791a29ebe0437b7a5ee
 - filename: src/content/projects/impulse-candle-scalper.mdx
@@ -9,6 +9,6 @@ fileignoreconfig:
   checksum: 598b503712e3581b8d5044a44665296e1c6046afc4d41caff7ea10970a15ab1c
 - filename: src/content/colophon/github-widget.mdx
   checksum: fffc85202cbe940204eeebacfa335dc10d512d7f97d168fe01bce1846ed5af73
-- filename: src/routes/LeetCodeStats.tsx
-  checksum: 97e9fafefb96cb0431ac45bf6f1e1a317a2fa39f8cc64980f05f99a00cb8e4a9
+- filename: src/components/leetcode/SubmissionHeatmap.tsx
+  checksum: c496e6b9e9f8cedf4e3354e97eafca5e9ef9d3b600411c95e49a2b65fccc91ea
 version: "1.0"

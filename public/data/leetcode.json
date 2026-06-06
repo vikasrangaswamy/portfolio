@@ -16,20 +16,6 @@
     "Medium": 2063,
     "Hard": 939
   },
-  "languages": [
-    {
-      "languageName": "Python3",
-      "problemsSolved": 52
-    },
-    {
-      "languageName": "JavaScript",
-      "problemsSolved": 10
-    },
-    {
-      "languageName": "MySQL",
-      "problemsSolved": 4
-    }
-  ],
   "calendar": {
     "streak": 4,
     "totalActiveDays": 42,
@@ -86,5 +72,5 @@
       "1780704000": 1
     }
   },
-  "fetchedAt": "2026-06-06T02:45:56.030Z"
+  "fetchedAt": "2026-06-06T03:05:48.386Z"
 }
