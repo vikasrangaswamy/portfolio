@@ -1,6 +1,6 @@
 fileignoreconfig:
 - filename: package-lock.json
-  checksum: b22e222a8cf114cf46e48cafa4b4b09f42321f9a6fc8fcf488142f34db9859d8
+  checksum: 057d113a15bef23f3bfa39108db43b00cdfda8e39af2a293e3de7641a76125d8
 - filename: src/components/diagrams/FlowNodes.tsx
   checksum: a46152f1d5035b331262f50cddca290a2ddf8658d3ab1791a29ebe0437b7a5ee
 - filename: src/content/projects/impulse-candle-scalper.mdx
@@ -8,7 +8,9 @@ fileignoreconfig:
 - filename: src/components/layout/Header.tsx
   checksum: 62288011d9b5232d02eebd75c87cb66025ac0a931e2e9887464fd286037843c1
 - filename: src/components/command/CommandPalette.tsx
-  checksum: 79f3675a376b637cb9683860944cb0ecaa21263717573809c2ab90f5e1b8b54a
+  checksum: 5401b7edd5598a684b71c676ba8d7305ab686942a224ac400702ab4fc7b57bca
+- filename: src/lib/searchIndex.ts
+  checksum: 778b212234d6f693d49d5371eb7a74569acc4c639ef34dffd48a2ac49146a2ee
 - filename: src/content/colophon/github-widget.mdx
   checksum: fffc85202cbe940204eeebacfa335dc10d512d7f97d168fe01bce1846ed5af73
 - filename: src/components/leetcode/SubmissionHeatmap.tsx
