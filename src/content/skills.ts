@@ -5,6 +5,17 @@ export type SkillCategory = {
 
 export const skills: readonly SkillCategory[] = [
   {
+    category: 'AI & Automation',
+    skills: [
+      'Contentstack Automate (AI connectors)',
+      'LLM integrations (Claude, OpenAI)',
+      'Agentic tool-use',
+      'Model Context Protocol (MCP)',
+      'Claude Code',
+      'n8n',
+    ],
+  },
+  {
     category: 'Languages',
     skills: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C'],
   },
@@ -14,7 +25,7 @@ export const skills: readonly SkillCategory[] = [
   },
   {
     category: 'Backend & APIs',
-    skills: ['Node.js', 'Express', 'MongoDB', 'REST', 'GraphQL', 'Webhooks', 'OAuth 2.0'],
+    skills: ['Node.js', 'Express', 'MongoDB', 'REST', 'GraphQL', 'microservices', 'Webhooks', 'OAuth 2.0'],
   },
   {
     category: 'Cloud & AWS',
@@ -25,8 +36,8 @@ export const skills: readonly SkillCategory[] = [
     skills: ['Contentstack', 'Shopify (embedded apps, Admin GraphQL)', 'MetaTrader 5'],
   },
   {
-    category: 'AI & Automation',
-    skills: ['Contentstack Automate', 'n8n'],
+    category: 'Practices',
+    skills: ['CI/CD', 'Unit & integration testing', 'Agile / Scrum'],
   },
   {
     category: 'Tools',

@@ -88,6 +88,13 @@
   color: var(--danger);
 }
 
+.answerLink {
+  color: var(--clay);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  word-break: break-word;
+}
+
 .cursor {
   display: inline-block;
   width: 0.55em;

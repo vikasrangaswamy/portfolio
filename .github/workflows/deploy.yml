@@ -47,3 +47,28 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v5
+
+  # Keep the AI assistant in sync with the site: the worker builds its context
+  # from src/content/* in this same checkout, so deploying it on every push
+  # guarantees the bot never drifts from the website.
+  deploy-worker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Deploy worker (skips if no Cloudflare token configured)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::notice::CLOUDFLARE_API_TOKEN not set — skipping worker deploy. Add the secret to enable auto-sync."
+            exit 0
+          fi
+          cd worker
+          npm install
+          npx wrangler deploy

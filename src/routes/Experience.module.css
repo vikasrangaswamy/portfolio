@@ -122,24 +122,19 @@
   letter-spacing: 0;
 }
 
-.bullets {
-  margin: var(--sp-2) 0 var(--sp-3);
-  padding-left: var(--sp-5);
-  list-style: disc;
-}
-
-.bullets li {
+/* One neutral line on the area of work — quiet, sits under the role title. */
+.roleArea {
+  margin: var(--sp-1) 0 var(--sp-3);
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.5;
   color: var(--gray-700);
-  margin-bottom: var(--sp-1);
 }
 
 .techRow {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-2) var(--sp-3);
-  margin-top: var(--sp-3);
+  margin-top: 0;
 }
 
 /* Keycap-style tech chip */
@@ -165,10 +160,7 @@
     grid-template-columns: 14px 1fr;
     gap: var(--sp-3);
   }
-  .bullets {
-    padding-left: var(--sp-4);
-  }
-  .bullets li {
+  .roleArea {
     font-size: 13.5px;
   }
 }

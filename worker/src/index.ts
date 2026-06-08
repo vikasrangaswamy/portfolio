@@ -1,4 +1,4 @@
-import { CONTEXT } from './context'
+import { CONTEXT, CONTACT } from './context'
 
 export interface Env {
   AI: Ai
@@ -23,11 +23,12 @@ const MAX_TOKENS = 300
 const SYSTEM_PROMPT = `You are the assistant on Vikas Rangaswamy's portfolio site. Answer visitors' questions about Vikas using ONLY the context below.
 
 Rules:
-- Answer ONLY from the context. If the answer isn't in it, say you don't have that detail on the site and suggest checking the relevant section (Projects, Experience, Learnings). Never invent facts, dates, employers, or numbers.
+- Answer ONLY from the context, and keep it high-level — his skills, technologies, roles, and projects.
+- If the answer isn't in the context, or it's a private/specific detail (salary, exact internal specifics, anything not stated), do NOT guess. Say you don't have that here and suggest reaching out to Vikas directly: ${CONTACT.email} or LinkedIn ${CONTACT.linkedin}.
 - Be concise: 2–4 sentences, plain text, no markdown headings.
-- Refer to Vikas in the third person ("Vikas has…", "He built…").
-- If asked something unrelated to Vikas or his work, politely decline and steer back to his portfolio.
-- Be warm and direct, not salesy.
+- Refer to Vikas in the third person ("Vikas has…", "He builds…").
+- If asked something unrelated to Vikas, politely decline and point to his contact above.
+- Never invent facts, dates, employers, or numbers. Be warm and direct, not salesy.
 
 Context:
 ${CONTEXT}`
@@ -114,7 +115,7 @@ export default {
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: question },
         ],
-      })) as ReadableStream
+      })) as unknown as ReadableStream
 
       return new Response(stream, {
         headers: {

@@ -5,6 +5,32 @@ import type { Turn } from '../../lib/useAsk'
 import { useTypedPlaceholder } from '../../lib/useTypedPlaceholder'
 import styles from './AskConversation.module.css'
 
+// Turn URLs and emails in an answer into clickable links — so the fallback
+// "reach out to Vikas" contacts the bot emits are tappable.
+const LINK_RE = /(https?:\/\/[^\s]+|[\w.+-]+@[\w-]+\.[\w.-]+)/g
+
+function renderWithLinks(text: string): ReactNode[] {
+  return text.split(LINK_RE).map((part, i) => {
+    if (!part) return null
+    if (/^https?:\/\//.test(part)) {
+      const href = part.replace(/[.,;:)]+$/, '')
+      return (
+        <a key={i} href={href} target="_blank" rel="noreferrer" className={styles.answerLink}>
+          {href}
+        </a>
+      )
+    }
+    if (/^[\w.+-]+@[\w-]+\.[\w.-]+$/.test(part)) {
+      return (
+        <a key={i} href={`mailto:${part}`} className={styles.answerLink}>
+          {part}
+        </a>
+      )
+    }
+    return <span key={i}>{part}</span>
+  })
+}
+
 type Props = {
   turns: Turn[]
   busy: boolean
@@ -89,7 +115,7 @@ export function AskConversation({ turns, busy, ask, autoFocus = false, greeting,
                 </div>
               ) : (
                 <div className={`${styles.answer} ${turn.error ? styles.answerError : ''}`}>
-                  {turn.text || <span className={styles.cursor} />}
+                  {turn.text ? renderWithLinks(turn.text) : <span className={styles.cursor} />}
                 </div>
               )}
             </div>

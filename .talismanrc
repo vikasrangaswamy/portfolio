@@ -38,7 +38,9 @@ fileignoreconfig:
 - filename: src/components/layout/NavAsk.tsx
   checksum: a7c30c9df45e988778efdd9564b4090d732e8aac05516fe531c89758207ecf39
 - filename: src/components/ask/AskConversation.tsx
-  checksum: 09767408743012513b50b333f36f16c89548330bc92ff4184f08b541a54557c2
+  checksum: a6ee820c34f3b8db29414c2ca991c682cb8806f68cc172d972fe4ae98ae5c740
 - filename: worker/src/context.ts
   checksum: 0e6ff6b8e76422730a92c92a1bf95546f117c6f3a9e3e4a35835aee2170d7f5a
+- filename: worker/package-lock.json
+  checksum: ba21eb5334ac370cfe6b875d2150272ff69e9e84f102b0d7fd4d212417a93ec7
 version: "1.0"

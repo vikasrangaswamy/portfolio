@@ -4,7 +4,8 @@ export type Role = {
   start: string
   end: string | 'Present'
   location?: string
-  bullets: readonly string[]
+  /** One neutral line describing the area of work (not achievements). */
+  area?: string
   tech?: readonly string[]
 }
 
@@ -15,12 +16,21 @@ export const experience: readonly Role[] = [
     start: '2025-03',
     end: 'Present',
     location: 'Bangalore, India',
-    bullets: [
-      'Sole developer of the Marketplace XTM App connecting Contentstack with XTM Cloud for translation management — adopted by 20+ enterprise clients.',
-      'Built the full stack: React UI, Node.js API, Contentstack + XTM Cloud integrations, and AWS infrastructure.',
-      'Designed a serverless API with encrypted credentials, async callback handling, and rate limiting to keep translations reliable under bursty load.',
+    area: 'AI connectors & workflow automation · translation integrations',
+    tech: [
+      'Contentstack Automate',
+      'Claude',
+      'OpenAI',
+      'MCP',
+      'Claude Code',
+      'Node.js',
+      'TypeScript',
+      'React',
+      'AWS Lambda',
+      'KMS',
+      'Contentstack',
+      'XTM Cloud',
     ],
-    tech: ['React', 'Node.js', 'TypeScript', 'AWS Lambda', 'KMS', 'Contentstack', 'XTM Cloud'],
   },
   {
     company: 'Contentstack',
@@ -28,11 +38,7 @@ export const experience: readonly Role[] = [
     start: '2023-07',
     end: '2025-03',
     location: 'Bangalore, India',
-    bullets: [
-      'Owned key features of the Shopify ↔ Contentstack integration app, syncing CMS content into Shopify metafields and metaobjects on Remix.',
-      'Built the Contentstack OAuth flow, merchant-facing connect/sync UI in Shopify Polaris, and the webhook handling layer.',
-      'Implemented the initial bulk sync pipeline and MongoDB session storage that the app still runs on.',
-    ],
+    area: 'Shopify ↔ CMS integration app',
     tech: ['Remix', 'React', 'Node.js', 'MongoDB', 'Shopify Polaris', 'OAuth 2.0', 'Webhooks'],
   },
   {
@@ -41,9 +47,7 @@ export const experience: readonly Role[] = [
     start: '2023-01',
     end: '2023-07',
     location: 'Bangalore, India',
-    bullets: [
-      'Built a Custom Reference Field Marketplace app from scratch, letting content authors attach and manage reference entries directly inside Contentstack entries.',
-    ],
+    area: 'Marketplace app development',
     tech: ['React', 'TypeScript', 'Contentstack Marketplace SDK'],
   },
   {
@@ -52,10 +56,7 @@ export const experience: readonly Role[] = [
     start: '2022-07',
     end: '2022-09',
     location: 'Chennai, India',
-    bullets: [
-      'Led software integration for custom User Equipment using a Telit FN980 cellular modem with Raspberry Pi.',
-      'Implemented PCIe communication and AT-command control for modem interactions in a 5G environment.',
-    ],
+    area: '5G user-equipment integration',
     tech: ['Python', 'C', 'Linux', 'PCIe', 'AT commands'],
   },
 ]

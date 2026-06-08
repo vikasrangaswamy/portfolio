@@ -3,7 +3,7 @@ export const profile = {
   role: 'Software Engineer',
   company: 'Contentstack',
   tagline:
-    'Full-stack engineer building SaaS marketplace apps and enterprise integrations. React, Node.js, TypeScript, Python, AWS.',
+    'Full-stack engineer building AI & automation connectors, enterprise integrations, and SaaS marketplace apps. React, Node.js, TypeScript, Python, AWS.',
   location: 'Bangalore, India',
   email: 'vikasrangaswamyy@gmail.com',
   github: 'https://github.com/vikasrangaswamy',
@@ -12,9 +12,9 @@ export const profile = {
   leetcodeUsername: 'VIKAS_RANGASWAMY',
   githubUsername: 'vikasrangaswamy',
   /** Short, present-tense status for the "Now" widget on the home page. */
-  now: 'MT5 algorithmic trading EAs in Python',
+  now: 'AI connectors for Contentstack Automate',
   about: [
-    "I'm a software engineer at Contentstack, where I build marketplace apps and integrations that connect a headless CMS to the rest of the SaaS world — translation platforms, e-commerce, automation tooling.",
+    "I'm a software engineer at Contentstack, where I build AI connectors and workflow automation for Contentstack Automate — plus the marketplace apps and integrations that connect a headless CMS to the rest of the SaaS world (translation platforms, e-commerce, automation tooling).",
     "Most of my work sits at the seam between product UX and infrastructure: a React surface a content author actually wants to use, backed by serverless APIs, webhook plumbing, encrypted credentials, and the unglamorous reliability work that keeps integrations from breaking at 2 a.m.",
     "Outside work I write algorithmic trading bots in Python for MetaTrader 5 and study system design. This site collects the work I'm willing to put my name on.",
   ],

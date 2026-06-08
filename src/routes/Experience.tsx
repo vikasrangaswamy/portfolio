@@ -67,11 +67,7 @@ export default function Experience() {
 
   return (
     <div className={pageStyles.container}>
-      <PageHeader
-        tag="Experience"
-        title="Work history"
-        summary="Two companies, four roles. Most recent first."
-      />
+      <PageHeader tag="Experience" title="Work history" />
       <div className={styles.timeline}>
         {groups.map((group, gi) => (
           <motion.section
@@ -100,11 +96,7 @@ export default function Experience() {
                       <span className={styles.roleTitle}>{role.title}</span>
                       <span className={styles.roleRange}>{formatRange(role)}</span>
                     </div>
-                    <ul className={styles.bullets}>
-                      {role.bullets.map((b) => (
-                        <li key={b}>{b}</li>
-                      ))}
-                    </ul>
+                    {role.area && <p className={styles.roleArea}>{role.area}</p>}
                     {role.tech && (
                       <div className={styles.techRow}>
                         {role.tech.map((t) => (
