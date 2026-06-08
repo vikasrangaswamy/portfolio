@@ -15,8 +15,8 @@ export function Bio() {
       </div>
 
       <p className={styles.lead}>
-        I build AI &amp; automation connectors, enterprise integrations, and SaaS marketplace apps
-        at Contentstack.
+        I work on automation, AI connectors, and agentic systems — plus enterprise integrations and
+        SaaS apps at Contentstack.
       </p>
 
       <dl className={styles.facts}>

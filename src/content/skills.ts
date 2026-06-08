@@ -7,11 +7,10 @@ export const skills: readonly SkillCategory[] = [
   {
     category: 'AI & Automation',
     skills: [
-      'Contentstack Automate (AI connectors)',
-      'LLM integrations (Claude, OpenAI)',
-      'Agentic tool-use',
-      'Model Context Protocol (MCP)',
-      'Claude Code',
+      'AI connectors',
+      'Workflow automation',
+      'Agentic systems',
+      'LLM integrations',
       'n8n',
     ],
   },
