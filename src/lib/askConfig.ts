@@ -21,14 +21,14 @@ export function openAsk(question?: string) {
 
 /** Full questions — used for the self-typing placeholder in the input. */
 export const ASK_SUGGESTIONS = [
-  'What AI work has Vikas done?',
-  'What does he work on these days?',
+  'What does Vikas work on?',
+  'Does he work with AI and agents?',
   "What's his AWS experience?",
 ] as const
 
 /** Ready-made questions shown as chips in the terminal intro; tapping asks one. */
 export const ASK_TOPICS = [
-  'What AI & automation has he built?',
+  'What automation & AI work does he do?',
   'What did he build at Contentstack?',
   "What's his strongest skill?",
 ] as const
