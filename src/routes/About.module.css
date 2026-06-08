@@ -54,8 +54,8 @@
 }
 
 .skillBlock h2 {
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 19px;
+  font-weight: 600;
   color: var(--slate);
   margin-bottom: var(--sp-4);
 }

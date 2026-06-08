@@ -1,0 +1,15 @@
+name = "ask-vikas"
+main = "src/index.ts"
+compatibility_date = "2025-05-01"
+
+# Workers AI binding — no API key in code; auth is the Cloudflare account.
+# remote = true lets `wrangler dev` call real Workers AI (no local simulator).
+[ai]
+binding = "AI"
+remote = true
+
+# KV for rate limiting. Create with:  wrangler kv namespace create RL
+# then paste the returned id below.
+[[kv_namespaces]]
+binding = "RL"
+id = "47e2e30e876646a9be5b749274ff8385"

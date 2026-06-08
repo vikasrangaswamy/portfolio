@@ -2,13 +2,13 @@ import { Outlet } from 'react-router-dom'
 import { Header } from './Header'
 import { Footer } from './Footer'
 import { GlobalSoundListener } from '../../lib/GlobalSoundListener'
-import { CommandPalette } from '../command/CommandPalette'
+import { AskTerminal } from '../ask/AskTerminal'
 
 export function PageShell() {
   return (
     <>
       <GlobalSoundListener />
-      <CommandPalette />
+      <AskTerminal />
       <Header />
       <main>
         <Outlet />

@@ -15,8 +15,8 @@
   border-bottom: 1px solid var(--oat);
   padding: var(--sp-4) var(--sp-7);
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-template-areas: 'logo nav right';
+  grid-template-columns: auto 1fr auto auto;
+  grid-template-areas: 'logo ask nav right';
   align-items: center;
   column-gap: var(--sp-6);
   animation: fadeIn 0.35s ease both;
@@ -29,9 +29,9 @@
   display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.022em;
   color: var(--slate);
   white-space: nowrap;
   transition: opacity var(--transition);
@@ -75,9 +75,23 @@
   color: var(--gray-700);
 }
 
-.navLinkActive {
+/* Current page is the one "important" link — bolder + a clay underline so
+   location reads at a glance, while the rest stay quiet. */
+.navLinkActive,
+.navLinkActive:hover {
   color: var(--clay);
-  font-weight: 500;
+  font-weight: 600;
+}
+
+.navLinkActive::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--clay);
 }
 
 /* ---------- Toggles cluster ---------- */
@@ -87,40 +101,6 @@
   display: inline-flex;
   align-items: center;
   gap: var(--sp-3);
-}
-
-/* ⌘K command-palette launcher — two small keycaps. */
-.cmdkButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  height: 32px;
-  padding: 0 var(--sp-2);
-  background: transparent;
-  border: 1px solid var(--gray-300);
-  border-radius: var(--r-sm);
-  cursor: pointer;
-  transition: border-color var(--transition), background var(--transition);
-}
-
-.cmdkButton:hover {
-  border-color: var(--clay);
-  background: var(--gray-100);
-}
-
-.cmdkKey {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--gray-700);
-}
-
-/* Hide the launcher on phones — the shortcut/affordance is desktop-leaning,
-   and the wrapped nav already gives full access. */
-@media (max-width: 640px) {
-  .cmdkButton {
-    display: none;
-  }
 }
 
 /* ---------- Tablet (≤820px) — tighten gaps before wrap kicks in. */
@@ -142,6 +122,7 @@
     grid-template-columns: 1fr auto;
     grid-template-areas:
       'logo right'
+      'ask  ask'
       'nav  nav';
     row-gap: var(--sp-3);
     padding: var(--sp-3) var(--sp-4);

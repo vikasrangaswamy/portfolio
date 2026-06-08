@@ -1,11 +1,8 @@
 import { NavLink, Link } from 'react-router-dom'
 import { ThemeToggle } from './ThemeToggle'
 import { SoundToggle } from './SoundToggle'
-import { COMMAND_PALETTE_EVENT } from '../command/CommandPalette'
+import { NavAsk } from './NavAsk'
 import styles from './Header.module.css'
-
-const isMac =
-  typeof navigator !== 'undefined' && /mac/i.test(navigator.platform || navigator.userAgent)
 
 const navItems = [
   { to: '/about', label: 'About' },
@@ -22,6 +19,7 @@ export function Header() {
         <span className={styles.logoDot} />
         Vikas Rangaswamy
       </Link>
+      <NavAsk />
       <nav className={styles.nav}>
         {navItems.map((item) => (
           <NavLink
@@ -36,17 +34,6 @@ export function Header() {
         ))}
       </nav>
       <div className={styles.right}>
-        <button
-          type="button"
-          className={styles.cmdkButton}
-          onClick={() => window.dispatchEvent(new CustomEvent(COMMAND_PALETTE_EVENT))}
-          data-tip="Command palette"
-          data-tip-below
-          aria-label="Open command palette"
-        >
-          <kbd className={styles.cmdkKey}>{isMac ? '⌘' : 'ctrl'}</kbd>
-          <kbd className={styles.cmdkKey}>K</kbd>
-        </button>
         <SoundToggle />
         <ThemeToggle />
       </div>

@@ -1,0 +1,112 @@
+/* Left identity pane of the home page. */
+
+.bio {
+  max-width: 460px;
+}
+
+.name {
+  margin: 0 0 var(--sp-3);
+  font-size: 52px;
+  line-height: 1.02;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--slate);
+}
+
+.role {
+  margin-bottom: var(--sp-5);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--gray-500);
+  min-height: 1.4em; /* reserve space so layout doesn't jump as it types */
+}
+
+.lead {
+  margin: 0 0 var(--sp-5);
+  font-size: 18px;
+  line-height: 1.55;
+  font-weight: 450;
+  color: var(--gray-700);
+}
+
+.facts {
+  margin: 0 0 var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.fact {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+}
+
+.factLabel {
+  flex-shrink: 0;
+  width: 48px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--clay);
+}
+
+.factValue {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--gray-700);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.link {
+  color: var(--gray-500);
+  transition: color var(--transition);
+}
+
+.link:hover {
+  color: var(--clay);
+}
+
+.sep {
+  color: var(--gray-300);
+}
+
+@media (max-width: 880px) {
+  .bio {
+    max-width: none;
+  }
+  .name {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .name {
+    font-size: 34px;
+  }
+  .lead {
+    font-size: 16px;
+  }
+  .actions :global(.kbd-btn) {
+    flex: 1;
+  }
+}

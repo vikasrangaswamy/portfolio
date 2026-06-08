@@ -7,7 +7,7 @@
  * server.
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 type SoundName = 'boop' | 'pop' | 'click' | 'swish' | 'chord'
 
@@ -131,26 +131,46 @@ function readMuted(): boolean {
   }
 }
 
-function writeMuted(muted: boolean) {
+/**
+ * Mute is GLOBAL, not per-hook. Every useSound() consumer (the global click
+ * listener, the toggle button, the command palette) must agree on a single
+ * source of truth — otherwise toggling mute in one component leaves another's
+ * copy stale and sounds keep firing. Hold it at module scope and notify
+ * subscribers on change.
+ */
+let mutedState: boolean | null = null
+const subscribers = new Set<() => void>()
+
+function getMuted(): boolean {
+  if (mutedState === null) mutedState = readMuted()
+  return mutedState
+}
+
+function setMutedState(next: boolean) {
+  mutedState = next
   try {
-    localStorage.setItem(STORAGE_KEY, String(muted))
+    localStorage.setItem(STORAGE_KEY, String(next))
   } catch {
     // ignore
   }
+  for (const fn of subscribers) fn()
 }
 
 export function useSound() {
-  const [muted, setMuted] = useState<boolean>(true)
-  const mutedRef = useRef(true)
+  const [muted, setLocal] = useState<boolean>(getMuted)
 
   useEffect(() => {
-    const initial = readMuted()
-    setMuted(initial)
-    mutedRef.current = initial
+    const update = () => setLocal(getMuted())
+    update() // resync in case state changed between render and mount
+    subscribers.add(update)
+    return () => {
+      subscribers.delete(update)
+    }
   }, [])
 
   const play = useCallback((name: SoundName, gain = 1) => {
-    if (mutedRef.current) return
+    // Always read the single source of truth — never a per-instance copy.
+    if (getMuted()) return
     const ctx = getCtx()
     if (!ctx) return
     if (ctx.state === 'suspended') void ctx.resume()
@@ -163,20 +183,16 @@ export function useSound() {
   }, [])
 
   const toggleMute = useCallback(() => {
-    setMuted((prev) => {
-      const next = !prev
-      mutedRef.current = next
-      writeMuted(next)
-      // Click feedback when *unmuting* so the user knows it worked.
-      if (!next) {
-        const ctx = getCtx()
-        if (ctx) {
-          if (ctx.state === 'suspended') void ctx.resume()
-          for (const voice of PRESETS.boop) playVoice(ctx, voice, 1)
-        }
+    const next = !getMuted()
+    setMutedState(next)
+    // Click feedback when *unmuting* so the user knows it worked.
+    if (!next) {
+      const ctx = getCtx()
+      if (ctx) {
+        if (ctx.state === 'suspended') void ctx.resume()
+        for (const voice of PRESETS.boop) playVoice(ctx, voice, 1)
       }
-      return next
-    })
+    }
   }, [])
 
   return { play, muted, toggleMute }

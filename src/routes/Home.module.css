@@ -1,19 +1,54 @@
+/* Two-pane landing: identity on the left, live AI terminal on the right. */
+.split {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--sp-6) var(--sp-6) var(--sp-4);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-8);
+  align-items: center;
+}
+
+.bioCol {
+  min-width: 0;
+}
+
+.termCol {
+  min-width: 0;
+}
+
+/* Stack the panes once they get cramped side by side. */
+@media (max-width: 880px) {
+  .split {
+    grid-template-columns: 1fr;
+    gap: var(--sp-6);
+    padding: var(--sp-6) var(--sp-5) var(--sp-4);
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .split {
+    padding: var(--sp-5) var(--sp-4) var(--sp-4);
+  }
+}
+
 .section {
   position: relative;
   z-index: 1;
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: var(--sp-6) var(--sp-6) var(--sp-7);
+  padding: var(--sp-3) var(--sp-6) var(--sp-6);
 }
 
 @media (max-width: 720px) {
   .section {
-    padding: var(--sp-5) var(--sp-5) var(--sp-6);
+    padding: var(--sp-3) var(--sp-5) var(--sp-6);
   }
 }
 
 @media (max-width: 480px) {
   .section {
-    padding: var(--sp-4) var(--sp-4) var(--sp-5);
+    padding: var(--sp-3) var(--sp-4) var(--sp-5);
   }
 }

@@ -27,4 +27,18 @@ fileignoreconfig:
   checksum: 461705d4bc04e1136e2766b60181dcea7454beb3513b34436b0ea4e0ecdf2e3e
 - filename: src/components/widgets/GitHubWidget.tsx
   checksum: f525347965bab63bb05f3f50edb1ba87441b0f336d8726ef39920dbb1c8860ae
+- filename: worker/wrangler.toml
+  checksum: 71df4bfdcc2797a78d80e665df6b3722b55595358f9fa389534283b2852998f4
+- filename: src/lib/sound.ts
+  checksum: 1326db238d224e7079caa2655c2fe4330cb1f07d0e0e7cb582a3f341a6845a11
+- filename: src/components/ask/AskTerminal.tsx
+  checksum: 216728634a65c5b9b44725d2982f9ab3476ac2ea09e040756a679dc55384e7aa
+- filename: worker/src/index.ts
+  checksum: 70d1c8eee2b4f22243ab817e01c0f63da614dfd4c9f4348f8a4b338099d59c20
+- filename: src/components/layout/NavAsk.tsx
+  checksum: a7c30c9df45e988778efdd9564b4090d732e8aac05516fe531c89758207ecf39
+- filename: src/components/ask/AskConversation.tsx
+  checksum: 09767408743012513b50b333f36f16c89548330bc92ff4184f08b541a54557c2
+- filename: worker/src/context.ts
+  checksum: 0e6ff6b8e76422730a92c92a1bf95546f117c6f3a9e3e4a35835aee2170d7f5a
 version: "1.0"

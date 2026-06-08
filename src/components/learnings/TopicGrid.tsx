@@ -42,7 +42,7 @@ export function TopicGrid({ tag, title, summary, trackPath, topics, back }: Prop
               <div
                 style={{
                   fontSize: 17,
-                  fontWeight: 500,
+                  fontWeight: 600,
                   color: 'var(--slate)',
                   marginBottom: 'var(--sp-2)',
                 }}

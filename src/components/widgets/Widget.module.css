@@ -49,7 +49,7 @@
   display: flex;
   align-items: baseline;
   gap: var(--sp-3);
-  margin-bottom: var(--sp-4);
+  margin-bottom: var(--sp-3);
 }
 
 .rowKicker {
@@ -83,14 +83,14 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: var(--sp-5);
+  padding: var(--sp-4);
   background: var(--white);
   border: 1px solid var(--gray-300);
   border-radius: var(--r-md);
   transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
   text-decoration: none;
   color: inherit;
-  min-height: 180px;
+  min-height: 128px;
 }
 
 .widget > .widgetMeta {
@@ -134,7 +134,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--sp-3);
+  margin-bottom: var(--sp-2);
 }
 
 .widgetLabel {
@@ -175,8 +175,8 @@
 }
 
 .widgetValue {
-  font-size: 28px;
-  font-weight: 500;
+  font-size: 30px;
+  font-weight: 700;
   color: var(--slate);
   letter-spacing: -0.01em;
   font-variant-numeric: tabular-nums;

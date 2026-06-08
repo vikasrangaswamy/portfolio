@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
-import { Hero } from '../components/home/Hero'
+import { Bio } from '../components/home/Bio'
+import { HeroTerminal } from '../components/home/HeroTerminal'
 import { LeetCodeWidget } from '../components/widgets/LeetCodeWidget'
 import { GitHubWidget } from '../components/widgets/GitHubWidget'
 import { RoleWidget } from '../components/widgets/RoleWidget'
@@ -17,7 +18,24 @@ const widgets = [
 export default function Home() {
   return (
     <>
-      <Hero />
+      <section className={styles.split}>
+        <motion.div
+          className={styles.bioCol}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+        >
+          <Bio />
+        </motion.div>
+        <motion.div
+          className={styles.termCol}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.12, ease: 'easeOut' }}
+        >
+          <HeroTerminal />
+        </motion.div>
+      </section>
 
       <section className={styles.section}>
         <motion.div
@@ -39,7 +57,7 @@ export default function Home() {
               className={widgetStyles.cell}
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.25 + i * 0.07, ease: 'easeOut' }}
+              transition={{ duration: 0.45, delay: 0.3 + i * 0.07, ease: 'easeOut' }}
               whileHover={{ y: -3 }}
             >
               <Component />

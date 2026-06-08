@@ -56,11 +56,11 @@
 
 .title {
   font-size: 36px;
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  font-weight: 700;
+  letter-spacing: -0.025em;
   color: var(--slate);
   margin-bottom: var(--sp-3);
-  line-height: 1.15;
+  line-height: 1.12;
 }
 
 .summary {

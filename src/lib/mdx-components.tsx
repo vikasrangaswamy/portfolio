@@ -6,9 +6,9 @@ export const mdxComponents: MDXComponents = {
   h1: (props: ComponentPropsWithoutRef<'h1'>) => (
     <h1
       style={{
-        fontSize: 28,
-        fontWeight: 500,
-        letterSpacing: '-0.01em',
+        fontSize: 30,
+        fontWeight: 700,
+        letterSpacing: '-0.025em',
         margin: '0 0 var(--sp-4)',
         color: 'var(--slate)',
       }}
@@ -18,8 +18,9 @@ export const mdxComponents: MDXComponents = {
   h2: (props: ComponentPropsWithoutRef<'h2'>) => (
     <h2
       style={{
-        fontSize: 20,
-        fontWeight: 500,
+        fontSize: 21,
+        fontWeight: 600,
+        letterSpacing: '-0.015em',
         margin: 'var(--sp-6) 0 var(--sp-3)',
         color: 'var(--slate)',
       }}
@@ -30,7 +31,7 @@ export const mdxComponents: MDXComponents = {
     <h3
       style={{
         fontSize: 16,
-        fontWeight: 500,
+        fontWeight: 600,
         margin: 'var(--sp-5) 0 var(--sp-2)',
         color: 'var(--slate)',
       }}
