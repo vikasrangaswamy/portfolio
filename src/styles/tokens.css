@@ -15,6 +15,15 @@ html[data-theme='light'] {
   --danger:   #B04A4A;
   --info:     #5C7CA3;
 
+  /* Console palette — intentionally dark in BOTH themes so the home terminal
+     always reads as a real console, distinct from the page around it. */
+  --console-bg:        #1C1B18;
+  --console-elev:      #26241F;
+  --console-fg:        #ECE7DA;
+  --console-fg-strong: #FAF7EF;
+  --console-muted:     #9A968A;
+  --console-border:    rgba(236, 231, 218, 0.14);
+
   --shadow-sm: 0 1px 2px rgba(20, 20, 19, 0.06);
   --shadow-md: 0 4px 10px rgba(20, 20, 19, 0.08);
   --shadow-lg: 0 12px 28px rgba(20, 20, 19, 0.12);
@@ -60,6 +69,11 @@ html[data-theme='dark'] {
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
   --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.45);
+
+  /* On the dark page the console must read as an ELEVATED, lighter surface
+     (the light-theme near-black would blend into the dark background). */
+  --console-bg:    #26241F;
+  --console-elev:  #322F28;
 }
 
 html {

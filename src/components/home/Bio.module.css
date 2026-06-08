@@ -66,28 +66,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-3);
-  margin-bottom: var(--sp-4);
-}
-
-.links {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  font-family: var(--font-mono);
-  font-size: 13px;
-}
-
-.link {
-  color: var(--gray-500);
-  transition: color var(--transition);
-}
-
-.link:hover {
-  color: var(--clay);
-}
-
-.sep {
-  color: var(--gray-300);
 }
 
 @media (max-width: 880px) {

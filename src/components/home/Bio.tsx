@@ -19,31 +19,17 @@ export function Bio() {
         algorithmic trading bots in Python after hours.
       </p>
 
+      <dl className={styles.facts}>
+        <div className={styles.fact}>
+          <dt className={styles.factLabel}>stack</dt>
+          <dd className={styles.factValue}>React · Node.js · TypeScript · Python · AWS</dd>
+        </div>
+      </dl>
+
       <div className={styles.actions}>
         <Link to="/projects" className="kbd-btn kbd-btn--primary">
           See projects →
         </Link>
-        <Link to="/about" className="kbd-btn kbd-btn--secondary">
-          About
-        </Link>
-      </div>
-
-      <div className={styles.links}>
-        <a href={profile.github} target="_blank" rel="noreferrer" className={styles.link}>
-          GitHub
-        </a>
-        <span className={styles.sep} aria-hidden="true">
-          ·
-        </span>
-        <a href={profile.linkedin} target="_blank" rel="noreferrer" className={styles.link}>
-          LinkedIn
-        </a>
-        <span className={styles.sep} aria-hidden="true">
-          ·
-        </span>
-        <a href={`mailto:${profile.email}`} className={styles.link}>
-          Email
-        </a>
       </div>
     </div>
   )

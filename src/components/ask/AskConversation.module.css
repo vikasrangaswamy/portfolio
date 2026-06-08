@@ -1,5 +1,7 @@
 /* Shared transcript / chips / input styling for the ask surfaces (modal + the
-   embedded hero terminal). Window chrome lives in the callers' stylesheets. */
+   embedded hero terminal). Colors come from --ask-* custom properties with the
+   original light values as fallbacks, so the modal stays light by default and
+   the home terminal can override them to a dark console palette. */
 
 .body {
   flex: 1;
@@ -11,19 +13,19 @@
 }
 
 .intro {
-  color: var(--gray-500);
+  color: var(--ask-muted, var(--gray-500));
 }
 
-/* The assistant's opening line — reads as its voice (a touch darker). */
+/* The assistant's opening line — reads as its voice (a touch stronger). */
 .greetLine {
   margin: 0 0 var(--sp-5);
-  color: var(--gray-700);
+  color: var(--ask-fg, var(--gray-700));
 }
 
 .topicsLabel {
   margin: 0 0 var(--sp-3);
   font-size: 12px;
-  color: var(--gray-500);
+  color: var(--ask-muted, var(--gray-500));
 }
 
 .topics {
@@ -33,9 +35,29 @@
   gap: var(--sp-2);
 }
 
-.topics button {
-  cursor: pointer;
+/* Local chip (replaces global kbd-chip so it reads on a dark console too). */
+.topicChip {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
   text-align: left;
+  cursor: pointer;
+  color: var(--ask-fg, var(--gray-700));
+  background: var(--ask-chip-bg, var(--white));
+  border: 1px solid var(--ask-chip-border, var(--gray-300));
+  border-radius: var(--r-xs);
+  box-shadow: 0 2px 0 0 var(--ask-chip-border, var(--gray-300));
+  padding: 4px 10px;
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.topicChip:hover:not(:disabled) {
+  border-color: var(--clay);
+  color: var(--clay);
+}
+
+.topicChip:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .turn {
@@ -45,7 +67,7 @@
 .userLine {
   display: flex;
   gap: var(--sp-2);
-  color: var(--slate);
+  color: var(--ask-fg-strong, var(--slate));
   font-weight: 500;
 }
 
@@ -58,7 +80,7 @@
 .answer {
   margin-top: var(--sp-2);
   padding-left: calc(var(--sp-2) + 0.6em);
-  color: var(--gray-700);
+  color: var(--ask-fg, var(--gray-700));
   white-space: pre-wrap;
 }
 
@@ -85,34 +107,71 @@
   }
 }
 
+/* Input row, styled as an obvious bordered field with a send button. */
 .inputRow {
   display: flex;
   align-items: center;
-  gap: var(--sp-3);
-  padding: var(--sp-3) var(--sp-4);
-  border-top: 1px solid var(--gray-100);
+  gap: var(--sp-2);
+  margin: var(--sp-3) var(--sp-4);
+  padding: var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-3);
+  background: var(--ask-field-bg, var(--white));
+  border: 1px solid var(--ask-border, var(--gray-300));
+  border-radius: var(--r-sm);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.inputRow:focus-within {
+  border-color: var(--clay);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--clay) 18%, transparent);
 }
 
 .input {
   flex: 1;
+  min-width: 0;
   border: none;
   background: transparent;
   outline: none;
   font-family: var(--font-mono);
   font-size: 14px;
-  color: var(--slate);
+  color: var(--ask-fg, var(--slate));
 }
 
 .input::placeholder {
-  color: var(--gray-500);
+  color: var(--ask-muted, var(--gray-500));
+}
+
+/* Send button — clay, clearly the submit affordance. */
+.send {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: var(--r-xs);
+  background: var(--clay);
+  color: #fff;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--transition), opacity var(--transition);
+}
+
+.send:hover:not(:disabled) {
+  background: var(--clay-edge);
+}
+
+.send:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .footer {
-  padding: var(--sp-2) var(--sp-4) var(--sp-3);
+  padding: 0 var(--sp-4) var(--sp-3);
   font-family: var(--font-mono);
   font-size: 10.5px;
-  color: var(--gray-500);
-  border-top: 1px solid var(--gray-100);
+  color: var(--ask-muted, var(--gray-500));
 }
 
 @media (prefers-reduced-motion: reduce) {

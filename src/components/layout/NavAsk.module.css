@@ -12,9 +12,10 @@
   max-width: 360px;
   height: 34px;
   padding: 0 var(--sp-2) 0 var(--sp-3);
-  background: color-mix(in srgb, var(--ivory) 55%, var(--gray-100));
-  border: 1px solid var(--gray-300);
+  background: var(--white);
+  border: 1px solid color-mix(in srgb, var(--clay) 32%, var(--gray-300));
   border-radius: var(--r-sm);
+  box-shadow: var(--shadow-sm);
   transition: border-color var(--transition), box-shadow var(--transition),
     opacity 0.28s ease, transform 0.28s ease;
 }
@@ -30,7 +31,7 @@
 }
 
 .bar:hover {
-  border-color: color-mix(in srgb, var(--clay) 40%, var(--gray-300));
+  border-color: color-mix(in srgb, var(--clay) 60%, var(--gray-300));
 }
 
 .bar:focus-within {

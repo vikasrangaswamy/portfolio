@@ -70,7 +70,7 @@ export function AskConversation({ turns, busy, ask, autoFocus = false, greeting,
                 <button
                   key={q}
                   type="button"
-                  className="kbd-chip"
+                  className={styles.topicChip}
                   onClick={() => void ask(q)}
                   disabled={busy}
                 >
@@ -112,6 +112,14 @@ export function AskConversation({ turns, busy, ask, autoFocus = false, greeting,
           autoComplete="off"
           disabled={busy}
         />
+        <button
+          type="submit"
+          className={styles.send}
+          aria-label="Send"
+          disabled={busy || input.trim().length === 0}
+        >
+          ↵
+        </button>
       </form>
 
       <div className={styles.footer}>AI-generated from this portfolio — may be imperfect.</div>
