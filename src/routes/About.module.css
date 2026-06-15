@@ -60,35 +60,61 @@
   margin-bottom: var(--sp-4);
 }
 
-.skillCategory {
-  margin-bottom: var(--sp-4);
-}
-
-.skillLabel {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  text-transform: lowercase;
-  letter-spacing: 0;
-  color: var(--gray-500);
-  margin-bottom: var(--sp-2);
-}
-
-.chips {
+/* Skills as an aligned list with dotted leaders (man-page / contents style):
+   category label on the left, a dotted leader filling the gap, then the skills
+   as a middot list. Width-constrained so it stays compact, not stretched. */
+.skillRows {
+  margin: 0;
+  max-width: 760px;
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-2) var(--sp-3);
+  flex-direction: column;
+  gap: var(--sp-3);
 }
 
-/* Keycap-style skill chip — mono, raised key with a thin bottom edge. */
-.chip {
+.skillRow {
+  display: grid;
+  grid-template-columns: 215px 1fr;
+  column-gap: var(--sp-3);
+  align-items: baseline;
+}
+
+.skillCat {
+  display: flex;
+  align-items: baseline;
   font-family: var(--font-mono);
-  background: var(--white);
-  border: 1px solid var(--gray-300);
-  border-radius: var(--r-xs);
-  box-shadow: 0 2px 0 0 var(--gray-300);
-  padding: 4px 10px;
-  font-size: 12.5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--clay);
+  white-space: nowrap;
+}
+
+/* The dotted leader — fills the rest of the label column up to the values. */
+.skillCat::after {
+  content: '';
+  flex: 1;
+  margin-left: 0.6em;
+  border-bottom: 1px dotted var(--gray-300);
+  transform: translateY(-0.28em);
+}
+
+.skillVals {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.65;
   color: var(--gray-700);
+}
+
+@media (max-width: 600px) {
+  .skillRow {
+    grid-template-columns: 1fr;
+    row-gap: 2px;
+  }
+  .skillCat::after {
+    display: none;
+  }
 }
 
 .contactRow {

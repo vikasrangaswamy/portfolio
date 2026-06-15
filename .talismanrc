@@ -43,4 +43,6 @@ fileignoreconfig:
   checksum: 0e6ff6b8e76422730a92c92a1bf95546f117c6f3a9e3e4a35835aee2170d7f5a
 - filename: worker/package-lock.json
   checksum: ba21eb5334ac370cfe6b875d2150272ff69e9e84f102b0d7fd4d212417a93ec7
+- filename: src/routes/About.tsx
+  checksum: fa23b1945b5ebfb7edde7cdb51208db1fd8bef2f586f04365e832bc04318d901
 version: "1.0"

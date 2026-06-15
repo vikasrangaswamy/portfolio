@@ -53,18 +53,14 @@ export default function About() {
         transition={{ duration: 0.45, delay: 0.25, ease: 'easeOut' }}
       >
         <h2>Skills</h2>
-        {skills.map((cat) => (
-          <div key={cat.category} className={styles.skillCategory}>
-            <div className={styles.skillLabel}>{cat.category}</div>
-            <div className={styles.chips}>
-              {cat.skills.map((s) => (
-                <span key={s} className={styles.chip}>
-                  {s}
-                </span>
-              ))}
+        <dl className={styles.skillRows}>
+          {skills.map((cat) => (
+            <div key={cat.category} className={styles.skillRow}>
+              <dt className={styles.skillCat}>{cat.category}</dt>
+              <dd className={styles.skillVals}>{cat.skills.join('  ·  ')}</dd>
             </div>
-          </div>
-        ))}
+          ))}
+        </dl>
       </motion.section>
     </div>
   )
