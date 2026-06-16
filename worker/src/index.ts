@@ -5,7 +5,10 @@ export interface Env {
   RL: KVNamespace
 }
 
-const MODEL = '@cf/meta/llama-3.1-8b-instruct'
+// NOTE: the base @cf/meta/llama-3.1-8b-instruct was deprecated/removed from
+// Workers AI; the fp8 variant is the current drop-in (same family, streaming).
+// If answers 502 again, run `wrangler ai models` — the model may have moved.
+const MODEL = '@cf/meta/llama-3.1-8b-instruct-fp8'
 
 const ALLOWED_ORIGINS = new Set([
   'https://vikasrangaswamy.github.io',
@@ -124,7 +127,8 @@ export default {
           ...cors,
         },
       })
-    } catch {
+    } catch (err) {
+      console.error('AI.run failed:', err)
       return json({ error: 'model_error', message: 'The assistant had trouble — try again.' }, 502, cors)
     }
   },
