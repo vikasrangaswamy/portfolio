@@ -5,10 +5,11 @@ export interface Env {
   RL: KVNamespace
 }
 
-// NOTE: the base @cf/meta/llama-3.1-8b-instruct was deprecated/removed from
-// Workers AI; the fp8 variant is the current drop-in (same family, streaming).
-// If answers 502 again, run `wrangler ai models` — the model may have moved.
-const MODEL = '@cf/meta/llama-3.1-8b-instruct-fp8'
+// Models tried in order — if the first errors (e.g. Cloudflare deprecates it,
+// like the old base @cf/meta/llama-3.1-8b-instruct), the next is used so the
+// assistant degrades gracefully instead of going down. Run `wrangler ai models`
+// to see what's current if all of these start failing.
+const MODELS = ['@cf/meta/llama-3.1-8b-instruct-fp8', '@cf/meta/llama-3.3-70b-instruct-fp8-fast']
 
 const ALLOWED_ORIGINS = new Set([
   'https://vikasrangaswamy.github.io',
@@ -109,27 +110,31 @@ export default {
       // If KV hiccups, don't hard-fail the request — just proceed.
     }
 
-    // --- Generate (streamed) ---
-    try {
-      const stream = (await env.AI.run(MODEL, {
-        stream: true,
-        max_tokens: MAX_TOKENS,
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: question },
-        ],
-      })) as unknown as ReadableStream
+    // --- Generate (streamed), trying each model until one works ---
+    const messages = [
+      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'user', content: question },
+    ]
+    for (const model of MODELS) {
+      try {
+        const stream = (await env.AI.run(model, {
+          stream: true,
+          max_tokens: MAX_TOKENS,
+          messages,
+        })) as unknown as ReadableStream
 
-      return new Response(stream, {
-        headers: {
-          'Content-Type': 'text/event-stream',
-          'Cache-Control': 'no-store',
-          ...cors,
-        },
-      })
-    } catch (err) {
-      console.error('AI.run failed:', err)
-      return json({ error: 'model_error', message: 'The assistant had trouble — try again.' }, 502, cors)
+        return new Response(stream, {
+          headers: {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-store',
+            ...cors,
+          },
+        })
+      } catch (err) {
+        // Try the next model; only 502 if they all fail.
+        console.error(`AI.run failed for ${model}:`, err)
+      }
     }
+    return json({ error: 'model_error', message: 'The assistant had trouble — try again.' }, 502, cors)
   },
 }
