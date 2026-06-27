@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useSeo } from '../lib/useSeo'
 import { Bio } from '../components/home/Bio'
 import { HeroTerminal } from '../components/home/HeroTerminal'
 import { LeetCodeWidget } from '../components/widgets/LeetCodeWidget'
@@ -16,6 +17,7 @@ const widgets = [
 ]
 
 export default function Home() {
+  useSeo() // restore the site default title/description on the landing page
   return (
     <>
       <section className={styles.split}>

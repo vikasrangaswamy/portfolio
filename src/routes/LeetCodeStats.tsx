@@ -54,6 +54,7 @@ export default function LeetCodeStats() {
   const isPlaceholder = data._placeholder || !data.username
   const activities = toActivities(data.calendar.submissionCalendar)
   const lastYear = activities.reduce((s, a) => s + a.count, 0)
+  const longestStreak = computeLongestStreak(activities)
   const profileUrl = data.username
     ? `https://leetcode.com/u/${data.username}/`
     : 'https://leetcode.com'
@@ -81,7 +82,7 @@ export default function LeetCodeStats() {
       )}
 
       <section className={styles.consistencyRow}>
-        <ConsistencyStat label="Current Streak" value={`${data.calendar.streak}`} unit="days" delay={0} />
+        <ConsistencyStat label="Longest Streak" value={`${longestStreak}`} unit="days" delay={0} />
         <ConsistencyStat label="Active Days" value={`${data.calendar.totalActiveDays}`} unit="this year" delay={0.05} />
         <ConsistencyStat label="Submissions" value={`${lastYear}`} unit="last 12 mo" delay={0.1} />
       </section>
@@ -133,6 +134,23 @@ function ConsistencyStat({
       </div>
     </motion.div>
   )
+}
+
+/** Longest run of consecutive active days across the rendered 12-month window.
+ *  Derived from the calendar so it's always accurate, unlike LeetCode's
+ *  point-in-time `streak` field (which decays and goes stale between syncs). */
+function computeLongestStreak(days: ActivityDay[]): number {
+  let longest = 0
+  let run = 0
+  for (const d of days) {
+    if (d.count > 0) {
+      run += 1
+      if (run > longest) longest = run
+    } else {
+      run = 0
+    }
+  }
+  return longest
 }
 
 function toActivities(submissionCalendar: Record<string, number>): ActivityDay[] {

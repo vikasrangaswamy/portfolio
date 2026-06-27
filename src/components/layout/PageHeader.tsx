@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { useSeo } from '../../lib/useSeo'
 import styles from '../../routes/Page.module.css'
 
 type Props = {
@@ -10,9 +11,16 @@ type Props = {
   back?: { to: string; label: string }
   /** Hides the bottom divider — useful when the next element provides its own boundary. */
   noDivider?: boolean
+  /** Overrides the SEO/tab title segment (defaults to `tag`). */
+  seoTitle?: string
 }
 
-export function PageHeader({ tag, title, summary, back, noDivider }: Props) {
+export function PageHeader({ tag, title, summary, back, noDivider, seoTitle }: Props) {
+  // The kicker (`tag`) is the clean page name ("About", "Projects") — better as
+  // the tab title than the big visual heading (sometimes the person's name).
+  // Callers can override via `seoTitle`.
+  useSeo(seoTitle ?? tag, summary)
+
   return (
     <header>
       {back && (

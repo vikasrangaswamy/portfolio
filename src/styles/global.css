@@ -9,6 +9,9 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  /* Never let a stray wide element (diagram, code block, table) force the
+     whole page to scroll sideways on a phone. */
+  overflow-x: hidden;
 }
 
 #root {
@@ -16,9 +19,49 @@ body {
   display: flex;
   flex-direction: column;
   /* Scale the whole app up ~10% — the design reads best at this size (what
-     looked right at 110% browser zoom). The modal lives outside #root and
-     keeps its own scale. */
+     looked right at 110% browser zoom). */
   zoom: 1.1;
+}
+
+/* The 1.1 zoom is a desktop nicety; on small viewports it compounds with the
+   narrow screen and makes everything feel oversized and cramped. Render the
+   app at natural scale on tablets and phones. */
+@media (max-width: 820px) {
+  #root {
+    zoom: 1;
+  }
+}
+
+/* Ease the base type down a touch on the smallest screens so dense pages
+   (experience, learnings) breathe. */
+@media (max-width: 480px) {
+  body {
+    font-size: 16px;
+    line-height: 1.58;
+  }
+}
+
+/* ---------- Accessibility ----------------------------------------------- */
+
+/* A clear, consistent keyboard-focus ring. Uses :focus-visible so it appears
+   for keyboard/AT users without showing on mouse clicks. */
+:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Honor reduced-motion globally: near-instant animations/transitions and no
+   smooth scroll. Component-level reduced-motion rules still apply on top. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @keyframes fadeUp {

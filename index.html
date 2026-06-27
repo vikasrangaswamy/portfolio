@@ -8,7 +8,7 @@
     <title>Vikas Rangaswamy — Software Engineer at Contentstack</title>
     <meta
       name="description"
-      content="Vikas Rangaswamy — full-stack software engineer at Contentstack in Bangalore. Portfolio of algorithmic trading projects, system-design notes, and live LeetCode stats."
+      content="Vikas Rangaswamy — software engineer at Contentstack in Bangalore, building automation, AI connectors, and agentic systems, plus enterprise integrations and SaaS marketplace apps."
     />
     <link rel="canonical" href="https://vikasrangaswamy.github.io/portfolio/" />
 
@@ -16,22 +16,26 @@
     <meta property="og:title" content="Vikas Rangaswamy — Software Engineer at Contentstack" />
     <meta
       property="og:description"
-      content="Full-stack engineer building SaaS marketplace apps and enterprise integrations. React, Node.js, TypeScript, Python, AWS."
+      content="Building automation, AI connectors & agentic systems at Contentstack — plus enterprise integrations and SaaS apps. React, Node.js, TypeScript, Python, AWS."
     />
     <meta property="og:type" content="profile" />
     <meta property="profile:first_name" content="Vikas" />
     <meta property="profile:last_name" content="Rangaswamy" />
     <meta property="og:url" content="https://vikasrangaswamy.github.io/portfolio/" />
-    <meta property="og:image" content="https://vikasrangaswamy.github.io/portfolio/og-image.svg" />
+    <meta property="og:image" content="https://vikasrangaswamy.github.io/portfolio/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Vikas Rangaswamy — Software Engineer at Contentstack" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Vikas Rangaswamy — Software Engineer at Contentstack" />
     <meta
       name="twitter:description"
-      content="Full-stack engineer building SaaS marketplace apps and enterprise integrations. React, Node.js, TypeScript, Python, AWS."
+      content="Building automation, AI connectors & agentic systems at Contentstack — plus enterprise integrations and SaaS apps. React, Node.js, TypeScript, Python, AWS."
     />
-    <meta name="twitter:image" content="https://vikasrangaswamy.github.io/portfolio/og-image.svg" />
+    <meta name="twitter:image" content="https://vikasrangaswamy.github.io/portfolio/og-image.png" />
 
     <!-- JSON-LD: Person schema. Helps Google answer name searches with a
          knowledge-panel-style hit — links the site to a single identity. -->
@@ -59,31 +63,53 @@
           "addressRegion": "Karnataka",
           "addressCountry": "IN"
         },
+        "image": "https://vikasrangaswamy.github.io/portfolio/profile.jpg",
         "knowsAbout": [
+          "Automation",
+          "AI connectors",
+          "Agentic systems",
+          "LLM integrations",
           "Full-stack web development",
           "React",
           "Node.js",
           "TypeScript",
           "Python",
           "AWS",
-          "Algorithmic trading",
           "Headless CMS",
           "SaaS integrations"
         ],
         "sameAs": [
           "https://github.com/vikasrangaswamy",
-          "https://www.linkedin.com/in/vikasrangaswamy/"
+          "https://www.linkedin.com/in/vikasrangaswamy/",
+          "https://www.instagram.com/vikas_rangaswamy/"
         ],
-        "description": "Full-stack engineer building SaaS marketplace apps and enterprise integrations at Contentstack."
+        "description": "Software engineer at Contentstack building automation, AI connectors, and agentic systems, plus enterprise integrations and SaaS marketplace apps."
       }
     </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Load the font CSS without blocking first paint: fetch it as a
+         non-blocking "print" stylesheet, then promote it to all media once it
+         arrives. `display=swap` keeps text visible in the fallback font until
+         the web font loads, so there's no invisible-text flash. -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;430;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;430;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;430;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
     <!-- Prevent FOUC by setting initial theme before React mounts -->
     <script>
@@ -101,5 +127,13 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Cloudflare Web Analytics — privacy-first, cookieless. Loads deferred so
+         it never blocks page rendering. -->
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "fba85bb8246c48e2be4c5c9b4426dc55"}'
+    ></script>
   </body>
 </html>

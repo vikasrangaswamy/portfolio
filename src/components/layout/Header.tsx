@@ -1,4 +1,5 @@
-import { NavLink, Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { NavLink, Link, useLocation } from 'react-router-dom'
 import { ThemeToggle } from './ThemeToggle'
 import { SoundToggle } from './SoundToggle'
 import { NavAsk } from './NavAsk'
@@ -13,13 +14,36 @@ const navItems = [
 ]
 
 export function Header() {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const { pathname } = useLocation()
+
+  // Collapse the mobile menu whenever the route changes (e.g. after tapping a
+  // link) so it never lingers open over the new page.
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [pathname])
+
+  // Lock background scroll while the mobile menu is open.
+  useEffect(() => {
+    if (!menuOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [menuOpen])
+
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${menuOpen ? styles.menuOpen : ''}`}>
       <Link to="/" className={styles.logo}>
         <span className={styles.logoDot} />
         Vikas Rangaswamy
       </Link>
-      <NavAsk />
+
+      <div className={styles.askArea}>
+        <NavAsk />
+      </div>
+
       <nav className={styles.nav}>
         {navItems.map((item) => (
           <NavLink
@@ -33,10 +57,31 @@ export function Header() {
           </NavLink>
         ))}
       </nav>
+
       <div className={styles.right}>
         <SoundToggle />
         <ThemeToggle />
+        <button
+          type="button"
+          className={styles.menuButton}
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((v) => !v)}
+        >
+          <span className={styles.menuBar} />
+          <span className={styles.menuBar} />
+          <span className={styles.menuBar} />
+        </button>
       </div>
+
+      {/* Tap-away backdrop, mobile only (CSS-gated). */}
+      <button
+        type="button"
+        className={styles.backdrop}
+        aria-hidden="true"
+        tabIndex={-1}
+        onClick={() => setMenuOpen(false)}
+      />
     </header>
   )
 }

@@ -6,7 +6,6 @@ import styles from './Widget.module.css'
 
 type LeetCodeData = {
   calendar: {
-    streak: number
     submissionCalendar: Record<string, number>
   }
   _placeholder?: boolean
@@ -25,6 +24,7 @@ export function LeetCodeWidget() {
   const bars = data ? lastSevenDays(data.calendar.submissionCalendar) : []
   const max = bars.length ? Math.max(...bars, 1) : 1
   const submissions = data ? lastYearTotal(data.calendar.submissionCalendar) : 0
+  const bestStreak = data ? longestStreakLastYear(data.calendar.submissionCalendar) : 0
 
   return (
     <Link to="/learnings/leetcode" className={styles.widget}>
@@ -66,7 +66,7 @@ export function LeetCodeWidget() {
       <div className={styles.widgetMeta}>
         {data ? (
           <>
-            <span className={styles.flame}>🔥</span> {data.calendar.streak}-day streak
+            <span className={styles.flame}>🔥</span> {bestStreak}-day best streak
           </>
         ) : (
           <span className={styles.smallSkeleton} />
@@ -85,6 +85,28 @@ function lastYearTotal(submissionCalendar: Record<string, number>): number {
     if (Number(ts) >= cutoff) total += Number(count)
   }
   return total
+}
+
+/** Longest run of consecutive active days within the last 365 days. Computed
+ *  from the calendar so it's always correct regardless of how stale the daily
+ *  sync is — unlike LeetCode's point-in-time `streak` field, which decays. */
+function longestStreakLastYear(submissionCalendar: Record<string, number>): number {
+  const today = new Date()
+  let longest = 0
+  let run = 0
+  for (let i = 364; i >= 0; i--) {
+    const d = new Date(today)
+    d.setUTCDate(today.getUTCDate() - i)
+    d.setUTCHours(0, 0, 0, 0)
+    const ts = Math.floor(d.getTime() / 1000)
+    if ((submissionCalendar[String(ts)] ?? 0) > 0) {
+      run += 1
+      if (run > longest) longest = run
+    } else {
+      run = 0
+    }
+  }
+  return longest
 }
 
 function lastSevenDays(submissionCalendar: Record<string, number>): number[] {

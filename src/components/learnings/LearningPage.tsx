@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react'
 import { Link } from 'react-router-dom'
+import { useSeo } from '../../lib/useSeo'
 import pageStyles from '../../routes/Page.module.css'
 import styles from './LearningPage.module.css'
 
@@ -20,6 +21,7 @@ type Props = {
 
 export function LearningPage({ trackLabel, trackHref, topic }: Props) {
   const Body = topic.component
+  useSeo(topic.title, topic.summary)
   return (
     <div className={pageStyles.container}>
       <header className={styles.header}>

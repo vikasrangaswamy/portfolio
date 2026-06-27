@@ -6,7 +6,7 @@ export default function Colophon() {
     <TopicGrid
       tag="Colophon"
       title="How this site works"
-      summary="Short writeups for a couple of features that have non-obvious mechanics behind them — the live LeetCode sync and the client-fetched GitHub stats. Each one walks through the data path and the code that runs it."
+      summary="Short writeups for the features with non-obvious mechanics behind them — the AI &lsquo;Ask&rsquo; assistant, the live LeetCode sync, and the client-fetched GitHub stats. Each one walks through the data path and the code that runs it."
       trackPath="/colophon"
       topics={colophonTopics}
     />

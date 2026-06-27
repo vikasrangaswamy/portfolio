@@ -1,0 +1,67 @@
+import { FlowDiagram } from '../../components/diagrams/FlowDiagram'
+import { askAssistantFlow } from './ask-assistant.flow'
+
+## What's happening
+
+The terminal at the top of the site — and the "Ask" bar in the nav — is a small AI assistant that answers questions about my work. You type a question, press Enter, and the answer streams back token by token, the way a real terminal would print it.
+
+It's grounded: it only answers from a summary of this portfolio, refers to me in the third person, and points you to my email or LinkedIn for anything it doesn't know. There's no chat history, no login, and — importantly — no API key anywhere in the website. The site is still just a static build on GitHub Pages.
+
+## The data path
+
+All the model logic lives in a tiny [Cloudflare Worker](https://github.com/vikasrangaswamy/portfolio/blob/main/worker/src/index.ts). The browser sends it a question; the Worker validates it, checks rate limits, builds the prompt, and streams a grounded answer back.
+
+<FlowDiagram {...askAssistantFlow} />
+
+## Grounded, not freeform
+
+The model never sees the open internet. It gets a system prompt that pins it to a fixed context (a summary of my roles, skills, and projects) and a strict set of rules:
+
+```text
+Answer ONLY from the context, and keep it high-level.
+If the answer isn't in the context — or it's a private detail
+(salary, internal specifics) — do NOT guess. Say you don't have
+that here and point to Vikas's email / LinkedIn.
+Be concise: 2–4 sentences, plain text, third person.
+Never invent facts, dates, employers, or numbers.
+```
+
+So a question like "what's his AWS experience?" gets a real answer, while "what's his salary?" gets a polite "I don't have that — reach out directly." That keeps it useful without letting it hallucinate.
+
+## Free, and hard to abuse
+
+It runs on Workers AI's free daily allowance, so it costs nothing — and a few guardrails keep it that way. A KV-backed counter throttles per-IP and global usage, and the whole thing is capped well under the free budget:
+
+```ts
+const PER_IP_PER_MIN  = 8
+const PER_IP_PER_DAY  = 40
+const GLOBAL_PER_DAY  = 800   // well under the free Workers AI allowance
+const MAX_QUESTION_CHARS = 500
+const MAX_TOKENS = 300
+```
+
+Requests are also locked to known origins via CORS, and over-limit calls return a friendly `429` instead of erroring out. Because there's no payment method on the account, it can never run up a bill — at worst the assistant "rests for the day" and the rest of the site works normally.
+
+## Degrading gracefully
+
+Models on Workers AI get deprecated from time to time (the original `llama-3.1-8b-instruct` was removed), so the Worker tries a list in order and falls back to the next if one fails:
+
+```ts
+const MODELS = [
+  '@cf/meta/llama-3.1-8b-instruct-fp8',
+  '@cf/meta/llama-3.3-70b-instruct-fp8-fast',
+]
+
+for (const model of MODELS) {
+  try {
+    const stream = await env.AI.run(model, { stream: true, max_tokens: MAX_TOKENS, messages })
+    return new Response(stream, { headers: { 'Content-Type': 'text/event-stream', ...cors } })
+  } catch (err) {
+    // try the next model; only 502 if they all fail
+  }
+}
+```
+
+## Why this shape
+
+A static site can't safely hold a model key, and I didn't want a server to babysit. Pushing the one stateful piece — the model call — into a free Worker keeps the website itself completely static and keyless, makes the cost provably zero, and means a bad day for any single model just falls through to the next instead of taking the feature down.

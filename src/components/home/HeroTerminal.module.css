@@ -15,9 +15,18 @@
   --ask-fg-strong: var(--console-fg-strong);
   --ask-muted: var(--console-muted);
   --ask-border: var(--console-border);
-  --ask-field-bg: rgba(255, 255, 255, 0.05);
-  --ask-chip-bg: rgba(255, 255, 255, 0.05);
+  --ask-field-bg: var(--console-field);
+  --ask-chip-bg: var(--console-field);
   --ask-chip-border: var(--console-border);
+}
+
+/* Dark page: the console is now a light surface, so a plain shadow on the dark
+   background is invisible. Lift it with a deep drop shadow and a thin dark ring
+   so the light terminal reads as a distinct, elevated panel. */
+:global(html[data-theme='dark']) .window {
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.45),
+    0 24px 60px -18px rgba(0, 0, 0, 0.85);
 }
 
 .titlebar {
