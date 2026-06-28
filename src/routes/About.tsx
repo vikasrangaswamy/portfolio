@@ -30,7 +30,7 @@ export default function About() {
         transition={{ duration: 0.45, delay: 0.15, ease: 'easeOut' }}
       >
         <div className={styles.sidebar}>
-          <div className={styles.avatar}>
+          <div className={styles.photo}>
             {avatarFailed ? (
               <span aria-label="Profile photo placeholder">V</span>
             ) : (
@@ -39,8 +39,8 @@ export default function About() {
                 <img
                   src={AVATAR_JPG}
                   alt={`${profile.name} — profile photo`}
-                  width={840}
-                  height={560}
+                  width={1536}
+                  height={1024}
                   loading="lazy"
                   decoding="async"
                   onError={() => setAvatarFailed(true)}

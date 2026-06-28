@@ -9,7 +9,7 @@ const navItems = [
   { to: '/about', label: 'About' },
   { to: '/experience', label: 'Experience' },
   { to: '/projects', label: 'Projects' },
-  { to: '/learnings', label: 'Learnings' },
+  { to: '/stats', label: 'Stats' },
   { to: '/colophon', label: 'Colophon' },
 ]
 

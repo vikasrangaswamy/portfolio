@@ -1,7 +1,8 @@
 import { useMemo, useRef, useState } from 'react'
+import type { ActivityDay } from '../../lib/activity'
 import styles from './SubmissionHeatmap.module.css'
 
-export type ActivityDay = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 }
+export type { ActivityDay }
 
 type Props = {
   days: ActivityDay[]

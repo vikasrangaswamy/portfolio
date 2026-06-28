@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { PageShell } from './components/layout/PageShell'
 // Home is the landing page — keep it eager so first paint has no loading flash.
 import Home from './routes/Home'
@@ -11,14 +11,13 @@ const About = lazy(() => import('./routes/About'))
 const Experience = lazy(() => import('./routes/Experience'))
 const Projects = lazy(() => import('./routes/Projects'))
 const ProjectDetail = lazy(() => import('./routes/ProjectDetail'))
-const Learnings = lazy(() => import('./routes/Learnings'))
 const SystemDesignIndex = lazy(() =>
   import('./routes/SystemDesign').then((m) => ({ default: m.SystemDesignIndex })),
 )
 const SystemDesignTopicPage = lazy(() =>
   import('./routes/SystemDesign').then((m) => ({ default: m.SystemDesignTopicPage })),
 )
-const LeetCodeStats = lazy(() => import('./routes/LeetCodeStats'))
+const Stats = lazy(() => import('./routes/Stats'))
 const Colophon = lazy(() => import('./routes/Colophon'))
 const ColophonDetail = lazy(() => import('./routes/ColophonDetail'))
 const NotFound = lazy(() => import('./routes/NotFound'))
@@ -67,15 +66,20 @@ export default function App() {
             }
           />
         </Route>
+        <Route
+          path="stats"
+          element={
+            <Suspense fallback={<RouteFallback />}>
+              <Stats />
+            </Suspense>
+          }
+        />
+        {/* "Learnings" was replaced by the Stats page. The old index and the
+            LeetCode page redirect there; System Design routes stay reachable by
+            URL (currently unlinked) until they're given a new home. */}
         <Route path="learnings">
-          <Route
-            index
-            element={
-              <Suspense fallback={<RouteFallback />}>
-                <Learnings />
-              </Suspense>
-            }
-          />
+          <Route index element={<Navigate to="/stats" replace />} />
+          <Route path="leetcode" element={<Navigate to="/stats" replace />} />
           <Route path="system-design">
             <Route
               index
@@ -94,14 +98,6 @@ export default function App() {
               }
             />
           </Route>
-          <Route
-            path="leetcode"
-            element={
-              <Suspense fallback={<RouteFallback />}>
-                <LeetCodeStats />
-              </Suspense>
-            }
-          />
         </Route>
         <Route path="colophon">
           <Route

@@ -1,4 +1,4 @@
-name: Sync LeetCode stats
+name: Sync stats
 
 on:
   schedule:
@@ -28,14 +28,20 @@ jobs:
           LEETCODE_USERNAME: VIKAS_RANGASWAMY
         run: node scripts/fetch-leetcode-stats.mjs
 
+      - name: Fetch GitHub contributions
+        env:
+          GITHUB_USERNAME: vikasrangaswamy
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/fetch-github-contributions.mjs
+
       - name: Commit if changed
         id: commit
         run: |
-          if [[ -n "$(git status --porcelain public/data/leetcode.json)" ]]; then
+          if [[ -n "$(git status --porcelain public/data/)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add public/data/leetcode.json
-            git commit -m "chore: refresh LeetCode stats"
+            git add public/data/leetcode.json public/data/github.json
+            git commit -m "chore: refresh LeetCode + GitHub stats"
             git push
             echo "committed=true" >> "$GITHUB_OUTPUT"
           else

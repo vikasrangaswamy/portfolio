@@ -36,34 +36,9 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/learnings</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/learnings/leetcode</loc>
+    <loc>https://vikasrangaswamy.github.io/portfolio/stats</loc>
     <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/learnings/system-design</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/learnings/system-design/url-shortener</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/learnings/system-design/aws-batch</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/learnings/system-design/aws-lambda</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://vikasrangaswamy.github.io/portfolio/colophon</loc>

@@ -27,7 +27,7 @@ export function LeetCodeWidget() {
   const bestStreak = data ? longestStreakLastYear(data.calendar.submissionCalendar) : 0
 
   return (
-    <Link to="/learnings/leetcode" className={styles.widget}>
+    <Link to="/stats" className={styles.widget}>
       <div className={styles.widgetHead}>
         <span className={styles.widgetLabel}>LeetCode</span>
         <div className={styles.widgetHeadActions}>
