@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/</loc>
+    <loc>https://vikasrangaswamy.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/about</loc>
+    <loc>https://vikasrangaswamy.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/experience</loc>
+    <loc>https://vikasrangaswamy.com/experience</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/projects</loc>
+    <loc>https://vikasrangaswamy.com/projects</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/projects/bidirectional-grid-hedge</loc>
+    <loc>https://vikasrangaswamy.com/projects/bidirectional-grid-hedge</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/projects/highlow-breakout-scalper</loc>
+    <loc>https://vikasrangaswamy.com/projects/highlow-breakout-scalper</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/projects/impulse-candle-scalper</loc>
+    <loc>https://vikasrangaswamy.com/projects/impulse-candle-scalper</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/stats</loc>
+    <loc>https://vikasrangaswamy.com/stats</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/colophon</loc>
+    <loc>https://vikasrangaswamy.com/colophon</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/colophon/ask-assistant</loc>
+    <loc>https://vikasrangaswamy.com/colophon/ask-assistant</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/colophon/leetcode-sync</loc>
+    <loc>https://vikasrangaswamy.com/colophon/leetcode-sync</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://vikasrangaswamy.github.io/portfolio/colophon/github-widget</loc>
+    <loc>https://vikasrangaswamy.com/colophon/github-widget</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

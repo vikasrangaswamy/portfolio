@@ -6,12 +6,9 @@ on:
   workflow_dispatch:
 
 permissions:
+  # Just needs to commit the refreshed JSON. Cloudflare Pages auto-builds on
+  # the resulting push to main, so there's no deploy workflow to dispatch.
   contents: write
-  # actions:write lets the final step dispatch deploy.yml. Without this,
-  # daily sync commits land on main but never wake the Pages deploy
-  # workflow up — GITHUB_TOKEN-authored pushes do NOT trigger other
-  # workflows by default, with workflow_dispatch as the one exception.
-  actions: write
 
 jobs:
   sync:
@@ -35,7 +32,6 @@ jobs:
         run: node scripts/fetch-github-contributions.mjs
 
       - name: Commit if changed
-        id: commit
         run: |
           if [[ -n "$(git status --porcelain public/data/)" ]]; then
             git config user.name "github-actions[bot]"
@@ -43,14 +39,6 @@ jobs:
             git add public/data/leetcode.json public/data/github.json
             git commit -m "chore: refresh LeetCode + GitHub stats"
             git push
-            echo "committed=true" >> "$GITHUB_OUTPUT"
           else
             echo "No changes."
-            echo "committed=false" >> "$GITHUB_OUTPUT"
           fi
-
-      - name: Dispatch Pages deploy
-        if: steps.commit.outputs.committed == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run deploy.yml --ref main

@@ -12,7 +12,9 @@ export interface Env {
 const MODELS = ['@cf/meta/llama-3.1-8b-instruct-fp8', '@cf/meta/llama-3.3-70b-instruct-fp8-fast']
 
 const ALLOWED_ORIGINS = new Set([
-  'https://vikasrangaswamy.github.io',
+  'https://vikasrangaswamy.com',
+  'https://www.vikasrangaswamy.com',
+  'https://vikasrangaswamy.github.io', // legacy GitHub Pages host (transition)
   'http://localhost:5173',
   'http://localhost:4173', // vite preview
 ])
@@ -38,7 +40,7 @@ Context:
 ${CONTEXT}`
 
 function corsHeaders(origin: string | null): Record<string, string> {
-  const allow = origin && ALLOWED_ORIGINS.has(origin) ? origin : 'https://vikasrangaswamy.github.io'
+  const allow = origin && ALLOWED_ORIGINS.has(origin) ? origin : 'https://vikasrangaswamy.com'
   return {
     'Access-Control-Allow-Origin': allow,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',

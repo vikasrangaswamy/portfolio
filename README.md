@@ -2,17 +2,17 @@
 
 Personal portfolio of **Vikas Rangaswamy** — software engineer at Contentstack.
 
-Live at **[vikasrangaswamy.github.io/portfolio](https://vikasrangaswamy.github.io/portfolio/)**.
+Live at **[vikasrangaswamy.com](https://vikasrangaswamy.com/)**.
 
 ## Stack
 
-Vite + React 19 + TypeScript · MDX content authoring · Mermaid for architecture diagrams · CSS Modules with a warm earth-tone design system · GitHub Pages for hosting.
+Vite + React 19 + TypeScript · MDX content authoring · Mermaid for architecture diagrams · CSS Modules with a warm earth-tone design system · Cloudflare Pages for hosting.
 
 ## Develop
 
 ```bash
 npm install
-npm run dev          # http://localhost:5173/portfolio/
+npm run dev          # http://localhost:5173/
 npm run typecheck    # tsc -b --noEmit
 npm run build        # production build → dist/
 npm run preview      # serve dist/ locally
@@ -44,4 +44,4 @@ src/
 
 ## Deploy
 
-A push to `main` triggers `.github/workflows/deploy.yml`, which builds the site and publishes to GitHub Pages.
+Hosted on **Cloudflare Pages**, connected to this repo. A push to `main` triggers a Cloudflare build (`npm run build`, output `dist/`) and publishes automatically — including the daily bot commits from the "Sync stats" workflow that refresh `public/data/*.json`.

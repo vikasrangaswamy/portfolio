@@ -4,7 +4,9 @@ import mdx from '@mdx-js/rollup'
 import rehypePrettyCode from 'rehype-pretty-code'
 
 export default defineConfig({
-  base: '/portfolio/',
+  // Served at the domain root on Cloudflare Pages (and *.pages.dev), so no
+  // sub-path base. (Was '/portfolio/' for GitHub Pages project hosting.)
+  base: '/',
   plugins: [
     {
       enforce: 'pre',

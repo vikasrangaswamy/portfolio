@@ -1,0 +1,4 @@
+# Cloudflare Pages SPA fallback: serve index.html for any path that isn't a
+# real static asset, so client-side routes (e.g. /projects/x, /stats) resolve
+# on direct load and refresh instead of 404ing.
+/*    /index.html   200
