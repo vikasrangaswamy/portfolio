@@ -171,14 +171,10 @@
       </p>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>
-
-    <!-- Cloudflare Web Analytics (manual snippet). Token is for the
-         vikasrangaswamy.com site — Cloudflare Pages does not auto-inject, so
-         the snippet is required. Deferred so it never blocks rendering. -->
-    <script
-      defer
-      src="https://static.cloudflareinsights.com/beacon.min.js"
-      data-cf-beacon='{"token": "ed6b4a5d7bc54c40a6ca34cdab548467"}'
-    ></script>
+    <!-- Web Analytics: this domain is proxied through Cloudflare, so RUM is
+         handled by automatic injection at the edge (Web Analytics → site set to
+         "Enable"), which posts to same-origin /cdn-cgi/rum. A manual token
+         snippet posts to cloudflareinsights.com/cdn-cgi/rum and 404s here, so
+         it is intentionally NOT used. -->
   </body>
 </html>
