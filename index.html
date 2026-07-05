@@ -171,13 +171,8 @@
       </p>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>
-
-    <!-- Cloudflare Web Analytics — privacy-first, cookieless. Loads deferred so
-         it never blocks page rendering. -->
-    <script
-      defer
-      src="https://static.cloudflareinsights.com/beacon.min.js"
-      data-cf-beacon='{"token": "fba85bb8246c48e2be4c5c9b4426dc55"}'
-    ></script>
+    <!-- Cloudflare Web Analytics is auto-injected at the edge for this proxied
+         domain (Web Analytics → site set to "Enable"). No manual beacon here —
+         a manual snippet would suppress the auto-injection. -->
   </body>
 </html>
