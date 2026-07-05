@@ -171,15 +171,9 @@
       </p>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>
-
-    <!-- Cloudflare Web Analytics — manual snippet (required: Cloudflare Pages
-         does NOT auto-inject the beacon). Token is for the vikasrangaswamy.com
-         site. The beacon posts to cloudflareinsights.com/cdn-cgi/rum; that call
-         is blocked/404'd by ad-blockers, so verify from a clean browser. -->
-    <script
-      defer
-      src="https://static.cloudflareinsights.com/beacon.min.js"
-      data-cf-beacon='{"token": "3116358875124162aaa666a7d97df1ec"}'
-    ></script>
+    <!-- No Cloudflare Web Analytics beacon: this site is served by Cloudflare
+         Pages, where the manual token snippet fails (external collector CORS)
+         and auto-injection isn't supported. Visitor analytics come from the
+         zone's server-side Traffic analytics instead. -->
   </body>
 </html>
