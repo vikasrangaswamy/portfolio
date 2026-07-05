@@ -52,5 +52,10 @@ fileignoreconfig:
 - filename: src/routes/Stats.tsx
   checksum: 3351f31c89b4dc123af4d53c412e4ac15e17338d6df9aa40ac816206241c6d55
 - filename: index.html
-  checksum: 661b8ab8debff83362448962eee987b83b9503aa19ab8a4b89a490d285d1db5f
+  checksum: 668c3419a9582152a0b047b39e0e66df5846ded41866c5d8053b4bb9d17480e5
+  # index.html ships a 32-char hex token (analytics/verification id — public,
+  # not a secret) that trips Talisman's hex detector on every edit. Allow any
+  # 32-hex string here so we stop re-whitelisting the file each time.
+  allowed_patterns:
+    - '[0-9a-f]{32}'
 version: "1.0"
