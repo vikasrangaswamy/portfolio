@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { site } from '../site.config'
 
 /**
  * Per-route document title + meta description for this SPA. React Router swaps
@@ -8,10 +9,9 @@ import { useEffect } from 'react'
  *
  * Pass nothing for the home page to restore the site defaults.
  */
-const SITE = 'Vikas Rangaswamy'
-const DEFAULT_TITLE = 'Vikas Rangaswamy — Software Engineer at Contentstack'
-const DEFAULT_DESCRIPTION =
-  'Vikas Rangaswamy — software engineer at Contentstack in Bangalore, building automation, AI connectors, and agentic systems, plus enterprise integrations and SaaS marketplace apps.'
+const SITE = site.name
+const DEFAULT_TITLE = site.title
+const DEFAULT_DESCRIPTION = site.description
 
 function setMeta(selector: string, content: string) {
   const el = document.head.querySelector<HTMLMetaElement>(selector)

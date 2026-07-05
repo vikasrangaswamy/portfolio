@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useTheme } from '../lib/useTheme'
 import { PageHeader } from '../components/layout/PageHeader'
@@ -30,10 +31,18 @@ type LeetCodeData = {
   _placeholder?: boolean
 }
 
+type Source = 'github' | 'leetcode'
+
 export default function Stats() {
   const { theme } = useTheme()
+  const [searchParams] = useSearchParams()
   const [gh, setGh] = useState<GitHubData | null>(null)
   const [lc, setLc] = useState<LeetCodeData | null>(null)
+  // Open on the tab the visitor came in on (e.g. the home GitHub/LeetCode
+  // widgets link to /stats?tab=…). Defaults to GitHub.
+  const [active, setActive] = useState<Source>(
+    searchParams.get('tab') === 'leetcode' ? 'leetcode' : 'github',
+  )
 
   useEffect(() => {
     const base = import.meta.env.BASE_URL
@@ -55,8 +64,32 @@ export default function Stats() {
         summary="A live look at my coding activity — GitHub contributions and LeetCode practice, each synced automatically from my profiles every morning."
       />
 
-      <GitHubSection data={gh} theme={theme} />
-      <LeetCodeSection data={lc} theme={theme} />
+      <div className={styles.toggle} role="tablist" aria-label="Choose a data source">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={active === 'github'}
+          className={active === 'github' ? `${styles.toggleBtn} ${styles.toggleBtnActive}` : styles.toggleBtn}
+          onClick={() => setActive('github')}
+        >
+          GitHub
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={active === 'leetcode'}
+          className={active === 'leetcode' ? `${styles.toggleBtn} ${styles.toggleBtnActive}` : styles.toggleBtn}
+          onClick={() => setActive('leetcode')}
+        >
+          LeetCode
+        </button>
+      </div>
+
+      {active === 'github' ? (
+        <GitHubSection data={gh} theme={theme} />
+      ) : (
+        <LeetCodeSection data={lc} theme={theme} />
+      )}
     </div>
   )
 }
@@ -138,7 +171,7 @@ function Section({
   fetchedAt: string | null
 }) {
   return (
-    <section style={{ marginTop: 'var(--sp-7)' }}>
+    <section style={{ marginTop: 'var(--sp-4)' }}>
       <div className={styles.profileRow}>
         <a href={profileUrl} target="_blank" rel="noreferrer" className={styles.profileLink}>
           {profileLabel}
@@ -176,7 +209,7 @@ function Section({
 
 function SectionLoading({ title }: { title: string }) {
   return (
-    <section style={{ marginTop: 'var(--sp-7)' }}>
+    <section style={{ marginTop: 'var(--sp-4)' }}>
       <header className={styles.cardHeader}>
         <h2 className={styles.cardTitle}>{title}</h2>
         <span className={styles.cardMeta}>loading…</span>

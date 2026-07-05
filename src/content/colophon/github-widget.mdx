@@ -1,78 +1,79 @@
 ## What's happening
 
-The GitHub tile on the home page shows a live `public_repos` count and follower count from `api.github.com`. There's no backend, no GitHub token, and no cron job — every visitor's browser hits the GitHub REST API directly on first visit.
+The GitHub tile on the home page shows my contribution count for the last year plus a small 7-day sparkline. There's no backend and no client-side GitHub API call — the widget just reads a JSON file, `public/data/github.json`, over HTTP at load time.
 
-The whole thing is one `fetch` call and a small `localStorage` cache.
+That file is written by the same daily sync that feeds the [LeetCode tile](/colophon/leetcode-sync): a GitHub Actions cron runs a small Node script, commits the result to the repo, and the next deploy picks it up.
 
-## Why client-side is fine here
+## The data path
 
-The endpoint we hit — `GET /users/:username` — is public and unauthenticated. There's nothing sensitive in either the request or the response, and the data changes slowly. So the question becomes: is it polite?
-
-GitHub's [unauthenticated rate limit](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting) is **60 requests per hour per IP**. For a portfolio that gets, generously, a few visits an hour, that's plenty — even without a cache. With the cache it's basically free.
-
-## The cache
-
-```ts
-const CACHE_KEY = `gh:${profile.githubUsername}`
-const CACHE_TTL_MS = 6 * 60 * 60 * 1000 // 6h
-
-function readCache(): Cached | null {
-  if (typeof window === 'undefined') return null
-  try {
-    const raw = localStorage.getItem(CACHE_KEY)
-    if (!raw) return null
-    const parsed = JSON.parse(raw) as Cached
-    if (Date.now() - parsed.at > CACHE_TTL_MS) return null
-    return parsed
-  } catch {
-    return null
-  }
-}
-
-function writeCache(data: GitHubData) {
-  try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify({ data, at: Date.now() }))
-  } catch {
-    // ignore (private browsing / quota exceeded)
-  }
-}
-```
-
-A returning visitor inside the 6-hour window never even makes the request — the widget renders from `localStorage` synchronously after mount. The TTL is short enough that a freshly-merged PR shows up the same day if you check back, and long enough that someone tab-cycling through my site doesn't ping the API every reload.
-
-## The fetch
+The tile reads the committed JSON — nothing more:
 
 ```ts
 useEffect(() => {
-  const cached = readCache()
-  if (cached) {
-    setData(cached.data)
-    return
-  }
-  fetch(`https://api.github.com/users/${profile.githubUsername}`)
+  fetch(`${import.meta.env.BASE_URL}data/github.json`)
     .then((r) => (r.ok ? r.json() : null))
-    .then((json) => {
-      if (!json) return
-      const next = {
-        public_repos: json.public_repos ?? 0,
-        followers: json.followers ?? 0,
-        updated_at: json.updated_at ?? null,
-      }
-      setData(next)
-      writeCache(next)
-    })
+    .then(setData)
     .catch(() => setData(null))
 }, [])
 ```
 
-If the fetch fails, the widget stays in its skeleton state and nothing else on the page is affected. Nothing in the rest of the site depends on this data resolving.
+The shape is `{ username, fetchedAt, totalLastYear, days: { "YYYY-MM-DD": count } }`. `totalLastYear` renders as the "contributions" number; the last seven entries of `days` become the sparkline. If the fetch fails, the widget stays in its skeleton state and nothing else on the page is affected.
 
-## What about the other widgets?
+## The script
 
-The other three tiles on the home page follow the same shape — a small data dependency declared next to the rendering — but with different sources:
+One GraphQL query against GitHub's `contributionsCollection.contributionCalendar` — the calendar you see on a profile page:
 
-- **LeetCode** reads `public/data/leetcode.json`, which a [GitHub Actions cron writes daily](/colophon/leetcode-sync). Same component shape, different source of truth.
-- **Role** reads `experience[0]` from `src/content/experience.ts`. Static, but treated the same way (skeleton → value).
-- **Now** reads `profile.now` from `src/content/profile.ts`. A literal string I edit by hand.
+```js
+const QUERY = `
+  query ($login: String!) {
+    user(login: $login) {
+      contributionsCollection {
+        contributionCalendar {
+          totalContributions
+          weeks {
+            contributionDays {
+              date
+              contributionCount
+            }
+          }
+        }
+      }
+    }
+  }
+`
+```
 
-Treating data the same way across all four widgets — static, cron-fed, or live-fetched — keeps the rendering code identical and means swapping one widget's source out is a localized change.
+The script keeps only active days (count > 0), keyed by ISO date — the page fills in the zeros — and writes `totalContributions` as `totalLastYear`. It needs a `GITHUB_TOKEN` in the environment; the token the Actions runner already provides works, since the contribution calendar is public data readable with any valid token.
+
+## The cron
+
+The GitHub and LeetCode fetches share one workflow — "Sync stats" — on a daily cron:
+
+```yaml
+on:
+  schedule:
+    - cron: '17 6 * * *' # daily ~06:17 UTC
+  workflow_dispatch:
+```
+
+It runs both scripts, then commits whatever changed under `public/data/`:
+
+```yaml
+- name: Commit if changed
+  run: |
+    if [[ -n "$(git status --porcelain public/data/)" ]]; then
+      git config user.name "github-actions[bot]"
+      git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      git add public/data/leetcode.json public/data/github.json
+      git commit -m "chore: refresh LeetCode + GitHub stats"
+      git push
+    fi
+```
+
+That push to `main` is all it takes — Cloudflare Pages auto-builds on the resulting commit, so there's no deploy workflow to dispatch.
+
+## Why this shape
+
+This used to be a client-side fetch to `api.github.com` with a `localStorage` cache — a "static site, no backend" pattern from when the site lived on GitHub Pages. It worked, but every visitor's browser hit the API, and the contribution calendar isn't available from the unauthenticated REST endpoint anyway.
+
+Moving to a committed JSON means the build never depends on GitHub being reachable. If a sync run breaks, the page keeps showing the last successful snapshot until the next cron tick fixes it — and both the home tile and the Stats page read the same file with one fetch. Treating the GitHub tile exactly like the LeetCode one keeps the rendering code identical and makes the source of truth a single JSON file in the repo.

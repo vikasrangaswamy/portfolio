@@ -26,10 +26,10 @@ export const colophonTopics: readonly LearningTopic[] = [
   },
   {
     slug: 'github-widget',
-    title: 'Client-fetched GitHub stats',
+    title: 'Server-synced GitHub stats',
     summary:
-      'The home page GitHub tile reads from api.github.com on every visitor — no auth, no backend. A 6 hour localStorage cache keeps the unauthenticated rate limit comfortable.',
-    tech: ['React', 'GitHub REST API', 'localStorage'],
+      'The home page GitHub tile reads a daily-synced JSON file — no client-side API call, no cache. A GitHub Actions cron queries the GraphQL contribution calendar and commits the result, sharing one pipeline with the LeetCode tile.',
+    tech: ['GitHub Actions', 'GraphQL', 'React', 'JSON'],
     repoUrl: `${REPO}/src/components/widgets/GitHubWidget.tsx`,
     component: GithubWidget,
   },

@@ -16,6 +16,7 @@ const navItems = [
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
+  const isHome = pathname === '/'
 
   // Collapse the mobile menu whenever the route changes (e.g. after tapping a
   // link) so it never lingers open over the new page.
@@ -35,9 +36,12 @@ export function Header() {
 
   return (
     <header className={`${styles.header} ${menuOpen ? styles.menuOpen : ''}`}>
-      <Link to="/" className={styles.logo}>
+      <Link to="/" className={styles.logo} aria-label="Vikas Rangaswamy — home">
         <span className={styles.logoDot} />
-        Vikas Rangaswamy
+        {/* On the home page the hero already shows the full name, so the nav
+            logo is just the clay dot (no text). Every other page shows the full
+            name as the persistent wordmark. */}
+        {isHome ? null : 'Vikas Rangaswamy'}
       </Link>
 
       <div className={styles.askArea}>

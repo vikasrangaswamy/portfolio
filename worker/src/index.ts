@@ -11,6 +11,8 @@ export interface Env {
 // to see what's current if all of these start failing.
 const MODELS = ['@cf/meta/llama-3.1-8b-instruct-fp8', '@cf/meta/llama-3.3-70b-instruct-fp8-fast']
 
+// @sync: the site origin must match `site.url` in src/site.config.ts. This is a
+// separate package (can't import it), so update by hand + redeploy: `wrangler deploy`.
 const ALLOWED_ORIGINS = new Set([
   'https://vikasrangaswamy.com',
   'https://www.vikasrangaswamy.com',

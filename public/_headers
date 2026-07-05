@@ -1,0 +1,15 @@
+# Cloudflare Pages response headers (GitHub Pages couldn't set these).
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+# Fingerprinted build assets never change — cache them hard.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Synced stats: let it revalidate every few minutes so refreshes show up.
+/data/*
+  Cache-Control: public, max-age=300, must-revalidate

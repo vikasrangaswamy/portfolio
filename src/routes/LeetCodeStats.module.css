@@ -1,3 +1,39 @@
+/* Segmented github | leetcode source toggle at the top of the Stats page. */
+.toggle {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--gray-100);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--r-sm);
+}
+
+.toggleBtn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--gray-500);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  padding: 6px 18px;
+  border-radius: var(--r-xs);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), box-shadow var(--transition);
+}
+
+.toggleBtn:hover {
+  color: var(--gray-700);
+}
+
+.toggleBtnActive,
+.toggleBtnActive:hover {
+  background: var(--white);
+  color: var(--clay);
+  box-shadow: var(--shadow-sm);
+}
+
 .profileRow {
   margin-bottom: var(--sp-5);
 }
