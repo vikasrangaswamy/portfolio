@@ -51,4 +51,6 @@ fileignoreconfig:
   checksum: 9923f4abebda8ac88839898ab5dbcfcaa76f8ba5fa52ac382f821733b2c941ea
 - filename: src/routes/Stats.tsx
   checksum: 3351f31c89b4dc123af4d53c412e4ac15e17338d6df9aa40ac816206241c6d55
+- filename: index.html
+  checksum: 661b8ab8debff83362448962eee987b83b9503aa19ab8a4b89a490d285d1db5f
 version: "1.0"

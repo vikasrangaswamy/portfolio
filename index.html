@@ -171,8 +171,14 @@
       </p>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- Cloudflare Web Analytics is auto-injected at the edge for this proxied
-         domain (Web Analytics → site set to "Enable"). No manual beacon here —
-         a manual snippet would suppress the auto-injection. -->
+
+    <!-- Cloudflare Web Analytics (manual snippet). Token is for the
+         vikasrangaswamy.com site — Cloudflare Pages does not auto-inject, so
+         the snippet is required. Deferred so it never blocks rendering. -->
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "ed6b4a5d7bc54c40a6ca34cdab548467"}'
+    ></script>
   </body>
 </html>
