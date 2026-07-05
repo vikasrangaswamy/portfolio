@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react'
 import mdx from '@mdx-js/rollup'
 import rehypePrettyCode from 'rehype-pretty-code'
 import { site, ROUTES } from './src/site.config'
+import { profile } from './src/content/profile'
 
 /**
  * Single-source SEO: fills the %SITE_*% placeholders in index.html and
@@ -21,7 +22,38 @@ function portfolioSeo(): Plugin {
     }).join('\n') +
     `\n</urlset>\n`
 
-  const robots = () => `User-agent: *\nAllow: /\n\nSitemap: ${site.url}/sitemap.xml\n`
+  // Search engines and AI answer engines both welcome — explicit Allow for the
+  // major AI crawlers so none are accidentally excluded.
+  const robots = () => {
+    const agents = [
+      '*',
+      'GPTBot',
+      'OAI-SearchBot',
+      'ChatGPT-User',
+      'ClaudeBot',
+      'Claude-Web',
+      'PerplexityBot',
+      'Google-Extended',
+      'Applebot-Extended',
+    ]
+    return (
+      agents.map((a) => `User-agent: ${a}\nAllow: /`).join('\n\n') +
+      `\n\nSitemap: ${site.url}/sitemap.xml\n`
+    )
+  }
+
+  // llms.txt — a concise, LLM-friendly summary + links (emerging GEO convention).
+  const llms = () =>
+    `# ${site.name}\n\n> ${site.description}\n\n` +
+    `## Site\n` +
+    `- Home: ${site.url}/\n` +
+    `- About: ${site.url}/about\n` +
+    `- Experience: ${site.url}/experience\n` +
+    `- Projects: ${site.url}/projects\n` +
+    `- Stats (GitHub + LeetCode activity): ${site.url}/stats\n\n` +
+    `## Profiles\n` +
+    `- GitHub: ${profile.github}\n` +
+    `- LinkedIn: ${profile.linkedin}\n`
 
   return {
     name: 'portfolio-seo',
@@ -36,6 +68,7 @@ function portfolioSeo(): Plugin {
       const dir = options.dir ?? 'dist'
       writeFileSync(join(dir, 'sitemap.xml'), sitemap())
       writeFileSync(join(dir, 'robots.txt'), robots())
+      writeFileSync(join(dir, 'llms.txt'), llms())
     },
   }
 }
