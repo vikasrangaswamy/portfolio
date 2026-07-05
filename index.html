@@ -37,53 +37,77 @@
     />
     <meta name="twitter:image" content="%SITE_URL%/og-image.png" />
 
-    <!-- JSON-LD: Person schema. Helps Google answer name searches with a
-         knowledge-panel-style hit — links the site to a single identity. -->
+    <!-- JSON-LD graph: Person + WebSite + ProfilePage. Helps Google answer
+         name searches with a knowledge-panel-style hit and gives AI answerers a
+         single, machine-readable identity. `dateModified` is stamped at build
+         (via the portfolio-seo plugin) so it always reads as recently updated. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Vikas Rangaswamy",
-        "givenName": "Vikas",
-        "familyName": "Rangaswamy",
-        "url": "%SITE_URL%/",
-        "jobTitle": "Software Engineer",
-        "worksFor": {
-          "@type": "Organization",
-          "name": "Contentstack",
-          "url": "https://www.contentstack.com/"
-        },
-        "alumniOf": {
-          "@type": "CollegeOrUniversity",
-          "name": "JSS Science and Technology University"
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Bangalore",
-          "addressRegion": "Karnataka",
-          "addressCountry": "IN"
-        },
-        "image": "%SITE_URL%/profile.jpg",
-        "knowsAbout": [
-          "Automation",
-          "AI connectors",
-          "Agentic systems",
-          "LLM integrations",
-          "Full-stack web development",
-          "React",
-          "Node.js",
-          "TypeScript",
-          "Python",
-          "AWS",
-          "Headless CMS",
-          "SaaS integrations"
-        ],
-        "sameAs": [
-          "https://github.com/vikasrangaswamy",
-          "https://www.linkedin.com/in/vikasrangaswamy/",
-          "https://www.instagram.com/vikas_rangaswamy/"
-        ],
-        "description": "Software engineer at Contentstack building automation, AI connectors, and agentic systems, plus enterprise integrations and SaaS marketplace apps."
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "%SITE_URL%/#person",
+            "name": "Vikas Rangaswamy",
+            "givenName": "Vikas",
+            "familyName": "Rangaswamy",
+            "url": "%SITE_URL%/",
+            "jobTitle": "Software Engineer",
+            "worksFor": {
+              "@type": "Organization",
+              "name": "Contentstack",
+              "url": "https://www.contentstack.com/"
+            },
+            "alumniOf": {
+              "@type": "CollegeOrUniversity",
+              "name": "JSS Science and Technology University"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Bangalore",
+              "addressRegion": "Karnataka",
+              "addressCountry": "IN"
+            },
+            "image": "%SITE_URL%/profile.jpg",
+            "knowsAbout": [
+              "Automation",
+              "AI connectors",
+              "Agentic systems",
+              "LLM integrations",
+              "Full-stack web development",
+              "React",
+              "Node.js",
+              "TypeScript",
+              "Python",
+              "AWS",
+              "Headless CMS",
+              "SaaS integrations"
+            ],
+            "sameAs": [
+              "https://github.com/vikasrangaswamy",
+              "https://www.linkedin.com/in/vikasrangaswamy/",
+              "https://www.instagram.com/vikas_rangaswamy/"
+            ],
+            "description": "Software engineer at Contentstack building automation, AI connectors, and agentic systems, plus enterprise integrations and SaaS marketplace apps."
+          },
+          {
+            "@type": "WebSite",
+            "@id": "%SITE_URL%/#website",
+            "url": "%SITE_URL%/",
+            "name": "Vikas Rangaswamy",
+            "inLanguage": "en",
+            "publisher": { "@id": "%SITE_URL%/#person" }
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "%SITE_URL%/#profilepage",
+            "url": "%SITE_URL%/",
+            "name": "%SITE_TITLE%",
+            "isPartOf": { "@id": "%SITE_URL%/#website" },
+            "about": { "@id": "%SITE_URL%/#person" },
+            "dateModified": "%BUILD_DATE%"
+          }
+        ]
       }
     </script>
 
@@ -126,6 +150,26 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Crawlable content fallback for bots that don't run JavaScript (many AI
+         crawlers). React renders into #root above; this sibling stays in the
+         raw HTML so there's always real text about who this is. -->
+    <noscript>
+      <h1>Vikas Rangaswamy</h1>
+      <p>
+        Software Engineer at Contentstack, Bangalore, India. Vikas Rangaswamy builds
+        automation, AI connectors, and agentic systems, plus enterprise integrations and
+        SaaS marketplace apps — with React, Node.js, TypeScript, Python, and AWS.
+      </p>
+      <p>
+        Links:
+        <a href="%SITE_URL%/about">About</a>,
+        <a href="%SITE_URL%/experience">Experience</a>,
+        <a href="%SITE_URL%/projects">Projects</a>,
+        <a href="%SITE_URL%/stats">Stats</a>,
+        <a href="https://github.com/vikasrangaswamy">GitHub</a>,
+        <a href="https://www.linkedin.com/in/vikasrangaswamy/">LinkedIn</a>.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
 
     <!-- Cloudflare Web Analytics — privacy-first, cookieless. Loads deferred so

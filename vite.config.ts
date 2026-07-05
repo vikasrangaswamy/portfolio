@@ -26,7 +26,11 @@ function portfolioSeo(): Plugin {
   return {
     name: 'portfolio-seo',
     transformIndexHtml(html) {
-      return html.replaceAll('%SITE_URL%', site.url).replaceAll('%SITE_TITLE%', site.title)
+      const buildDate = new Date().toISOString().slice(0, 10) // YYYY-MM-DD
+      return html
+        .replaceAll('%SITE_URL%', site.url)
+        .replaceAll('%SITE_TITLE%', site.title)
+        .replaceAll('%BUILD_DATE%', buildDate)
     },
     writeBundle(options) {
       const dir = options.dir ?? 'dist'
