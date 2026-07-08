@@ -123,11 +123,12 @@ const STORAGE_KEY = 'sound-muted'
 function readMuted(): boolean {
   if (typeof window === 'undefined') return true
   try {
-    // Default: muted until the user opts in. Auto-playing sounds on a portfolio
-    // is hostile, even when it's "just" a boop on theme toggle.
-    return localStorage.getItem(STORAGE_KEY) !== 'false'
+    // Default: sounds ON. Only muted if the visitor has explicitly toggled mute
+    // (stored as 'true'). Note browsers block audio until the first user
+    // gesture, so nothing plays on load — the boops start on the first click.
+    return localStorage.getItem(STORAGE_KEY) === 'true'
   } catch {
-    return true
+    return false
   }
 }
 

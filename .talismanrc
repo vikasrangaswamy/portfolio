@@ -30,7 +30,7 @@ fileignoreconfig:
 - filename: worker/wrangler.toml
   checksum: 71df4bfdcc2797a78d80e665df6b3722b55595358f9fa389534283b2852998f4
 - filename: src/lib/sound.ts
-  checksum: 1326db238d224e7079caa2655c2fe4330cb1f07d0e0e7cb582a3f341a6845a11
+  checksum: 62a502105e12e963fec62da4b7922ec19f790218fc8f402af7f14b8e60538eee
 - filename: src/components/ask/AskTerminal.tsx
   checksum: 216728634a65c5b9b44725d2982f9ab3476ac2ea09e040756a679dc55384e7aa
 - filename: worker/src/index.ts
