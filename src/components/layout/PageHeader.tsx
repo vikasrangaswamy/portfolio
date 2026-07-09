@@ -13,13 +13,15 @@ type Props = {
   noDivider?: boolean
   /** Overrides the SEO/tab title segment (defaults to `tag`). */
   seoTitle?: string
+  /** Emit <meta robots noindex> for this route (e.g. the soft-404 page). */
+  noindex?: boolean
 }
 
-export function PageHeader({ tag, title, summary, back, noDivider, seoTitle }: Props) {
+export function PageHeader({ tag, title, summary, back, noDivider, seoTitle, noindex }: Props) {
   // The kicker (`tag`) is the clean page name ("About", "Projects") — better as
   // the tab title than the big visual heading (sometimes the person's name).
   // Callers can override via `seoTitle`.
-  useSeo(seoTitle ?? tag, summary)
+  useSeo(seoTitle ?? tag, summary, noindex)
 
   return (
     <header>

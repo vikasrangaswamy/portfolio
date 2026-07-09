@@ -5,7 +5,7 @@ import { askAssistantFlow } from './ask-assistant.flow'
 
 The terminal at the top of the site — and the "Ask" bar in the nav — is a small AI assistant that answers questions about my work. You type a question, press Enter, and the answer streams back token by token, the way a real terminal would print it.
 
-It's grounded: it only answers from a summary of this portfolio, refers to me in the third person, and points you to my email or LinkedIn for anything it doesn't know. There's no chat history, no login, and — importantly — no API key anywhere in the website. The site is still just a static build on GitHub Pages.
+It's grounded: it only answers from a summary of this portfolio, refers to me in the third person, and points you to my email or LinkedIn for anything it doesn't know. There's no chat history, no login, and — importantly — no API key anywhere in the website. The site itself is still just a static build (served by Cloudflare Pages); all the model logic and secrets live in a separate Cloudflare Worker.
 
 ## The data path
 

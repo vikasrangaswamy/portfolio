@@ -13,14 +13,21 @@ import { profile } from './src/content/profile'
  * src/site.config.ts, so the domain/title/routes live in exactly one place.
  */
 function portfolioSeo(): Plugin {
-  const sitemap = () =>
-    `<?xml version="1.0" encoding="UTF-8"?>\n` +
-    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-    ROUTES.map((r) => {
-      const loc = r.path === '/' ? `${site.url}/` : `${site.url}${r.path}`
-      return `  <url>\n    <loc>${loc}</loc>\n    <changefreq>${r.changefreq}</changefreq>\n    <priority>${r.priority.toFixed(1)}</priority>\n  </url>`
-    }).join('\n') +
-    `\n</urlset>\n`
+  const sitemap = () => {
+    // Stamp every URL with the build date so crawlers see a real <lastmod>.
+    // The site is rebuilt on each content push (Cloudflare Pages), so the build
+    // date is an honest "last changed" signal.
+    const lastmod = new Date().toISOString().slice(0, 10) // YYYY-MM-DD
+    return (
+      `<?xml version="1.0" encoding="UTF-8"?>\n` +
+      `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+      ROUTES.map((r) => {
+        const loc = r.path === '/' ? `${site.url}/` : `${site.url}${r.path}`
+        return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${r.changefreq}</changefreq>\n    <priority>${r.priority.toFixed(1)}</priority>\n  </url>`
+      }).join('\n') +
+      `\n</urlset>\n`
+    )
+  }
 
   // Search engines and AI answer engines both welcome — explicit Allow for the
   // major AI crawlers so none are accidentally excluded.

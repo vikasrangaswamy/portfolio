@@ -5,7 +5,7 @@ import styles from './Page.module.css'
 export default function NotFound() {
   return (
     <div className={styles.container}>
-      <PageHeader tag="404" title="Page not found" seoTitle="Page not found" noDivider />
+      <PageHeader tag="404" title="Page not found" seoTitle="Page not found" noDivider noindex />
       <p className={styles.summary}>
         That route doesn't exist (yet). Head back to the{' '}
         <Link to="/" style={{ color: 'var(--clay)' }}>

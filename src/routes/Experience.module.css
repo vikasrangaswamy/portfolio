@@ -51,6 +51,9 @@
   font-size: 12.5px;
   color: var(--gray-500);
   font-variant-numeric: tabular-nums;
+  /* Match the role-range dates below — lowercase terminal aesthetic, applied
+     uniformly so the company span and role ranges read consistently. */
+  text-transform: lowercase;
 }
 
 .roleList {

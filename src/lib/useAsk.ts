@@ -1,5 +1,11 @@
 import { useCallback, useRef, useState } from 'react'
+import { profile } from '../content/profile'
 import { ASK_ENDPOINT } from './askConfig'
+
+// Honest fallback when the backend can't answer — points to a real contact so
+// the visitor (often a recruiter) isn't left at a dead end. The email is
+// auto-linkified by AskConversation.
+const OFFLINE_MSG = `The assistant is resting right now — reach Vikas directly at ${profile.email}.`
 
 export type Turn = { role: 'user' | 'assistant'; text: string; error?: boolean }
 
@@ -64,7 +70,7 @@ export function useAsk() {
         })
 
         if (!res.ok) {
-          let msg = 'The assistant had trouble — try again.'
+          let msg = OFFLINE_MSG
           if (res.status === 429) {
             const data = (await res.json().catch(() => null)) as { message?: string } | null
             msg = data?.message ?? 'The assistant is busy right now — please try again in a moment.'
@@ -73,7 +79,7 @@ export function useAsk() {
           return
         }
         if (!res.body) {
-          failLast('No response from the assistant.')
+          failLast(OFFLINE_MSG)
           return
         }
 

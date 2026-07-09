@@ -3,7 +3,7 @@ import { leetcodeSyncFlow } from './leetcode-sync.flow'
 
 ## What's happening
 
-The LeetCode tile on the home page and the full stats page at `/stats` show real numbers from my profile — solved count, longest streak, the submission heatmap. None of that lives in a database. There's no backend at all; the site is a static build deployed to GitHub Pages.
+The LeetCode tile on the home page and the full stats page at `/stats` show real numbers from my profile — solved count, longest streak, the submission heatmap. None of that lives in a database. There's no backend at all; the site is a static build deployed to Cloudflare Pages.
 
 What keeps the numbers fresh is a tiny pipeline that runs on a cron, writes a JSON file to the repo, and lets the next deploy pick it up. The build is allowed to be a little stale — usually less than 24 hours.
 

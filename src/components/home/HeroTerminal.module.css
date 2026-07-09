@@ -80,6 +80,19 @@
   animation: pulse 2.4s ease-out infinite;
 }
 
+/* When the last answer failed, the assistant isn't "live" — drop the clay glow
+   to a muted, static dot and relabel, so a failure never looks healthy. */
+.offline {
+  color: var(--console-muted);
+}
+.offlineDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--console-muted);
+  animation: none;
+}
+
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0 color-mix(in srgb, var(--clay) 45%, transparent);
