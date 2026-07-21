@@ -142,15 +142,16 @@
       />
     </noscript>
 
-    <!-- Prevent FOUC by setting initial theme before React mounts -->
+    <!-- Prevent FOUC by setting initial theme before React mounts.
+         Default is DARK (the Midnight theme is the site's primary look);
+         a visitor's explicit toggle choice (localStorage) still wins. -->
     <script>
       (function () {
         try {
           var saved = localStorage.getItem('theme')
-          var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-          document.documentElement.dataset.theme = theme
+          document.documentElement.dataset.theme = saved || 'dark'
         } catch (e) {
-          document.documentElement.dataset.theme = 'light'
+          document.documentElement.dataset.theme = 'dark'
         }
       })()
     </script>

@@ -62,12 +62,20 @@
 
 /* ---------- Nav ---------- */
 
+/* Floating pill nav — a bordered capsule; the active link carries a sliding
+   highlight pill (motion layoutId, see Header.tsx). Inverted highlight:
+   --slate is ink in light mode and near-white in dark, so the active pill is
+   black-on-white / white-on-black in the two themes. */
 .nav {
   grid-area: nav;
   justify-self: end;
   display: inline-flex;
   align-items: center;
-  gap: var(--sp-6);
+  gap: 2px;
+  padding: 4px;
+  background: color-mix(in srgb, var(--gray-100) 72%, transparent);
+  border: 1px solid var(--oat);
+  border-radius: 999px;
 }
 
 .navLink {
@@ -78,30 +86,31 @@
   color: var(--gray-500);
   transition: color var(--transition);
   position: relative;
-  padding: 2px 0;
+  padding: 6px 13px;
+  border-radius: 999px;
 }
 
 .navLink:hover {
   color: var(--gray-700);
 }
 
-/* Current page is the one "important" link — bolder + a clay underline so
-   location reads at a glance, while the rest stay quiet. */
 .navLinkActive,
 .navLinkActive:hover {
-  color: var(--clay);
+  color: var(--ivory);
   font-weight: 600;
 }
 
-.navLinkActive::after {
-  content: '';
+/* The sliding highlight behind the active label. */
+.navPill {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -3px;
-  height: 2px;
-  border-radius: 1px;
-  background: var(--clay);
+  inset: 0;
+  border-radius: 999px;
+  background: var(--slate);
+}
+
+.navLabel {
+  position: relative;
+  z-index: 1;
 }
 
 /* ---------- Toggles cluster ---------- */
@@ -230,16 +239,29 @@
     padding-bottom: var(--sp-1);
   }
 
+  /* Stacked list: drop the capsule chrome and the sliding pill — accent color
+     alone marks the current page. */
+  .menuOpen .nav {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: var(--sp-3) 0 var(--sp-1);
+  }
+
   .navLink {
     padding: var(--sp-3) var(--sp-1);
     font-size: 15px;
     text-align: left;
     border-top: 1px solid var(--gray-100);
+    border-radius: 0;
   }
 
-  /* The active underline doesn't suit a stacked list — drop it; the bold clay
-     colour already signals the current page. */
-  .navLinkActive::after {
+  .navLinkActive,
+  .navLinkActive:hover {
+    color: var(--clay);
+  }
+
+  .navPill {
     display: none;
   }
 

@@ -1,4 +1,4 @@
-import { writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -62,6 +62,46 @@ function portfolioSeo(): Plugin {
     `- GitHub: ${profile.github}\n` +
     `- LinkedIn: ${profile.linkedin}\n`
 
+  // Per-route static HTML. The SPA serves one index.html for every path, so
+  // every subpage shipped the HOMEPAGE's canonical/og:url/title in the raw
+  // HTML — which made Google treat them all as duplicates of the homepage
+  // ("Alternate page with proper canonical tag") and skip indexing them. Here
+  // we stamp a copy of the built index.html per route with that route's own
+  // canonical/og:url/title/description, written to dist/<path>/index.html.
+  // Cloudflare Pages serves the matching static file directly (the SPA
+  // `/* -> /index.html` fallback only fires for paths without a real file), so
+  // crawlers now get correct per-page signals with zero JavaScript.
+  const escAttr = (s: string) =>
+    s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+
+  const prerender = (dir: string) => {
+    const template = readFileSync(join(dir, 'index.html'), 'utf8')
+    for (const r of ROUTES) {
+      if (r.path === '/') continue // the template already IS the home page
+      const canonical = `${site.url}${r.path}`
+      const title = escAttr(r.title ? `${r.title} · ${site.name}` : site.title)
+      const desc = escAttr(r.description ?? site.description)
+
+      const html = template
+        .replace(/<title>[\s\S]*?<\/title>/, `<title>${title}</title>`)
+        .replace(/<link rel="canonical" href="[^"]*"/, `<link rel="canonical" href="${canonical}"`)
+        .replace(/<meta property="og:url" content="[^"]*"/, `<meta property="og:url" content="${canonical}"`)
+        .replace(/<meta property="og:title" content="[^"]*"/, `<meta property="og:title" content="${title}"`)
+        .replace(/<meta name="twitter:title" content="[^"]*"/, `<meta name="twitter:title" content="${title}"`)
+        .replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/>/, `<meta name="description" content="${desc}" />`)
+        .replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*\/>/, `<meta property="og:description" content="${desc}" />`)
+        .replace(/<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/>/, `<meta name="twitter:description" content="${desc}" />`)
+
+      const outDir = join(dir, r.path)
+      mkdirSync(outDir, { recursive: true })
+      writeFileSync(join(outDir, 'index.html'), html)
+    }
+  }
+
   return {
     name: 'portfolio-seo',
     transformIndexHtml(html) {
@@ -76,6 +116,7 @@ function portfolioSeo(): Plugin {
       writeFileSync(join(dir, 'sitemap.xml'), sitemap())
       writeFileSync(join(dir, 'robots.txt'), robots())
       writeFileSync(join(dir, 'llms.txt'), llms())
+      prerender(dir)
     },
   }
 }

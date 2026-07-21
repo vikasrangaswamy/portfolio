@@ -32,8 +32,15 @@ you touch one of these, update the linked spots in the SAME change.
   description, or add/remove pages HERE.
 - It automatically propagates to: `index.html` meta (via the `portfolio-seo`
   plugin in `vite.config.ts`, which fills `%SITE_URL%` / `%SITE_TITLE%`),
-  `sitemap.xml` + `robots.txt` (generated into the build from `ROUTES`), and
-  per-route titles (`src/lib/useSeo.ts` imports `site`).
+  `sitemap.xml` + `robots.txt` (generated into the build from `ROUTES`),
+  per-route runtime titles/canonicals (`src/lib/useSeo.ts` imports `site`), and
+  **per-route static HTML** — the same `portfolio-seo` plugin prerenders one
+  `dist/<path>/index.html` per `ROUTES` entry with that route's own
+  `canonical`/`og:url`/`title`/`description` baked into the raw HTML (so
+  crawlers get correct per-page signals without running JS; Cloudflare Pages
+  serves the matching file, and the `/* -> /index.html` SPA fallback only fires
+  for paths without a real file). A route's SEO `title`/`description` live on
+  its `ROUTES` entry in `src/site.config.ts`.
 - **Not auto-linked (update by hand):** the Worker CORS allow-list in
   `worker/src/index.ts` (`ALLOWED_ORIGINS` + the `corsHeaders` default) — it's
   a separate package and can't import `site.config`. After changing it, the

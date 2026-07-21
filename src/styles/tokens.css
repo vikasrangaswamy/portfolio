@@ -1,37 +1,41 @@
+/* Midnight theme — pure-black canvas, neutral gray scale, one red accent.
+   Variable NAMES are kept from the original earth-tone system (--clay, --ivory,
+   --oat…) so every component keeps working; only the VALUES changed. Read them
+   as semantic roles now: --clay = accent, --ivory = page bg, --slate = ink,
+   --oat = hairline border, --white = raised surface. */
+
 :root,
 html[data-theme='light'] {
-  --clay:     #D97757;
-  --clay-edge: #A85638;
-  --slate:    #141413;
-  --ivory:    #FAF9F5;
-  --oat:      #E3DACC;
-  --white:    #FFFFFF;
-  --gray-100: #F0EEE6;
-  --gray-300: #D1CFC5;
-  /* Darkened from #87867F so muted/caption text clears WCAG AA (≈5:1) on the
-     ivory background. The dark theme keeps the lighter value (declared below),
-     where it already has ample contrast on the near-black surface. */
-  --gray-500: #6E6D66;
-  --gray-700: #3D3D3A;
-  --success:  #788C5D;
-  --warning:  #C78E3F;
-  --danger:   #B04A4A;
+  --clay:     #DC2626; /* accent (red) */
+  --clay-edge: #B91C1C;
+  --slate:    #111113; /* ink / headings */
+  --ivory:    #FFFFFF; /* page background */
+  --oat:      #E4E4E7; /* hairline border */
+  --white:    #FFFFFF; /* raised surface */
+  --gray-100: #F4F4F5;
+  --gray-300: #D4D4D8;
+  /* Muted/caption text — clears WCAG AA (≈5:1) on the white background. */
+  --gray-500: #6B6B70;
+  --gray-700: #3F3F46;
+  --success:  #5F8C5D;
+  --warning:  #B8863F;
+  --danger:   #DC2626;
   --info:     #5C7CA3;
 
-  /* Console palette. Light theme: a dark console on the ivory page so it pops.
-     Dark theme inverts this (see below) to a light console on the dark page —
-     either way the terminal contrasts hard with the page around it. */
-  --console-bg:        #1C1B18;
-  --console-elev:      #26241F;
-  --console-fg:        #ECE7DA;
-  --console-fg-strong: #FAF7EF;
-  --console-muted:     #9A968A;
-  --console-border:    rgba(236, 231, 218, 0.14);
+  /* Console palette. Light theme: a near-black console on the white page so it
+     pops. Dark theme inverts this (see below) to a light console on the black
+     page — either way the terminal contrasts hard with the page around it. */
+  --console-bg:        #0F0F10;
+  --console-elev:      #1A1A1C;
+  --console-fg:        #E4E4E7;
+  --console-fg-strong: #FAFAFA;
+  --console-muted:     #8E8E93;
+  --console-border:    rgba(228, 228, 231, 0.14);
   --console-field:     rgba(255, 255, 255, 0.05);
 
-  --shadow-sm: 0 1px 2px rgba(20, 20, 19, 0.06);
-  --shadow-md: 0 4px 10px rgba(20, 20, 19, 0.08);
-  --shadow-lg: 0 12px 28px rgba(20, 20, 19, 0.12);
+  --shadow-sm: 0 1px 2px rgba(17, 17, 19, 0.06);
+  --shadow-md: 0 4px 10px rgba(17, 17, 19, 0.08);
+  --shadow-lg: 0 12px 28px rgba(17, 17, 19, 0.12);
 
   --r-xs: 4px;
   --r-sm: 8px;
@@ -56,35 +60,35 @@ html[data-theme='light'] {
 }
 
 html[data-theme='dark'] {
-  --clay:     #E68B6F;
-  --clay-edge: #B5654A;
-  --slate:    #F0EEE6;
-  --ivory:    #1A1A18;
-  --oat:      #2A2A26;
-  --white:    #242421;
-  --gray-100: #2E2E2A;
-  --gray-300: #3D3D3A;
-  --gray-500: #87867F;
-  --gray-700: #C5C3BB;
-  --success:  #95A878;
+  --clay:     #EF4444; /* accent (red) — brighter stop for dark surfaces */
+  --clay-edge: #DC2626;
+  --slate:    #FAFAFA;
+  --ivory:    #0A0A0B; /* midnight page */
+  --oat:      #232326;
+  --white:    #141416; /* raised surface */
+  --gray-100: #1B1B1E;
+  --gray-300: #2E2E32;
+  --gray-500: #8E8E93;
+  --gray-700: #C9C9CE;
+  --success:  #7FA87D;
   --warning:  #D4A65A;
-  --danger:   #CC6464;
+  --danger:   #EF4444;
   --info:     #7AA0C8;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.45);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.6);
 
-  /* On the dark page a dark console would blend in, so flip it: a warm light
-     surface with dark text. The terminal now pops against the near-black page
-     the same way the dark console pops on the ivory page in light mode. */
-  --console-bg:        #F5F3ED;
-  --console-elev:      #E8E4D9;
-  --console-fg:        #3D3D3A;
-  --console-fg-strong: #141413;
-  --console-muted:     #6E6D66;
-  --console-border:    rgba(20, 20, 19, 0.12);
-  --console-field:     rgba(20, 20, 19, 0.045);
+  /* On the black page a dark console would blend in, so flip it: a light
+     neutral surface with dark text. The terminal pops against the midnight
+     page the same way the dark console pops on white in light mode. */
+  --console-bg:        #F4F4F5;
+  --console-elev:      #E7E7EA;
+  --console-fg:        #3F3F46;
+  --console-fg-strong: #111113;
+  --console-muted:     #6B6B70;
+  --console-border:    rgba(17, 17, 19, 0.12);
+  --console-field:     rgba(17, 17, 19, 0.045);
 }
 
 html {

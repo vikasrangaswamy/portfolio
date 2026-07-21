@@ -10,11 +10,10 @@ type Props = {
 }
 
 const PALETTE: Record<'light' | 'dark', [string, string, string, string, string]> = {
-  // Light: a clear warm grey for empty days, climbing through soft clay tints
-  // to a mid clay — deliberately never near-black, so the grid stays easy to
-  // read on the cream page.
-  light: ['#E6E4DC', '#F2D8C6', '#EAB592', '#DD8A64', '#CC6E45'],
-  dark: ['#2A2A26', '#5A3D2E', '#92583A', '#D97757', '#E68B6F'],
+  // Midnight theme: neutral grey for empty days, climbing through red tints to
+  // the full accent red — matches the site-wide red accent in both themes.
+  light: ['#EBEBED', '#FAD1D1', '#F19E9E', '#E35F5F', '#DC2626'],
+  dark: ['#1B1B1E', '#43191B', '#7A2626', '#C23232', '#EF4444'],
 }
 
 const CELL = 13

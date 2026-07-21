@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 import { NavLink, Link, useLocation } from 'react-router-dom'
 import { ThemeToggle } from './ThemeToggle'
 import { SoundToggle } from './SoundToggle'
@@ -48,6 +49,9 @@ export function Header() {
         <NavAsk />
       </div>
 
+      {/* Floating pill nav. The active link renders a shared-layoutId motion
+          span behind its label, so Motion slides the highlight pill from the
+          previous route to the new one (the 21st.dev / BuildUI pattern). */}
       <nav className={styles.nav}>
         {navItems.map((item) => (
           <NavLink
@@ -57,7 +61,18 @@ export function Header() {
               isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink
             }
           >
-            {item.label}
+            {({ isActive }) => (
+              <>
+                {isActive && (
+                  <motion.span
+                    layoutId="nav-active-pill"
+                    className={styles.navPill}
+                    transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                  />
+                )}
+                <span className={styles.navLabel}>{item.label}</span>
+              </>
+            )}
           </NavLink>
         ))}
       </nav>
