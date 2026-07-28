@@ -9,8 +9,9 @@ export function SoundToggle() {
       type="button"
       onClick={toggleMute}
       data-no-sound
+      // The label names the action, so no aria-pressed: paired with a changing
+      // label it double-signals ("Mute sounds, pressed"). Matches ThemeToggle.
       aria-label={muted ? 'Enable sounds' : 'Mute sounds'}
-      aria-pressed={!muted}
       data-tip={muted ? 'Enable sounds' : 'Mute sounds'}
       data-tip-below
       whileHover={{ scale: 1.08 }}

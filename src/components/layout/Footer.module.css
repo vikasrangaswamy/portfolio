@@ -23,7 +23,12 @@
   gap: var(--sp-3) var(--sp-4);
 }
 
+/* The extra block padding is for the tap target, not the look: at 13px these
+   sat at 21px tall, under the 24px minimum. The row gap absorbs it. */
 .links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   transition: color var(--transition);
 }
 

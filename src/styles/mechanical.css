@@ -82,12 +82,19 @@
   position: relative;
 }
 
+/* `display: none` at rest is deliberate, not just a hiding style: an
+   absolutely positioned pseudo-element still contributes to its ancestors'
+   scrollable overflow even at opacity 0, so a nowrap tooltip on a control near
+   a container's right edge added ~27px of horizontal page scroll on narrow
+   viewports. Keeping it out of layout until shown fixes that; the fade-in is an
+   animation because transitions can't run from display: none. */
 [data-tip]::after {
   content: attr(data-tip);
+  display: none;
   position: absolute;
   bottom: calc(100% + 8px);
   left: 50%;
-  transform: translateX(-50%) translateY(3px);
+  transform: translateX(-50%);
   background: var(--slate);
   color: var(--ivory);
   font-family: var(--font-mono);
@@ -97,16 +104,25 @@
   padding: 5px 8px;
   border-radius: var(--r-xs);
   box-shadow: var(--shadow-md);
-  opacity: 0;
   pointer-events: none;
-  transition: opacity 80ms ease, transform 80ms ease;
   z-index: 60;
 }
 
 [data-tip]:hover::after,
 [data-tip]:focus-visible::after {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  display: block;
+  animation: tipIn 80ms ease both;
+}
+
+@keyframes tipIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 /* Below variant — for elements near the top of the viewport (e.g. header
@@ -114,17 +130,44 @@
 [data-tip][data-tip-below]::after {
   bottom: auto;
   top: calc(100% + 8px);
-  transform: translateX(-50%) translateY(-3px);
 }
 
 [data-tip][data-tip-below]:hover::after,
 [data-tip][data-tip-below]:focus-visible::after {
-  transform: translateX(-50%) translateY(0);
+  animation-name: tipInBelow;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  [data-tip]::after {
-    transition: opacity 80ms ease;
-    transform: translateX(-50%);
+@keyframes tipInBelow {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* End variant — for controls pinned to a container's right edge, where a
+   centered tooltip would hang off the side of the page. */
+[data-tip][data-tip-end]::after {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+[data-tip][data-tip-end]:hover::after,
+[data-tip][data-tip-end]:focus-visible::after {
+  animation-name: tipInEnd;
+}
+
+@keyframes tipInEnd {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

@@ -92,7 +92,7 @@
   padding: 0 4px;
 }
 .close:hover {
-  color: var(--clay);
+  color: var(--console-accent);
 }
 
 @media (prefers-reduced-motion: reduce) {

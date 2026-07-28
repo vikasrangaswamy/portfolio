@@ -7,6 +7,9 @@ export type { ActivityDay }
 type Props = {
   days: ActivityDay[]
   theme: 'light' | 'dark'
+  /** What a cell counts, for the grid's accessible label ("327 contributions
+   *  in the last 12 months"). The grid is shared by both Stats tabs. */
+  noun?: string
 }
 
 const PALETTE: Record<'light' | 'dark', [string, string, string, string, string]> = {
@@ -80,7 +83,7 @@ function formatFull(date: string): string {
 
 type Tooltip = { left: number; top: number; count: number; date: string }
 
-export function SubmissionHeatmap({ days, theme }: Props) {
+export function SubmissionHeatmap({ days, theme, noun = 'submissions' }: Props) {
   const wrapRef = useRef<HTMLDivElement | null>(null)
   const [tip, setTip] = useState<Tooltip | null>(null)
 
@@ -158,7 +161,7 @@ export function SubmissionHeatmap({ days, theme }: Props) {
           width={width}
           height={height}
           role="img"
-          aria-label={`${insights.total} submissions in the last 12 months`}
+          aria-label={`${insights.total} ${noun} in the last 12 months`}
         >
           {monthLabels.map((m) => (
             <text

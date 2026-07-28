@@ -69,14 +69,16 @@
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.02em;
-  color: var(--clay);
+  /* Console-surface accent, not --clay: this sits on the titlebar, which is a
+     light panel in the dark theme. */
+  color: var(--console-accent);
 }
 
 .liveDot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--clay);
+  background: var(--console-accent);
   animation: pulse 2.4s ease-out infinite;
 }
 

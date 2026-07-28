@@ -30,12 +30,19 @@ html[data-theme='light'] {
   --console-fg:        #E4E4E7;
   --console-fg-strong: #FAFAFA;
   --console-muted:     #8E8E93;
+  /* Accent for text ON the console surface. Separate from --clay because the
+     console inverts between themes: --clay is tuned for the page background, so
+     reusing it here put a dark-background red on a light panel (3.0:1). */
+  --console-accent:    #F05252;
   --console-border:    rgba(228, 228, 231, 0.14);
   --console-field:     rgba(255, 255, 255, 0.05);
 
   --shadow-sm: 0 1px 2px rgba(17, 17, 19, 0.06);
   --shadow-md: 0 4px 10px rgba(17, 17, 19, 0.08);
   --shadow-lg: 0 12px 28px rgba(17, 17, 19, 0.12);
+
+  /* Wash behind an open overlay (e.g. the mobile menu). */
+  --scrim: rgba(20, 20, 19, 0.28);
 
   --r-xs: 4px;
   --r-sm: 8px;
@@ -79,6 +86,9 @@ html[data-theme='dark'] {
   --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.45);
   --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.6);
 
+  /* A dark wash is invisible against the midnight page — lift it instead. */
+  --scrim: rgba(0, 0, 0, 0.55);
+
   /* On the black page a dark console would blend in, so flip it: a light
      neutral surface with dark text. The terminal pops against the midnight
      page the same way the dark console pops on white in light mode. */
@@ -86,7 +96,10 @@ html[data-theme='dark'] {
   --console-elev:      #E7E7EA;
   --console-fg:        #3F3F46;
   --console-fg-strong: #111113;
-  --console-muted:     #6B6B70;
+  /* Both darkened to clear 4.5:1 against the light console surfaces: the old
+     values measured 4.29 (muted) and 3.05 (accent) on --console-elev. */
+  --console-muted:     #55555A;
+  --console-accent:    #B91C1C;
   --console-border:    rgba(17, 17, 19, 0.12);
   --console-field:     rgba(17, 17, 19, 0.045);
 }

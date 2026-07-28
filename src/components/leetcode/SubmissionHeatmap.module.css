@@ -62,6 +62,34 @@
   max-width: 100%;
 }
 
+/* Narrow screens: stop scaling, start scrolling. `width: 100%` alone shrank the
+   whole grid to fit — at phone widths that put the 13px cells near 7px and the
+   month labels near 5px, where they overlap and can't be read. A min-width
+   holds the grid at a legible size and .gridScroll (overflow-x: auto) carries
+   the overflow, which is what it was there for. */
+@media (max-width: 760px) {
+  .svg {
+    min-width: 620px;
+  }
+
+  /* Let the scrollbar show here — with the grid wider than the frame it's the
+     affordance that says "swipe sideways". */
+  .gridScroll {
+    scrollbar-width: thin;
+    padding-bottom: var(--sp-1);
+  }
+
+  .gridScroll::-webkit-scrollbar {
+    display: block;
+    height: 6px;
+  }
+
+  .gridScroll::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: 999px;
+  }
+}
+
 .monthLabel,
 .dayLabel {
   fill: var(--gray-500);

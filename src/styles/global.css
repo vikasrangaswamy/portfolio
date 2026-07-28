@@ -112,3 +112,68 @@ body {
     transform: scale(0.82);
   }
 }
+
+/* ---------- Print ------------------------------------------------------- */
+
+/* Browsers print with background graphics off by default, so the dark theme —
+   near-white ink (--slate: #FAFAFA) on a background that never gets painted —
+   comes out as a blank sheet. Force the light palette for print whatever the
+   on-screen theme is, and drop the chrome that means nothing on paper. */
+@media print {
+  html,
+  html[data-theme='dark'] {
+    --slate: #111113;
+    --ivory: #ffffff;
+    --white: #ffffff;
+    --oat: #d4d4d8;
+    --gray-100: #ffffff;
+    --gray-300: #d4d4d8;
+    --gray-500: #55555a;
+    --gray-700: #3f3f46;
+    --clay: #b3201f;
+    --console-bg: #ffffff;
+    --console-elev: #ffffff;
+    --console-fg: #111113;
+    --console-fg-strong: #000000;
+    --console-muted: #55555a;
+    --console-border: #d4d4d8;
+    --console-field: #ffffff;
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+  }
+
+  #root {
+    zoom: 1;
+  }
+
+  /* The sticky bar would otherwise reprint on every page. */
+  header {
+    position: static;
+  }
+
+  /* Navigation and toggles — on-screen affordances with no meaning on paper.
+     Deliberately narrow: a blanket [aria-hidden='true'] rule also catches
+     decorative elements that carry layout (e.g. Experience's timeline marker is
+     a flex item), which collapses the columns around them. */
+  header nav,
+  header button {
+    display: none !important;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  pre,
+  figure,
+  table {
+    break-inside: avoid;
+  }
+}

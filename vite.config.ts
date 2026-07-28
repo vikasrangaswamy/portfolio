@@ -49,18 +49,22 @@ function portfolioSeo(): Plugin {
     )
   }
 
-  // llms.txt — a concise, LLM-friendly summary + links (emerging GEO convention).
+  // llms.txt — a concise, LLM-friendly summary + links (emerging GEO
+  // convention). Entries use Markdown link syntax — `- [Name](url): note` — as
+  // llmstxt.org specifies; a bare `- Name: url` list reads as having no links
+  // at all to parsers (Lighthouse's llms-txt audit flags it).
   const llms = () =>
     `# ${site.name}\n\n> ${site.description}\n\n` +
     `## Site\n` +
-    `- Home: ${site.url}/\n` +
-    `- About: ${site.url}/about\n` +
-    `- Experience: ${site.url}/experience\n` +
-    `- Projects: ${site.url}/projects\n` +
-    `- Stats (GitHub + LeetCode activity): ${site.url}/stats\n\n` +
+    `- [Home](${site.url}/): overview, live coding activity and the AI assistant\n` +
+    `- [About](${site.url}/about): background and skills\n` +
+    `- [Experience](${site.url}/experience): roles and work history\n` +
+    `- [Projects](${site.url}/projects): project writeups\n` +
+    `- [Stats](${site.url}/stats): GitHub and LeetCode activity, synced daily\n` +
+    `- [Colophon](${site.url}/colophon): how this site is built\n\n` +
     `## Profiles\n` +
-    `- GitHub: ${profile.github}\n` +
-    `- LinkedIn: ${profile.linkedin}\n`
+    `- [GitHub](${profile.github})\n` +
+    `- [LinkedIn](${profile.linkedin})\n`
 
   // Per-route static HTML. The SPA serves one index.html for every path, so
   // every subpage shipped the HOMEPAGE's canonical/og:url/title in the raw
@@ -100,6 +104,20 @@ function portfolioSeo(): Plugin {
       mkdirSync(outDir, { recursive: true })
       writeFileSync(join(outDir, 'index.html'), html)
     }
+
+    // 404.html — Cloudflare Pages serves this with a real 404 status for any
+    // path that matches neither a static file nor a _redirects rule. Without it
+    // the SPA catch-all answered every unknown URL with HTTP 200 ("soft 404"),
+    // which search engines treat as a real, indexable page. It's the same SPA
+    // shell, so the client router still renders the NotFound route inside it.
+    writeFileSync(
+      join(dir, '404.html'),
+      template
+        .replace(/<title>[\s\S]*?<\/title>/, `<title>Page not found · ${escAttr(site.name)}</title>`)
+        // The template carries no robots meta (nothing else needs one), so add
+        // it here: a 404 shell should never be indexed.
+        .replace('</head>', '  <meta name="robots" content="noindex" />\n  </head>'),
+    )
   }
 
   return {

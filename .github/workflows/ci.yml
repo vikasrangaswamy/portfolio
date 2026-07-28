@@ -1,0 +1,39 @@
+name: CI
+
+# Cloudflare Pages builds on every push to main, so a type error already fails
+# the deploy — but silently, after the fact. This runs the same checks up front
+# (and on pull requests, which Pages doesn't gate at all).
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Reports but doesn't gate: `main` currently has 7 pre-existing errors (6
+      # react-hooks "setState in effect" findings plus one in worker/). Fix those
+      # and drop this line to make lint blocking like the checks above.
+      - name: Lint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Build
+        run: npm run build

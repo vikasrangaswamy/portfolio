@@ -1,4 +1,16 @@
-# Cloudflare Pages SPA fallback: serve index.html for any path that isn't a
-# real static asset, so client-side routes (e.g. /projects/x, /stats) resolve
-# on direct load and refresh instead of 404ing.
-/*    /index.html   200
+# Cloudflare Pages routing.
+#
+# There is deliberately NO `/* /index.html 200` catch-all any more. Every route
+# in ROUTES (src/site.config.ts) is prerendered to its own dist/<path>/index.html
+# by the `portfolio-seo` plugin, so Pages serves those as real static files. A
+# blanket SPA fallback would also answer genuinely unknown URLs with HTTP 200 —
+# a "soft 404" that search engines index as a real page. Without it, anything
+# unmatched falls through to dist/404.html with a proper 404 status, and the
+# client router still renders the NotFound route inside that shell.
+#
+# The exception is /learnings/*: those routes exist in the client router
+# (App.tsx) but aren't in ROUTES, so no static file is emitted for them and they
+# still need the SPA shell. @sync: add a rule here for any future client route
+# that isn't added to ROUTES.
+/learnings      /index.html   200
+/learnings/*    /index.html   200

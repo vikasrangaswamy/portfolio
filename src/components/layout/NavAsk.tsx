@@ -8,6 +8,29 @@ const isMac =
   typeof navigator !== 'undefined' && /mac/i.test(navigator.platform || navigator.userAgent)
 
 /**
+ * Compact stand-in for the Ask bar, shown only between 801–1139px (CSS-gated —
+ * see NavAsk.module.css). In that band the header can't fit the full bar
+ * alongside the logo, nav and toggles, so rather than drop the affordance
+ * entirely this button opens the Ask terminal directly.
+ */
+export function AskButton() {
+  return (
+    <button
+      type="button"
+      className={styles.askButton}
+      onClick={() => openAsk()}
+      aria-label="Ask the AI about Vikas's work"
+      data-tip={isMac ? 'Ask · ⌘K' : 'Ask · Ctrl K'}
+      data-tip-below
+    >
+      <span className={styles.askButtonPrompt} aria-hidden="true">
+        &gt;_
+      </span>
+    </button>
+  )
+}
+
+/**
  * Always-visible "Ask" bar in the nav. Typing a question and pressing Enter
  * opens the AskTerminal with that question already streaming. ⌘K (or "/" when
  * not already typing) focuses the bar — inherited muscle memory from the old
@@ -42,6 +65,12 @@ export function NavAsk() {
 
   useEffect(() => {
     const focusBar = () => {
+      // Below 1024px the bar isn't rendered (see Header.module.css), so there's
+      // nothing to focus — open the Ask terminal instead of dead-ending.
+      if (!inputRef.current?.offsetParent) {
+        openAsk()
+        return
+      }
       setRevealed(true)
       requestAnimationFrame(() => inputRef.current?.focus())
     }

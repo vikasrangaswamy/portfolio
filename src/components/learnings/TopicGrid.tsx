@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { entranceFrom } from '../../lib/entrance'
 import type { LearningTopic } from './LearningPage'
 import { PageHeader } from '../layout/PageHeader'
 import pageStyles from '../../routes/Page.module.css'
@@ -21,7 +22,7 @@ export function TopicGrid({ tag, title, summary, trackPath, topics, back }: Prop
         {topics.map((topic, i) => (
           <motion.li
             key={topic.slug}
-            initial={{ opacity: 0, y: 10 }}
+            initial={entranceFrom({ opacity: 0, y: 10 })}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.15 + i * 0.06, ease: 'easeOut' }}
             whileHover={{ y: -2 }}

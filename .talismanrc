@@ -6,7 +6,7 @@ fileignoreconfig:
 - filename: src/content/projects/impulse-candle-scalper.mdx
   checksum: a61ce13cb424ad606bccc93323b4cc05b549f3de72bbb57050a07fc0a3f4c390
 - filename: src/components/layout/Header.tsx
-  checksum: 62288011d9b5232d02eebd75c87cb66025ac0a931e2e9887464fd286037843c1
+  checksum: aa08fac9a7077e9ec7046a287915bb8f8c0fcc9dbfa9df85d67e121b1092db41
 - filename: src/components/command/CommandPalette.tsx
   checksum: 5401b7edd5598a684b71c676ba8d7305ab686942a224ac400702ab4fc7b57bca
 - filename: src/lib/searchIndex.ts
@@ -58,4 +58,8 @@ fileignoreconfig:
   # 32-hex string here so we stop re-whitelisting the file each time.
   allowed_patterns:
     - '[0-9a-f]{32}'
+- filename: src/components/layout/PageShell.tsx
+  checksum: c6c00f48a60f8da58230fd31c8869bc3365325d36cecacf001a6019e5e28ef10
+- filename: src/lib/entrance.ts
+  checksum: fd4ca12569f17de310111cb0a27ef7ae19e4e3eba4e9538c349906c6fd8c03d7
 version: "1.0"

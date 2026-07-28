@@ -29,7 +29,12 @@ export function GitHubWidget() {
   const contributions = data?.totalLastYear ?? 0
 
   return (
-    <Link to="/stats?tab=github" className={styles.widget}>
+    <div className={styles.widget}>
+      <Link
+        to="/stats?tab=github"
+        className={styles.widgetLink}
+        aria-label="GitHub contribution stats"
+      />
       <div className={styles.widgetHead}>
         <span className={styles.widgetLabel}>GitHub</span>
         <div className={styles.widgetHeadActions}>
@@ -62,6 +67,6 @@ export function GitHubWidget() {
             ))}
       </div>
       <div className={styles.widgetMeta}>@{profile.githubUsername}</div>
-    </Link>
+    </div>
   )
 }

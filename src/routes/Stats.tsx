@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { entranceFrom } from '../lib/entrance'
 import { useTheme } from '../lib/useTheme'
 import { PageHeader } from '../components/layout/PageHeader'
 import { SubmissionHeatmap } from '../components/leetcode/SubmissionHeatmap'
@@ -35,14 +36,15 @@ type Source = 'github' | 'leetcode'
 
 export default function Stats() {
   const { theme } = useTheme()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [gh, setGh] = useState<GitHubData | null>(null)
   const [lc, setLc] = useState<LeetCodeData | null>(null)
-  // Open on the tab the visitor came in on (e.g. the home GitHub/LeetCode
-  // widgets link to /stats?tab=…). Defaults to GitHub.
-  const [active, setActive] = useState<Source>(
-    searchParams.get('tab') === 'leetcode' ? 'leetcode' : 'github',
-  )
+  // `?tab=` is the source of truth, not local state: the visitor may arrive on
+  // either tab (the home GitHub/LeetCode widgets link to /stats?tab=…), and
+  // switching tabs should stay shareable and survive a refresh. `replace` keeps
+  // tab flipping out of the back button's way. Defaults to GitHub.
+  const active: Source = searchParams.get('tab') === 'leetcode' ? 'leetcode' : 'github'
+  const setActive = (tab: Source) => setSearchParams({ tab }, { replace: true })
 
   useEffect(() => {
     const base = import.meta.env.BASE_URL
@@ -105,6 +107,7 @@ function GitHubSection({ data, theme }: { data: GitHubData | null; theme: 'light
   return (
     <Section
       title="GitHub contributions"
+      noun="contributions"
       profileLabel="View profile on github.com ↗"
       profileUrl={profileUrl}
       placeholder={placeholder}
@@ -131,6 +134,7 @@ function LeetCodeSection({ data, theme }: { data: LeetCodeData | null; theme: 'l
   return (
     <Section
       title="LeetCode practice"
+      noun="submissions"
       profileLabel="View profile on leetcode.com ↗"
       profileUrl={profileUrl}
       placeholder={placeholder}
@@ -151,6 +155,7 @@ type Stat = { label: string; value: string; unit: string }
 
 function Section({
   title,
+  noun,
   profileLabel,
   profileUrl,
   placeholder,
@@ -161,6 +166,7 @@ function Section({
   fetchedAt,
 }: {
   title: string
+  noun: string
   profileLabel: string
   profileUrl: string
   placeholder: boolean
@@ -188,7 +194,7 @@ function Section({
 
       <motion.section
         className={styles.heatmapCard}
-        initial={{ opacity: 0, y: 12 }}
+        initial={entranceFrom({ opacity: 0, y: 12 })}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
       >
@@ -196,7 +202,7 @@ function Section({
           <h2 className={styles.cardTitle}>{title}</h2>
           <span className={styles.cardMeta}>last 12 months</span>
         </header>
-        <SubmissionHeatmap days={activities} theme={theme} />
+        <SubmissionHeatmap days={activities} theme={theme} noun={noun} />
         {fetchedAt && (
           <footer className={styles.heatmapFooter}>
             Updated {formatRelative(fetchedAt)} · synced daily at 06:17 UTC
@@ -227,7 +233,7 @@ function ConsistencyStat({
   return (
     <motion.div
       className={styles.consistency}
-      initial={{ opacity: 0, y: 10 }}
+      initial={entranceFrom({ opacity: 0, y: 10 })}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay, ease: 'easeOut' }}
       whileHover={{ y: -3 }}

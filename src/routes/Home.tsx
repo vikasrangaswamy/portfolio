@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { entranceFrom } from '../lib/entrance'
 import { useSeo } from '../lib/useSeo'
 import { Bio } from '../components/home/Bio'
 import { HeroTerminal } from '../components/home/HeroTerminal'
@@ -23,7 +24,7 @@ export default function Home() {
       <section className={styles.split}>
         <motion.div
           className={styles.bioCol}
-          initial={{ opacity: 0, y: 12 }}
+          initial={entranceFrom({ opacity: 0, y: 12 })}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
         >
@@ -31,7 +32,7 @@ export default function Home() {
         </motion.div>
         <motion.div
           className={styles.termCol}
-          initial={{ opacity: 0, y: 12 }}
+          initial={entranceFrom({ opacity: 0, y: 12 })}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.12, ease: 'easeOut' }}
         >
@@ -42,7 +43,7 @@ export default function Home() {
       <section className={styles.section}>
         <motion.div
           className={widgetStyles.rowHeader}
-          initial={{ opacity: 0, y: 6 }}
+          initial={entranceFrom({ opacity: 0, y: 6 })}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.2, ease: 'easeOut' }}
         >
@@ -57,7 +58,7 @@ export default function Home() {
             <motion.div
               key={key}
               className={widgetStyles.cell}
-              initial={{ opacity: 0, y: 14 }}
+              initial={entranceFrom({ opacity: 0, y: 14 })}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.3 + i * 0.07, ease: 'easeOut' }}
               whileHover={{ y: -3 }}

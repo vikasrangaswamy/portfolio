@@ -21,6 +21,7 @@ export function WidgetInfoLink({ slug, label = 'How this works' }: Props) {
       className={styles.infoButton}
       aria-label={label}
       data-tip={label}
+      data-tip-end
       data-no-sound
       onClick={(e) => {
         e.preventDefault()

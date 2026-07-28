@@ -5,6 +5,14 @@
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
   Permissions-Policy: geolocation=(), microphone=(), camera=()
+  # 'unsafe-inline' is load-bearing in both places, not laziness: style-src
+  # because components style via React's `style={{…}}` (which lands as inline
+  # style attributes), and script-src because index.html runs one inline theme
+  # bootstrap before first paint to avoid a flash of the wrong theme. Everything
+  # else is locked down — notably connect-src, so the only host this page can
+  # talk to is the Ask Worker. @sync: the Worker URL matches ASK_ENDPOINT in
+  # src/lib/askConfig.ts, and the font hosts match the <link>s in index.html.
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://ask-vikas.vikasrangaswamy.workers.dev; upgrade-insecure-requests
 
 # Fingerprinted build assets never change — cache them hard.
 /assets/*

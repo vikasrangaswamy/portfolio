@@ -136,7 +136,12 @@
   font-size: 13.5px;
 }
 
+/* min-height is the tap target, not the look — 13.5px text alone left these
+   under the 24px minimum. */
 .contactRow a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   color: var(--clay);
   transition: opacity var(--transition);
 }

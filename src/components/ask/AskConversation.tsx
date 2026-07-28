@@ -72,9 +72,16 @@ export function AskConversation({ turns, busy, ask, autoFocus = false, greeting,
     if (autoFocus) requestAnimationFrame(() => inputRef.current?.focus())
   }, [autoFocus])
 
-  // Autoscroll the transcript as it streams.
+  // Autoscroll the transcript as it streams. Two guards: don't run before the
+  // first question (it would scroll the greeting out of view on short panels),
+  // and don't yank the view down if the reader has scrolled back up to re-read
+  // an earlier answer.
   useEffect(() => {
-    bodyRef.current?.scrollTo({ top: bodyRef.current.scrollHeight })
+    const body = bodyRef.current
+    if (!body || turns.length === 0) return
+    const distanceFromBottom = body.scrollHeight - body.scrollTop - body.clientHeight
+    if (distanceFromBottom > 80) return
+    body.scrollTo({ top: body.scrollHeight })
   }, [turns])
 
   const onSubmit = (e: React.FormEvent) => {

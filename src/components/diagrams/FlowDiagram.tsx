@@ -189,6 +189,30 @@ export function FlowDiagram({ nodes, edges, direction = 'LR', height = 420 }: Fl
     typeof window !== 'undefined' &&
     window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
+  // Touch devices: drag-to-pan must stay off so a vertical swipe scrolls the
+  // page instead of the canvas.
+  const coarsePointer =
+    typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches
+
+  // How wide the canvas needs to be for fitView to land on a legible zoom. On a
+  // phone the frame is ~350px against a graph over 1300px wide, so fitView
+  // scales to ~0.4 and 12px node labels render at 5px. Sizing the canvas from
+  // the laid-out graph instead (and scrolling it — see the media query in
+  // FlowDiagram.module.css) keeps labels near full size. Capped so a very wide
+  // diagram doesn't turn into an endless swipe.
+  const legibleCanvasWidth = useMemo(() => {
+    let minX = Infinity
+    let maxX = -Infinity
+    for (const n of baseNodes) {
+      const w = typeof n.style?.width === 'number' ? n.style.width : 0
+      minX = Math.min(minX, n.position.x)
+      maxX = Math.max(maxX, n.position.x + w)
+    }
+    if (!Number.isFinite(minX) || !Number.isFinite(maxX)) return 660
+    // fitView's 0.15 padding means the box must exceed the graph by ~18%.
+    return Math.min(1400, Math.max(660, Math.round((maxX - minX) * 1.18)))
+  }, [baseNodes])
+
   useEffect(() => {
     if (!playing) return
     if (step >= totalSteps) {
@@ -306,27 +330,40 @@ export function FlowDiagram({ nodes, edges, direction = 'LR', height = 420 }: Fl
           </button>
         </div>
       )}
-      <ReactFlow
-        nodes={displayNodes}
-        edges={displayEdges}
-        nodeTypes={NODE_TYPES}
-        fitView
-        fitViewOptions={{ padding: 0.15 }}
-        proOptions={{ hideAttribution: true }}
-        panOnDrag
-        zoomOnScroll
-        zoomOnPinch
-        nodesDraggable={false}
-        nodesConnectable={false}
-        nodesFocusable={false}
-        edgesFocusable={false}
-        elementsSelectable={false}
-        minZoom={0.4}
-        maxZoom={2.5}
+      <div
+        className={styles.canvas}
+        style={{ '--flow-canvas-w': `${legibleCanvasWidth}px` } as React.CSSProperties}
       >
-        <Background gap={28} size={1} className={styles.bg} />
-        <Controls showInteractive={false} className={styles.controls} />
-      </ReactFlow>
+        <ReactFlow
+          nodes={displayNodes}
+          edges={displayEdges}
+          nodeTypes={NODE_TYPES}
+          fitView
+          fitViewOptions={{ padding: 0.15 }}
+          proOptions={{ hideAttribution: true }}
+          /* Page scroll always wins. React Flow's defaults (zoomOnScroll +
+             preventScrolling) swallow every wheel event over the canvas, so a
+             diagram became a dead zone you couldn't scroll past. Pan is gated
+             to the mouse for the same reason: on touch, dragging the canvas
+             hijacked the vertical swipe that should scroll the page — there the
+             canvas is a plain horizontal scroller instead (see .canvas). Zoom
+             stays available via trackpad/touch pinch and the +/− controls. */
+          zoomOnScroll={false}
+          preventScrolling={false}
+          panOnDrag={coarsePointer ? false : [0]}
+          zoomOnPinch
+          nodesDraggable={false}
+          nodesConnectable={false}
+          nodesFocusable={false}
+          edgesFocusable={false}
+          elementsSelectable={false}
+          minZoom={0.4}
+          maxZoom={2.5}
+        >
+          <Background gap={28} size={1} className={styles.bg} />
+          <Controls showInteractive={false} className={styles.controls} />
+        </ReactFlow>
+      </div>
     </div>
   )
 }

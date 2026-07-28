@@ -22,6 +22,34 @@
   box-shadow: var(--shadow-sm);
 }
 
+.canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* The canvas fills the frame at normal widths. On phones a graph this wide
+   fitView-scales to ~0.4, which shrinks 12px node labels to ~5px — illegible.
+   There, give the graph a floor width and let the canvas scroll horizontally:
+   fitView then works against the wider box (labels stay readable) and a
+   sideways swipe is native scroll, so vertical swipes still scroll the page.
+
+   The scroller is .canvas rather than .wrap so the walkthrough bar — absolutely
+   positioned against .wrap — stays anchored in the corner instead of sliding
+   off with the graph. */
+@media (max-width: 760px) {
+  .canvas {
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+  }
+
+  .canvas :global(.react-flow) {
+    /* Width comes from the laid-out graph (see legibleCanvasWidth). */
+    min-width: var(--flow-canvas-w, 660px);
+    height: 100%;
+  }
+}
+
 /* Override React Flow internal styles to use our theme variables. */
 .wrap :global(.react-flow) {
   background: var(--flow-bg);
@@ -264,8 +292,12 @@
 .stepBtn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
   height: 28px;
+  /* The single-glyph buttons (‹ › ↺) came out 21px wide — under the 24px tap
+     target floor. */
+  min-width: 24px;
   padding: 0 9px;
   border: none;
   border-radius: var(--r-xs);

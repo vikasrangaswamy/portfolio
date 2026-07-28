@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { entranceFrom } from '../lib/entrance'
 import { experience, type Role } from '../content/experience'
 import { PageHeader } from '../components/layout/PageHeader'
 import pageStyles from './Page.module.css'
@@ -73,7 +74,7 @@ export default function Experience() {
           <motion.section
             key={`${group.company}-${group.spanStart}`}
             className={styles.companyBlock}
-            initial={{ opacity: 0, y: 12 }}
+            initial={entranceFrom({ opacity: 0, y: 12 })}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.1 + gi * 0.08, ease: 'easeOut' }}
           >

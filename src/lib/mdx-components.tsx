@@ -102,6 +102,10 @@ export const mdxComponents: MDXComponents = {
         padding: '2px 6px',
         borderRadius: 4,
         color: 'var(--slate)',
+        // Identifiers like `contributionsCollection.contributionCalendar` have
+        // no break opportunity, so on a phone they pushed the whole page into
+        // horizontal scroll. Let them break rather than overflow.
+        overflowWrap: 'anywhere',
       }}
       {...props}
     />

@@ -51,8 +51,8 @@
 }
 
 .topicChip:hover:not(:disabled) {
-  border-color: var(--clay);
-  color: var(--clay);
+  border-color: var(--console-accent);
+  color: var(--console-accent);
 }
 
 .topicChip:disabled {
@@ -73,7 +73,7 @@
 
 .prompt {
   flex-shrink: 0;
-  color: var(--clay);
+  color: var(--console-accent);
   font-weight: 600;
 }
 
@@ -89,7 +89,7 @@
 }
 
 .answerLink {
-  color: var(--clay);
+  color: var(--console-accent);
   text-decoration: underline;
   text-underline-offset: 2px;
   word-break: break-word;
@@ -99,7 +99,7 @@
   display: inline-block;
   width: 0.55em;
   height: 1em;
-  background: var(--clay);
+  background: var(--console-accent);
   vertical-align: -0.15em;
   animation: blink 1.1s step-end infinite;
 }

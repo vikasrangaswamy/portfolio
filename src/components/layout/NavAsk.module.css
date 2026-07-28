@@ -21,8 +21,9 @@
 }
 
 /* Home page above the fold: hidden so it doesn't duplicate the hero ask box.
-   Desktop only — on phones the bar keeps its own row and stays visible. */
-@media (min-width: 641px) {
+   Desktop only — inside the mobile menu the bar keeps its own row and stays
+   visible. @sync: Header.module.css uses the same 800/801px boundary. */
+@media (min-width: 801px) {
   .hidden {
     opacity: 0;
     transform: translateY(-4px);
@@ -76,8 +77,55 @@
   padding: 1px 5px;
 }
 
-/* Phone: the bar gets its own full-width row (see Header grid); drop the hint. */
-@media (max-width: 640px) {
+/* ---------- Compact Ask button (801–1139px) ----------
+   The full bar needs ~200px it can't get in that band (Header.module.css hides
+   it there), so this takes its place next to the toggles. Styled to match them:
+   same height and border, mono label. */
+
+.askButton {
+  display: none; /* shown only in the band below */
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  /* Square, same footprint as the sound/theme toggles it sits beside — a
+     labelled button costs ~36px the header doesn't have at the low end of the
+     band. The `>_` glyph carries the terminal metaphor; the tooltip and
+     aria-label carry the meaning. */
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--r-sm);
+  color: var(--gray-700);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.askButton:hover {
+  border-color: var(--clay);
+  color: var(--clay);
+}
+
+.askButtonPrompt {
+  color: var(--clay);
+  letter-spacing: -0.06em;
+}
+
+@media (min-width: 801px) and (max-width: 1139px) {
+  .askButton {
+    display: inline-flex;
+  }
+}
+
+/* In the mobile menu the bar gets its own full-width row (see Header grid);
+   drop the ⌘K hint, since that shortcut needs a hardware keyboard. */
+@media (max-width: 800px) {
   .bar {
     max-width: none;
   }

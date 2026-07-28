@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { entranceFrom } from '../lib/entrance'
 import { profile } from '../content/profile'
 import { skills } from '../content/skills'
 import { PageHeader } from '../components/layout/PageHeader'
@@ -25,7 +26,7 @@ export default function About() {
 
       <motion.div
         className={styles.layout}
-        initial={{ opacity: 0, y: 12 }}
+        initial={entranceFrom({ opacity: 0, y: 12 })}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, delay: 0.15, ease: 'easeOut' }}
       >
@@ -74,7 +75,7 @@ export default function About() {
 
       <motion.section
         className={styles.skillBlock}
-        initial={{ opacity: 0, y: 12 }}
+        initial={entranceFrom({ opacity: 0, y: 12 })}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, delay: 0.25, ease: 'easeOut' }}
       >
