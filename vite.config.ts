@@ -4,7 +4,7 @@ import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import mdx from '@mdx-js/rollup'
 import rehypePrettyCode from 'rehype-pretty-code'
-import { site, ROUTES } from './src/site.config'
+import { site, ROUTES, UNLISTED_ROUTES } from './src/site.config'
 import { profile } from './src/content/profile'
 
 /**
@@ -84,7 +84,9 @@ function portfolioSeo(): Plugin {
 
   const prerender = (dir: string) => {
     const template = readFileSync(join(dir, 'index.html'), 'utf8')
-    for (const r of ROUTES) {
+    // UNLISTED_ROUTES are emitted as files too, but stay out of sitemap.xml —
+    // see the comment on the export in src/site.config.ts.
+    for (const r of [...ROUTES, ...UNLISTED_ROUTES]) {
       if (r.path === '/') continue // the template already IS the home page
       const canonical = `${site.url}${r.path}`
       const title = escAttr(r.title ? `${r.title} · ${site.name}` : site.title)

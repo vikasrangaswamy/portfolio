@@ -1,4 +1,5 @@
 import { projectsMeta } from './content/projects/meta'
+import { systemDesignMeta } from './content/learnings/system-design/meta'
 
 /**
  * Single source of truth for site-wide / deployment constants.
@@ -116,4 +117,30 @@ export const ROUTES: SitemapEntry[] = [
     description:
       'How the GitHub contributions widget on vikasrangaswamy.com works — a daily server-side sync into committed JSON, read straight from the static build.',
   },
+]
+
+/**
+ * Paths that exist in the client router (src/App.tsx) but deliberately stay out
+ * of `ROUTES` — the System Design notes, which aren't linked from the nav yet
+ * and shouldn't be advertised in sitemap.xml.
+ *
+ * They still need prerendered HTML: Cloudflare Pages only honours a `200`
+ * rewrite in `_redirects` for the SPA catch-all. A rule like
+ * `/learnings/* /index.html 200` doesn't rewrite — the bare path turns into a
+ * redirect to `/` and the nested paths 404 outright. Emitting a real file per
+ * path is the only reliable way to keep them reachable now that the catch-all
+ * is gone (it was removed so unknown URLs return a true 404 instead of a soft
+ * 200). @sync: add any future unlisted client route here.
+ */
+export const UNLISTED_ROUTES: { path: string; title: string; description: string }[] = [
+  {
+    path: '/learnings/system-design',
+    title: 'System Design',
+    description: 'Notes from building small systems end to end — the tradeoffs, not the theory.',
+  },
+  ...systemDesignMeta.map((t) => ({
+    path: `/learnings/system-design/${t.slug}`,
+    title: t.title,
+    description: t.summary,
+  })),
 ]

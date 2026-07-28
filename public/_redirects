@@ -1,16 +1,18 @@
 # Cloudflare Pages routing.
 #
-# There is deliberately NO `/* /index.html 200` catch-all any more. Every route
-# in ROUTES (src/site.config.ts) is prerendered to its own dist/<path>/index.html
-# by the `portfolio-seo` plugin, so Pages serves those as real static files. A
-# blanket SPA fallback would also answer genuinely unknown URLs with HTTP 200 —
-# a "soft 404" that search engines index as a real page. Without it, anything
-# unmatched falls through to dist/404.html with a proper 404 status, and the
-# client router still renders the NotFound route inside that shell.
+# There is deliberately NO `/* /index.html 200` catch-all. Every client route is
+# prerendered to its own dist/<path>/index.html by the `portfolio-seo` plugin
+# (from ROUTES + UNLISTED_ROUTES in src/site.config.ts), so Pages serves them as
+# real static files. A blanket SPA fallback would also answer genuinely unknown
+# URLs with HTTP 200 — a "soft 404" that search engines index as a real page.
+# Without it, anything unmatched falls through to dist/404.html with a proper 404
+# status, and the client router renders the NotFound route inside that shell.
 #
-# The exception is /learnings/*: those routes exist in the client router
-# (App.tsx) but aren't in ROUTES, so no static file is emitted for them and they
-# still need the SPA shell. @sync: add a rule here for any future client route
-# that isn't added to ROUTES.
-/learnings      /index.html   200
-/learnings/*    /index.html   200
+# Note: Pages does NOT honour a `200` rewrite here outside that catch-all. A rule
+# like `/learnings/* /index.html 200` does not rewrite — the bare path becomes a
+# redirect to `/` and nested paths 404. Hence prerendered files, not rewrites.
+#
+# These two were client-side <Navigate> redirects; as real 301s they cost one
+# less round trip and pass the signal to crawlers.
+/learnings              /stats   301
+/learnings/leetcode     /stats   301
