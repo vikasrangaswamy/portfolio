@@ -13,10 +13,13 @@ import './styles/mechanical.css'
 // without which edges render at zero size.
 import '@xyflow/react/dist/style.css'
 import App from './App.tsx'
+import { logConsoleGreeting } from './lib/consoleGreeting'
 import { mdxComponents } from './lib/mdx-components'
 
 const rootEl = document.getElementById('root')
 if (!rootEl) throw new Error('Root element #root not found')
+
+logConsoleGreeting()
 
 createRoot(rootEl).render(
   <StrictMode>

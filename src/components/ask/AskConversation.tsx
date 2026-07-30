@@ -52,8 +52,25 @@ type Props = {
 export function AskConversation({ turns, busy, ask, autoFocus = false, greeting, intro }: Props) {
   const [input, setInput] = useState('')
   const [focused, setFocused] = useState(false)
+  const [copied, setCopied] = useState(false)
   const inputRef = useRef<HTMLInputElement | null>(null)
   const bodyRef = useRef<HTMLDivElement | null>(null)
+
+  // Answers are shareable: `?q=…` replays the question for whoever opens the
+  // link (see AskTerminal). Offer the link once there's something to share.
+  const firstQuestion = turns.find((t) => t.role === 'user')?.text
+  const copyLink = async () => {
+    if (!firstQuestion) return
+    const url = `${window.location.origin}${window.location.pathname}?q=${encodeURIComponent(firstQuestion)}`
+    try {
+      await navigator.clipboard.writeText(url)
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 1600)
+    } catch {
+      // Clipboard blocked (permissions, or a non-secure context) — the button
+      // just doesn't confirm rather than throwing at the visitor.
+    }
+  }
 
   // Cycle the starter questions as a self-typing placeholder while the input is
   // idle and empty before the first question. Once chatting (or focused), drop
@@ -135,6 +152,7 @@ export function AskConversation({ turns, busy, ask, autoFocus = false, greeting,
         <input
           ref={inputRef}
           className={styles.input}
+          name="q"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onFocus={() => setFocused(true)}
@@ -155,7 +173,14 @@ export function AskConversation({ turns, busy, ask, autoFocus = false, greeting,
         </button>
       </form>
 
-      <div className={styles.footer}>AI-generated from this portfolio — may be imperfect.</div>
+      <div className={styles.footer}>
+        <span>AI-generated from this portfolio — may be imperfect.</span>
+        {firstQuestion && (
+          <button type="button" className={styles.shareBtn} onClick={copyLink} data-no-sound>
+            {copied ? 'link copied' : 'copy link'}
+          </button>
+        )}
+      </div>
     </>
   )
 }

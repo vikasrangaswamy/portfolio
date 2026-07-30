@@ -26,3 +26,6 @@ dist-ssr
 
 # Local-only todos / placeholder tracking (NEEDS-FROM-USER.md, SEO.md, etc.)
 todos/
+
+# Local agent tooling (dev-server launch config) — not part of the site.
+.claude/

@@ -175,10 +175,35 @@
 }
 
 .footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
   padding: 0 var(--sp-4) var(--sp-3);
   font-family: var(--font-mono);
   font-size: 10.5px;
   color: var(--ask-muted, var(--gray-500));
+}
+
+/* Deliberately quiet — it should be findable after reading an answer, not
+   compete with it. Underlined so it reads as a control at this size. */
+.shareBtn {
+  flex-shrink: 0;
+  min-height: 24px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--ask-muted, var(--gray-500));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  transition: color var(--transition);
+}
+
+.shareBtn:hover {
+  color: var(--console-accent);
 }
 
 @media (prefers-reduced-motion: reduce) {

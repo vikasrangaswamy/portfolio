@@ -15,6 +15,7 @@ export function AskTerminal() {
   const chat = useAsk()
   const askRef = useRef<(q: string) => Promise<void> | void>(() => {})
   askRef.current = chat.ask
+  const deepLinkAsked = useRef(false)
 
   const close = useCallback(() => setOpen(false), [])
 
@@ -35,6 +36,20 @@ export function AskTerminal() {
       window.removeEventListener(ASK_TERMINAL_EVENT, onOpen)
       document.removeEventListener('keydown', onKey)
     }
+  }, [])
+
+  // Deep link: `?q=…` on any route opens the terminal and asks straight away, so
+  // a shared link lands on the answer rather than an empty prompt. The param is
+  // left in the URL on purpose — it IS the shareable link. Every route's
+  // canonical tag points at the clean path, so this doesn't fragment indexing.
+  useEffect(() => {
+    if (deepLinkAsked.current) return // StrictMode runs mount effects twice in dev
+    const q = new URLSearchParams(window.location.search).get('q')?.trim()
+    if (!q) return
+    deepLinkAsked.current = true
+    setOpen(true)
+    // Same ceiling as the input fields, so a hand-edited link can't send more.
+    requestAnimationFrame(() => askRef.current(q.slice(0, 500)))
   }, [])
 
   if (!open) return null

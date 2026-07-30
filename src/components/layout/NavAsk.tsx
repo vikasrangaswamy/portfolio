@@ -118,6 +118,7 @@ export function NavAsk() {
       <input
         ref={inputRef}
         className={styles.input}
+        name="q"
         type="text"
         placeholder={focused ? 'Ask about my work…' : `${typed}▏`}
         aria-label="Ask the AI about Vikas's work"

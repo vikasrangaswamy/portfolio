@@ -62,4 +62,6 @@ fileignoreconfig:
   checksum: c6c00f48a60f8da58230fd31c8869bc3365325d36cecacf001a6019e5e28ef10
 - filename: src/lib/entrance.ts
   checksum: fd4ca12569f17de310111cb0a27ef7ae19e4e3eba4e9538c349906c6fd8c03d7
+- filename: src/lib/consoleGreeting.ts
+  checksum: 37a98af50562fc3bde7fcdf6bf539296f82e5910e69f75034c24e8c52f95fdc4
 version: "1.0"
