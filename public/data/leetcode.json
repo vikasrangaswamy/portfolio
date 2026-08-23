@@ -3,7 +3,7 @@
   "realName": "VIKAS RANGASWAMY",
   "avatar": "https://assets.leetcode.com/users/VIKAS_RANGASWAMY/avatar_1626924383.png",
   "country": null,
-  "ranking": 2387536,
+  "ranking": 2389052,
   "totals": {
     "All": 59,
     "Easy": 24,
@@ -11,10 +11,10 @@
     "Hard": 0
   },
   "questionTotals": {
-    "All": 4029,
-    "Easy": 960,
-    "Medium": 2103,
-    "Hard": 966
+    "All": 4033,
+    "Easy": 961,
+    "Medium": 2105,
+    "Hard": 967
   },
   "calendar": {
     "streak": 4,
@@ -75,5 +75,5 @@
       "1786233600": 2
     }
   },
-  "fetchedAt": "2026-08-22T06:58:18.468Z"
+  "fetchedAt": "2026-08-23T07:00:03.764Z"
 }
